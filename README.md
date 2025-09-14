@@ -10,24 +10,96 @@
 | Sarvani Yoganand Lakshmitulasi |                 |
 
 
-## User Stories
 
-### Admin (Faculty/Staff)
-- As an **admin**, I want to see a dashboard with items due back, overdue items, and requests, so that I can manage inventory efficiently and hold students accountable.  
-- As an **admin**, I want to send reminders directly to students with overdue items, so that tools are returned on time.  
-- As an **admin**, I want to review and approve/deny event reservations, so that resources are prioritized for important projects or classes.  
-- As an **admin**, I want to export usage data, so that I can plan future purchases and manage budgets better.  
+#  User Stories
 
-### Student
-- As a **student**, I want to check real-time availability of tools, so that I know if what I need is available before making a trip.  
-- As a **student**, I want to check out a tool or a bundled set (e.g., soldering kit + goggles), so that I don’t miss required accessories.  
-- As a **student**, I want to get reminders about due dates, so that I don’t forget to return borrowed items.  
-- As a **student**, I want to log in and check in tools easily, so that the return process is quick and tracked.  
-- As a **student**, I want to be flagged if I’m overdue, so that admins can follow up and I stay accountable.  
+## 1. Student
+**Name / Role:** University Student (age ~20–25, any gender)  
+**Description:** A student actively participating in academics and campus activities. Uses online systems to access resources, register for events, and connect with clubs.  
+**Personality:** Curious, social, tech-savvy, values convenience.  
+**Goals:**  
+- Quickly find and join campus clubs.  
+- Stay updated on events and deadlines.  
+- Easily register for activities.  
+**Problems / Pain Points:**  
+- Event information is scattered.  
+- Registration processes can be confusing.  
+- Notifications may be missed.  
 
-### Club Leader (Student Organization)
-- As a **club leader**, I want to request multiple tools for an event, so that my team has everything needed for the project.  
-- As a **club leader**, I want the system to route event requests to department heads for approval, so that events are prioritized properly.  
-- As a **club leader**, I want to reserve tools for specific dates, so that no one else checks them out during the event.  
-- As a **club leader**, I want to process a bulk return after the event, so that checking everything back in is fast and simple.  
-- As a **club leader**, I want to manage a mini-inventory for my club, so that we can track our own shared tools separate from the Makerspace.  
+**Main Scenario Example:** Register for a coding workshop  
+**Keypath:**  
+1. Log into the system  
+2. Navigate to “Events & Workshops”  
+3. Find “Coding Workshop – Saturday”  
+4. Click **Register**  
+5. Receive confirmation notification  
+
+**Additional Scenario Example:** Join a new club  
+**Keypath:**  
+1. Log into the system  
+2. Go to “Clubs Directory”  
+3. Search for “Robotics Club”  
+4. Click **Join Club**  
+5. Get added to club roster + welcome notification  
+
+---
+
+## 2. Admin
+**Name / Role:** System Administrator (any adult age, any gender)  
+**Description:** Manages users, approves clubs, oversees events, and monitors system activity.  
+**Personality:** Organized, detail-oriented, responsible, proactive.  
+**Goals:**  
+- Ensure proper user registration and access.  
+- Approve club creation and events.  
+- Monitor system activity and generate reports.  
+**Problems / Pain Points:**  
+- Overseeing multiple users and events can be overwhelming.  
+- Manual approvals take time.  
+- Ensuring accuracy and compliance is challenging.  
+
+**Main Scenario Example:** Approve a new club  
+**Keypath:**  
+1. Log into admin dashboard  
+2. Navigate to “Pending Clubs”  
+3. Review club details  
+4. Click **Approve** or **Reject**  
+5. Club receives notification of approval  
+
+**Additional Scenario Example:** Generate monthly activity report  
+**Keypath:**  
+1. Log into dashboard  
+2. Navigate to “Reports”  
+3. Select date range  
+4. Click **Generate Report**  
+5. Download or email the report  
+
+---
+
+## 3. Club Leader
+**Name / Role:** Club Leader / Organizer (any adult age, any gender)  
+**Description:** Leads a campus club, manages events, and communicates with members.  
+**Personality:** Motivated, collaborative, communicative, responsible.  
+**Goals:**  
+- Create and manage club events  
+- Recruit and manage club members  
+- Send announcements and updates efficiently  
+**Problems / Pain Points:**  
+- Event registration and member tracking can be confusing  
+- Members may miss important announcements  
+- Managing multiple events is time-consuming  
+
+**Main Scenario Example:** Create a new event  
+**Keypath:**  
+1. Log into system  
+2. Navigate to “My Club → Create Event”  
+3. Enter event details (name, date, description)  
+4. Click **Publish Event**  
+5. Members receive notification  
+
+**Additional Scenario Example:** Send announcement to members  
+**Keypath:**  
+1. Navigate to “My Club → Members”  
+2. Select members or all members  
+3. Type message  
+4. Click **Send Notification**  
+5. Members receive message via email/system  
