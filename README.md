@@ -11,95 +11,102 @@
 
 
 
-#  User Stories
+# CheckMate User Stories 
 
-## 1. Student
-**Name / Role:** University Student (age ~20–25, any gender)  
-**Description:** A student actively participating in academics and campus activities. Uses online systems to access resources, register for events, and connect with clubs.  
-**Personality:** Curious, social, tech-savvy, values convenience.  
-**Goals:**  
-- Quickly find and join campus clubs.  
-- Stay updated on events and deadlines.  
-- Easily register for activities.  
-**Problems / Pain Points:**  
-- Event information is scattered.  
-- Registration processes can be confusing.  
-- Notifications may be missed.  
-
-**Main Scenario Example:** Register for a coding workshop  
-**Keypath:**  
-1. Log into the system  
-2. Navigate to “Events & Workshops”  
-3. Find “Coding Workshop – Saturday”  
-4. Click **Register**  
-5. Receive confirmation notification  
-
-**Additional Scenario Example:** Join a new club  
-**Keypath:**  
-1. Log into the system  
-2. Go to “Clubs Directory”  
-3. Search for “Robotics Club”  
-4. Click **Join Club**  
-5. Get added to club roster + welcome notification  
+CheckMate is an inventory and resource management platform for students, faculty, and student organizations at NJIT. It provides real-time visibility into item availability, streamlines check-in/check-out processes, and helps reduce shortages. It also supports event planning by allowing admins and student groups to reserve batches of tools in advance and receive reminders.
 
 ---
 
-## 2. Admin
-**Name / Role:** System Administrator (any adult age, any gender)  
-**Description:** Manages users, approves clubs, oversees events, and monitors system activity.  
-**Personality:** Organized, detail-oriented, responsible, proactive.  
+## 1. Admin (Faculty/Staff)
+**Description:** Manages inventory, approves requests, monitors check-ins/outs, and ensures accountability for shared tools.  
+**Personality:** Organized, responsible, detail-oriented.  
 **Goals:**  
-- Ensure proper user registration and access.  
-- Approve club creation and events.  
-- Monitor system activity and generate reports.  
+- Track borrowed items and overdue returns  
+- Approve event/tool reservations  
+- Generate usage analytics for planning future purchases  
 **Problems / Pain Points:**  
-- Overseeing multiple users and events can be overwhelming.  
-- Manual approvals take time.  
-- Ensuring accuracy and compliance is challenging.  
+- Managing multiple users and items can be overwhelming  
+- Manual tracking can lead to errors  
+- Need for quick oversight of inventory  
 
-**Main Scenario Example:** Approve a new club  
+**Main Scenario Example:** Daily inventory and request management  
 **Keypath:**  
-1. Log into admin dashboard  
-2. Navigate to “Pending Clubs”  
-3. Review club details  
-4. Click **Approve** or **Reject**  
-5. Club receives notification of approval  
-
-**Additional Scenario Example:** Generate monthly activity report  
-**Keypath:**  
-1. Log into dashboard  
-2. Navigate to “Reports”  
-3. Select date range  
-4. Click **Generate Report**  
-5. Download or email the report  
+1. Admin logs into CheckMate dashboard  
+2. Dashboard shows:
+   - Items due back today
+   - Overdue items and flagged students
+   - Incoming student requests
+   - Pending event reservations requiring department approval  
+3. Admin sends reminders for overdue items  
+4. Admin checks and approves/denies event requests  
+5. Admin exports usage data to plan for future purchases  
 
 ---
 
-## 3. Club Leader
-**Name / Role:** Club Leader / Organizer (any adult age, any gender)  
-**Description:** Leads a campus club, manages events, and communicates with members.  
-**Personality:** Motivated, collaborative, communicative, responsible.  
+## 2. Student
+**Description:** Borrows and returns tools, checks availability, and receives reminders.  
+**Personality:** Tech-savvy, responsible, values convenience.  
 **Goals:**  
-- Create and manage club events  
-- Recruit and manage club members  
-- Send announcements and updates efficiently  
+- Easily borrow items and track due dates  
+- Receive notifications for overdue items  
+- Access bundled sets of tools for projects  
 **Problems / Pain Points:**  
-- Event registration and member tracking can be confusing  
-- Members may miss important announcements  
-- Managing multiple events is time-consuming  
+- Forgetting due dates  
+- Difficulty tracking tool availability  
+- Need for simplified checkout process  
 
-**Main Scenario Example:** Create a new event  
+**Main Scenario Example:** Borrow a soldering kit  
 **Keypath:**  
-1. Log into system  
-2. Navigate to “My Club → Create Event”  
-3. Enter event details (name, date, description)  
-4. Click **Publish Event**  
-5. Members receive notification  
+1. Student logs into CheckMate (Makerspace station or mobile)  
+2. Searches for the soldering kit  
+3. System shows availability and due dates  
+4. Student selects an available kit (bundled items included automatically)  
+5. System logs checkout and sends due date reminder  
+6. Student returns item; system updates inventory  
+7. Overdue items flagged and admin notified  
 
-**Additional Scenario Example:** Send announcement to members  
+---
+
+## 3. Club Leader (Event Requests)
+**Description:** Reserves multiple tools for student organization projects or events.  
+**Personality:** Organized, collaborative, proactive.  
+**Goals:**  
+- Reserve multiple tools for events  
+- Receive confirmations and reminders  
+- Process bulk returns after events  
+**Problems / Pain Points:**  
+- Ensuring tools are available for events  
+- Coordinating multiple members and checkouts  
+- Avoiding lost or misplaced items  
+
+**Main Scenario Example:** Event tool reservation  
 **Keypath:**  
-1. Navigate to “My Club → Members”  
-2. Select members or all members  
-3. Type message  
-4. Click **Send Notification**  
-5. Members receive message via email/system  
+1. Club leader logs into CheckMate  
+2. Selects tools needed for an event (e.g., calipers, precision measuring tools)  
+3. Request routed to department head for approval (event priority)  
+4. System reserves tools for the event date  
+5. Leader and members receive confirmations and reminders  
+6. After the event, leader processes bulk return of all items  
+
+---
+
+## Stakeholders at a Glance
+- **Faculty/Staff (Admins):** Primary users managing inventory and event reservations  
+- **Students:** Borrow tools and return them on time; rely on notifications  
+- **Student Leaders:** Manage group reservations and bulk check-ins for events  
+
+---
+
+## Risks & Risk Management
+**Risks:**  
+- User data could be exposed → encrypt data in transit  
+- Admins may accidentally see other organizations’ resources → implement role/group permissions  
+- Unauthorized access could compromise emails and transactions → separate and anonymize sensitive data  
+
+**Risk Management:**  
+- Issues are categorized as High, Medium, or Low  
+  - **High:** Critical availability/security issues → addressed within 1 week  
+  - **Medium:** Not mission-critical, may affect users → addressed within 2 weeks  
+  - **Low:** Minor issues affecting few users → addressed within 1 month  
+- Issues assigned via task board and reviewed by Product Manager and developers  
+
