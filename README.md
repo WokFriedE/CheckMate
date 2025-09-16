@@ -32,9 +32,6 @@ Note: Team members may work on other sections when needed, below demonstrates pr
 
 ## Product Plan
 
-### Backlog Tracker
-https://github.com/users/WokFriedE/projects/7
-
 ### Far Vision
 
 **FOR** students and faculty at NJIT including the student organizations, Makerspace, and departments
@@ -52,8 +49,16 @@ The team wants to provide users of the application an easy and useful inventory 
 
 Out of scope will be a direct messaging system between users and organizers for 
 
+### Backlog Tracker
+https://github.com/users/WokFriedE/projects/7
+
 ### Product Backlog Items
-Estimated PBI relative sizing was done with T-Shirt sizing which was interpreted into story points (XS=1, S=2, M=3, L=5, XL=8) and current S items, such as adding the ability to update an organizational setting, as a baseline.  
+Estimated PBI relative sizing was done with **T-Shirt sizing** which was interpreted into story points (XS=1, S=2, M=3, L=5, XL=8) and current S items, such as adding the ability to update an organizational setting, as a baseline.  
+
+Below is the breakdown of the PBIs, currently they are ordered from top to bottom as most important to later issues. Most of the important items will become dependencies for later items, so they must be addressed first. Some PBI's are logically associated with an epic, but can be implemented later. These items will have a note in the additional notes. 
+To further elaborate on the current order, authentication is required first as users will only be able to use the app logged in. The admin panel is important for generating organizations for later, as the database would need to be set appropriately. Though mock users can be set up later, but would be handy at the beginning. Next comes the manager panel for controlling users, though organizational config can be pushed for timing.
+Afterwards, the inventory page and its operations are required as it sets up the main usage of the application. Therefore, afterwards, the checkout system is next as that is also a major part of the application. The user dashboard would be next for tracking items that are have been checked out and also to increase the QOL of checking out / in items. The organizer dashboard would then be set up as a complement to the user dashboard.
+Lastly, the event request System and email systems will be last, acting as features we would like to add to make the app more flushed out and are based on all the previous items developed. 
 
 1. (epic) Authentication System
    1. Registration
@@ -107,7 +112,7 @@ Estimated PBI relative sizing was done with T-Shirt sizing which was interpreted
       - DOR:
         - A manager should be able to put in an email to invite the user to the organization.
         - This should be in the organization settings area and only available to organizers.
-   4. (story) Audit Log
+   4. Audit Log
       - Title: Manager Audit Log
       - User Story: A department head wants to see who recently changed the name of the organization.
       - Additional: We should set up a way to delete the data after x amount of time to not max out our database space.
@@ -115,27 +120,7 @@ Estimated PBI relative sizing was done with T-Shirt sizing which was interpreted
       - DOR:
         - Set up an audit system that will track all organization changes
         - Add a sub process to each manager and organizer operation that would log what was done
-4. (epic) Organizer Dashboard
-   1. Quick View
-      - Title: Organizer Dashboard - Missing Items Quick View
-      - User Story: A staff member (organizer) from the Makerspace wants to quickly see which items are currently out.
-      - Story Points: 2
-      - DOR:
-        - Organizers should have a card that shows the most recently checked out items.
-   2. History
-      - Title: Organizer Dashboard - History
-      - User Story: The staff (organizer) wants to see all the items taken out in the past month.
-      - Story Points: 1
-      - DOR:
-        - The frontend dashboard should have a page for history or a card to let the organizer see when and who took it out.
-        - Backend would need to return a GET request but like everything in organizer page, require role auth.
-    3. Order Settings
-      - Title: Order Settings
-      - User Story: Staff (organizers) want to set the maximum time items can be taken out for, duration, and other items.
-      - Story Points: 3
-      - DOR:
-        - Allow organizers to set settings for the organization for how orders can be made.
-5. (epic) Inventory Screen
+4. (epic) Inventory Screen
    1. Create, Update, Delete Items
       - Title: Inventory Page - Item Handling
       - User Story: Staff (organizer) should be able to add and update their items and inventory quantities.
@@ -164,37 +149,7 @@ Estimated PBI relative sizing was done with T-Shirt sizing which was interpreted
       - DOR: 
         - The person should be able to click on the item on the inventory page and see all current check outs 
         - Have a frontend page to see the current status of each item that is checked out and api endpoint to get details about an item.
-6. (epic) User Dashboard
-   1. Quick View
-      - Title: User Dashboard - Quick View
-      - User Story: A student wants to see all their checked out items
-      - Story Points: 2
-      - DOR: 
-        - There should be a card or info about all currently checked out items
-        - Clicking would bring them to a punishments page (if overdue)
-   2. User Dashboard - History
-      - Title: User Dashboard - Quick View
-      - User Story: Student wants to view all their checked out items and when.
-      - Story Points: 2
-      - DOR: 
-        - User should be able to see their order history via either a new page or on the dashboard
-        - Backend needs to have an API to return a user's history
-   3. Search Organization
-      - Title: User Dashboard - Search Organization
-      - User Story: A student wants to search up the Makerspace to request items for an event next week and also check the inventory.
-      - Story Points: 2
-      - DOR: 
-        - Users should be able to fuzzy search for an organization name 
-        - Users should be able to create an event request here 
-        - Users should be able to create an order here
-   4. Punishment Page / System
-      - Title: Punishment Page
-      - User Story: Student is severely overdue with returning a drill and owes a fine.
-      - Story Points: 3
-      - DOR: 
-        - The user will be prompted to view the punishment page on log in when checking something out / quick view. It would show them the item that is out and the punishment.
-        - Requires the order details to be updated with overdue message.
-7. (epic) User Check In / Out Page
+5. (epic) User Check In / Out Page
    1. Self Check In
       - Title: Self-Checkout System
       - User Story: User can search an organization and choose items to check out (single checkout) or Student leader can bulk check out a bunch of items (multi checkout)
@@ -225,6 +180,56 @@ Estimated PBI relative sizing was done with T-Shirt sizing which was interpreted
       - DOR: 
         - Allow the user to set a password to access the check in and checkout page.
         - Password should be stored as a hash (no plain text) and transferred in a secure format.
+6. (epic) User Dashboard
+   1. Quick View
+      - Title: User Dashboard - Quick View
+      - User Story: A student wants to see all their checked out items
+      - Story Points: 2
+      - DOR: 
+        - There should be a card or info about all currently checked out items
+        - Clicking would bring them to a punishments page (if overdue)
+   2. User Dashboard - History
+      - Title: User Dashboard - Quick View
+      - User Story: Student wants to view all their checked out items and when.
+      - Story Points: 2
+      - DOR: 
+        - User should be able to see their order history via either a new page or on the dashboard
+        - Backend needs to have an API to return a user's history
+   3. Search Organization
+      - Title: User Dashboard - Search Organization
+      - User Story: A student wants to search up the Makerspace to request items for an event next week and also check the inventory.
+      - Story Points: 2
+      - DOR: 
+        - Users should be able to fuzzy search for an organization name 
+        - Users should be able to create an event request here 
+        - Users should be able to create an order here
+   4. Punishment Page / System
+      - Title: Punishment Page
+      - User Story: Student is severely overdue with returning a drill and owes a fine.
+      - Story Points: 3
+      - DOR: 
+        - The user will be prompted to view the punishment page on log in when checking something out / quick view. It would show them the item that is out and the punishment.
+        - Requires the order details to be updated with overdue message.
+7. (epic) Organizer Dashboard
+   1. Quick View
+      - Title: Organizer Dashboard - Missing Items Quick View
+      - User Story: A staff member (organizer) from the Makerspace wants to quickly see which items are currently out.
+      - Story Points: 2
+      - DOR:
+        - Organizers should have a card that shows the most recently checked out items.
+   2. History
+      - Title: Organizer Dashboard - History
+      - User Story: The staff (organizer) wants to see all the items taken out in the past month.
+      - Story Points: 1
+      - DOR:
+        - The frontend dashboard should have a page for history or a card to let the organizer see when and who took it out.
+        - Backend would need to return a GET request but like everything in organizer page, require role auth.
+    3. Order Settings
+      - Title: Order Settings
+      - User Story: Staff (organizers) want to set the maximum time items can be taken out for, duration, and other items.
+      - Story Points: 3
+      - DOR:
+        - Allow organizers to set settings for the organization for how orders can be made.
 8.  (epic) Event Request System
     1.  Accept / Reject Event 
       - Title: Event System - Organizer Process Event
