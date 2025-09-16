@@ -10,6 +10,26 @@ Note: Team members may work on other sections when needed, below demonstrates pr
 | Carlos Vanegas Hinojosa        | Microservices Developer |
 | Sarvani Yoganand Lakshmitulasi | Quality & Dev Ops       |
 
+## Terminology
+### General Terms
+
+| Term         | Definition                                                | Example                                       |
+| ------------ | --------------------------------------------------------- | --------------------------------------------- |
+| Organization | A logically separated shared pool of items and items.     | NJIT's Local ACM Chapter                      |
+| Order        | A complete transaction of checking in and out an item.    | Laptop from ACM                               |
+| Event        | A scheduled order that could typically is for bulk items. | Laptops, routers, and a 3D printer in 2 weeks |
+
+
+### User Roles
+
+| Role      | Description                                                                                                                                                                   |
+| --------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Admin     | A developer or super user that has control of all the organizations of the application and setting managers.                                                                  |
+| Manager   | A faculty / staff / student leader who is in control of the organization and its inventory. Has the power to handle organization settings and user roles in the organization. |
+| Organizer | Another faculty / staff / student leader who will help control the inventory of an organization but has limit power.                                                          |
+| User      | A student / staff / faculty who will use the app to check items in or out.                                                                                                    |
+
+
 ## Product Plan
 
 ### Backlog Tracker
