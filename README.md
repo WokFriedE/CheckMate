@@ -58,7 +58,7 @@ Estimated PBI relative sizing was done with **T-Shirt sizing** which was interpr
 Below is the breakdown of the PBIs, currently they are ordered from top to bottom as most important to later issues. Most of the important items will become dependencies for later items, so they must be addressed first. Some PBI's are logically associated with an epic, but can be implemented later. These items will have a note in the additional notes. 
 To further elaborate on the current order, authentication is required first as users will only be able to use the app logged in. The admin panel is important for generating organizations for later, as the database would need to be set appropriately. Though mock users can be set up later, but would be handy at the beginning. Next comes the manager panel for controlling users, though organizational config can be pushed for timing.
 Afterwards, the inventory page and its operations are required as it sets up the main usage of the application. Therefore, afterwards, the checkout system is next as that is also a major part of the application. The user dashboard would be next for tracking items that are have been checked out and also to increase the QOL of checking out / in items. The organizer dashboard would then be set up as a complement to the user dashboard.
-Lastly, the event request System and email systems will be last, acting as features we would like to add to make the app more flushed out and are based on all the previous items developed. 
+Lastly, the event request System and email systems will be last, acting as features we would like to add to make the app more flushed out and are based on all the previous items developed. Ideally 1-2 epics will be accomplished in one 2 week sprint, saving one sprint for buffer.
 
 1. (epic) Authentication System
    1. Registration
@@ -129,7 +129,7 @@ Lastly, the event request System and email systems will be last, acting as featu
         - CRUD operations should be set up in frontend and backend.
    2. Import Export
       - Title: Inventory Page - Import Export
-      - User Story: Staff (organizer) should be able to add and update their items and inventory quantities.
+      - User Story: Staff (organizer) should be able to import and export their inventory using CSV files.
       - Story Points: 2
       - DOR:
         - There should be an import that allows for CSVs to be used with item names and quantities.
@@ -189,7 +189,7 @@ Lastly, the event request System and email systems will be last, acting as featu
         - There should be a card or info about all currently checked out items
         - Clicking would bring them to a punishments page (if overdue)
    2. User Dashboard - History
-      - Title: User Dashboard - Quick View
+      - Title: User Dashboard - History
       - User Story: Student wants to view all their checked out items and when.
       - Story Points: 2
       - DOR: 
@@ -233,30 +233,30 @@ Lastly, the event request System and email systems will be last, acting as featu
 8.  (epic) Event Request System
     1.  Accept / Reject Event 
       - Title: Event System - Organizer Process Event
-      - User Story: A staff member (organizer) wants to approve an event from a student, a week in advanced, to take out a bunch of items.
+      - User Story: A staff member (organizer) wants to approve an event from a student, a week in advance, to take out a bunch of items.
       - Story Points: 2
       - DOR: 
         - The organizer should be able to approve or deny event requests on their dashboard.
-        - The items should be marked for out of service for that due date and prevent future use.
+        - The items should be marked as out of service for that due date and prevent future use.
     2.  Create Event
-      - Title: Event System - Create Event
-      - User Story: A student leader wants to request a bunch of materials for a future event next week, so they search for the Makerspace and select the required items, date, and any other settings.
+    - Title: Event System - Create Event
+      - User Story: A student leader wants to request a bunch of materials for a future event next week. They search for the Makerspace and select the required items, date, and any other settings.
       - Story Points: 3
       - DOR: 
-          - The request should be sent to an organizer.
-          - User should be able to request an event from the organization search.
-          - User should be able to set settings for the event in the request.
+        - The request should be sent to an organizer.
+        - User should be able to request an event from the organization search.
+        - User should be able to set settings for the event in the request.
 9.  (epic)Email Service 
     1.  Email users/organizer for overdue items
-      - Title: Email Overdue Items
-      - User Story: A student with an overdue soldering iron will be emailed notifying them that they are late and will bring them to the punishment page.
-      - Story Points: 5
-      - DOR: 
+        - Title: Email Overdue Items
+        - User Story: A student with an overdue soldering iron will be emailed, notifying them that they are late and directing them to the punishment page.
+        - Story Points: 5
+        - DOR: 
           -  Email the organizer and the user that an item is overdue with the punishment page.
     2.  Email user on invite
-      - Title: Email User Invite
-      - User Story: Staff gets added to organization and gets an email.
-      - Story Points: 3
-      - DOR: 
+        - Title: Email User Invite
+        - User Story: Staff gets added to organization and gets an email.
+        - Story Points: 3
+        - DOR: 
           - When a user is added they should get an email with a link to the organization dashboard
-          - The email will also include some basic start info
+          - The email will also include some basic getting started information
