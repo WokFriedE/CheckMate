@@ -1,0 +1,23 @@
+<% if flash[:notice] %>
+  <p style="color: green;"><%= flash[:notice] %></p>
+<% end %>
+
+<% if flash[:alert] %>
+  <p style="color: red;"><%= flash[:alert] %></p>
+<% end %>
+
+<h1>Log in</h1>
+
+<%= form_with url: login_path, local: true do |f| %>
+  <p>
+    <%= f.label :email %><br>
+    <%= f.email_field :email %>
+  </p>
+  <p>
+    <%= f.label :password %><br>
+    <%= f.password_field :password %>
+  </p>
+  <p><%= f.submit "Log in" %></p>
+<% end %>
+
+<p>Don’t have an account? <%= link_to "Sign up", signup_path %></p>
