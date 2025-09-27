@@ -11,6 +11,9 @@ class AuthenticationController < ApplicationController
   # Handle invalid or missing CSRF tokens gracefully
   rescue_from ActionController::InvalidAuthenticityToken, with: :handle_invalid_authenticity_token
 
+  # Prevent browser caching so back button doesn’t show stale pages after logout
+  before_action :set_no_cache
+
   # ============================================================
   # GET /signup
   # Simply renders the signup form.
@@ -116,7 +119,7 @@ class AuthenticationController < ApplicationController
 
   # ============================================================
   # DELETE /logout
-  # Clears session and redirects to login page.
+  # Clears session and redirects to home page.
   # ============================================================
   def logout
     reset_session
@@ -201,5 +204,14 @@ class AuthenticationController < ApplicationController
       reset_session
       redirect_to login_path, alert: "Please try again."
     end
+  end
+
+  # ============================================================
+  # Prevent browser caching (fixes back button issue after logout).
+  # ============================================================
+  def set_no_cache
+    response.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0"
+    response.headers["Pragma"] = "no-cache"
+    response.headers["Expires"] = "Fri, 01 Jan 1990 00:00:00 GMT"
   end
 end
