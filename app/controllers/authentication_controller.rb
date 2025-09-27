@@ -86,21 +86,32 @@ class AuthenticationController < ApplicationController
     response = SupabaseAuthService.login(email: params[:email], password: params[:password])
     Rails.logger.info("[login] Supabase raw response: #{response.inspect}")
 
+    # Make available to browser console
     @supabase_response_json = response.to_json
 
-    if response.is_a?(Hash) && response["error"]
-      # Failed login (e.g., wrong password or user not found)
-      flash.now[:alert] = response.dig("error", "message") || response["msg"] || "Login failed."
-      render :login_form, status: :unprocessable_entity and return
+    # Interpret login outcome
+    outcome, msg = extract_login_outcome(response)
+
+    case outcome
+    when :success
+      reset_session
+      session[:access_token]  = response["access_token"]
+      session[:refresh_token] = response["refresh_token"]
+      session[:user_email]    = response.dig("user", "email")
+      redirect_to landing_path, notice: "You are logged in."
+    when :invalid_credentials
+      flash.now[:alert] = "Incorrect password."
+      render :login_form, status: :unprocessable_entity
+    when :email_not_confirmed
+      flash.now[:alert] = "Please confirm your email before logging in."
+      render :login_form, status: :unprocessable_entity
+    when :user_not_found
+      flash.now[:alert] = "No user with that email found."
+      render :login_form, status: :unprocessable_entity
+    else
+      flash.now[:alert] = msg.presence || "Login failed."
+      render :login_form, status: :unprocessable_entity
     end
-
-    # Reset session to avoid fixation attacks and save new session data
-    reset_session
-    session[:access_token]  = response["access_token"]
-    session[:refresh_token] = response["refresh_token"]
-    session[:user_email]    = response.dig("user", "email")
-
-    redirect_to landing_path, notice: "You are logged in."
   end
 
   # ============================================================
@@ -109,7 +120,7 @@ class AuthenticationController < ApplicationController
   # ============================================================
   def logout
     reset_session
-    redirect_to login_path, notice: "You have been logged out."
+    redirect_to root_path, notice: "You have been logged out."
   end
 
   private
@@ -149,6 +160,33 @@ class AuthenticationController < ApplicationController
     return [:email_in_use, msg] if msg.to_s.match?(/already|exists|in use/i)
 
     [:unknown, msg]
+  end
+
+  # ============================================================
+  # Analyze Supabase’s login response and return an outcome.
+  #
+  # Expected error codes:
+  # - "invalid_credentials" → wrong password
+  # - "email_not_confirmed" → email not confirmed
+  # - "user_not_found"      → no such user
+  # Otherwise: unknown with raw msg
+  # ============================================================
+  def extract_login_outcome(response)
+    return [:unknown, nil] unless response.is_a?(Hash)
+
+    if response["error"] || response["msg"]
+      code = response["error_code"].to_s
+      msg  = response.dig("error", "message") || response["msg"]
+
+      return [:invalid_credentials, msg] if code == "invalid_credentials"
+      return [:email_not_confirmed, msg] if code == "email_not_confirmed"
+      return [:user_not_found, msg] if code == "user_not_found"
+
+      return [:unknown, msg]
+    end
+
+    # If no error present, treat as success
+    [:success, nil]
   end
 
   # ============================================================

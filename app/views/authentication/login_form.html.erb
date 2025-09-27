@@ -6,7 +6,7 @@
   <p style="color: red;"><%= flash[:alert] %></p>
 <% end %>
 
-<%= form_with url: login_path, method: :post, local: true do %>
+<%= form_with url: login_path, local: true do %>
   <div>
     <%= label_tag :email, "Email" %><br>
     <%= text_field_tag :email, params[:email] %>
@@ -22,9 +22,13 @@
 
 <p>Don't have an account? <%= link_to "Sign up", signup_path %></p>
 
-<% if @supabase_request_json.present? %>
+<%# Inject request + response into the browser console for debugging %>
+<% if params[:email].present? || params[:password].present? %>
   <script>
-    console.log("Supabase login request:", <%= raw @supabase_request_json %>);
+    console.log("Supabase login payload:", {
+      email: "<%= params[:email].to_s %>",
+      password: "<%= params[:password].to_s %>"
+    });
   </script>
 <% end %>
 
