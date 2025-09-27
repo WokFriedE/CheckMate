@@ -1,23 +1,35 @@
+<h1>Sign up</h1>
+
 <% if flash[:notice] %>
   <p style="color: green;"><%= flash[:notice] %></p>
-<% end %>
-
-<% if flash[:alert] %>
+<% elsif flash[:alert] %>
   <p style="color: red;"><%= flash[:alert] %></p>
 <% end %>
 
-<h1>Sign up</h1>
-
-<%= form_with url: signup_path, local: true do |f| %>
-  <p>
-    <%= f.label :email %><br>
-    <%= f.email_field :email %>
-  </p>
-  <p>
-    <%= f.label :password %><br>
-    <%= f.password_field :password %>
-  </p>
-  <p><%= f.submit "Create account" %></p>
+<%= form_with url: signup_path, method: :post, local: true do %>
+  <div>
+    <%= label_tag :email, "Email" %><br>
+    <%= text_field_tag :email, params[:email] %>
+  </div>
+  <div>
+    <%= label_tag :password, "Password" %><br>
+    <%= password_field_tag :password %>
+  </div>
+  <div>
+    <%= submit_tag "Create account" %>
+  </div>
 <% end %>
 
 <p>Already have an account? <%= link_to "Log in", login_path %></p>
+
+<% if @supabase_request_json.present? %>
+  <script>
+    console.log("Supabase signup request:", <%= raw @supabase_request_json %>);
+  </script>
+<% end %>
+
+<% if @supabase_response_json.present? %>
+  <script>
+    console.log("Supabase signup response:", <%= raw @supabase_response_json %>);
+  </script>
+<% end %>
