@@ -143,55 +143,42 @@ class AuthenticationController < ApplicationController
 # Decides signup outcome from Supabase response without removing any
 # existing behavior. We first rely on explicit signals (error_code,
 # identities), then fall back to the original time/message heuristics.
-def extract_signup_outcome(response)
-  return [:unknown, nil] unless response.is_a?(Hash)
+  def extract_signup_outcome(response)
+    return [:unknown, nil] unless response.is_a?(Hash)
 
   # 1) Explicit error payloads (Supabase returns code + error_code + msg)
-  if response["error_code"] || response["code"]
-    code = response["error_code"].to_s
-    msg  = response["msg"] || response.dig("error", "message") || response["message"]
+    if response["error_code"] || response["code"]
+      code = response["error_code"].to_s
+      msg  = response["msg"] || response.dig("error", "message") || response["message"]
 
-    # Known, stable mappings from Supabase
-    return [:email_in_use,     msg] if code == "email_address_invalid"     # same verified email reused
-    return [:invalid_password, msg] if code == "validation_failed"          # e.g., missing/weak password
-    return [:rate_limited,     msg] if code == "over_email_send_rate_limit" # too many signups quickly
+      return [:email_in_use,     msg] if code == "email_address_invalid"
+      return [:invalid_password, msg] if code == "validation_failed"
+      return [:rate_limited,     msg] if code == "over_email_send_rate_limit"
+      return [:invalid_password, msg] if msg.to_s.match?(/password/i)
+      return [:email_in_use,     msg] if msg.to_s.match?(/already|exists|in use|duplicate|taken/i)
+      return [:unknown, msg]
+    end
 
-    # Fallback: pattern checks (kept from your original behavior)
+    if response["id"]
+      created_at           = Time.parse(response["created_at"].to_s) rescue nil
+      confirmation_sent_at = Time.parse(response["confirmation_sent_at"].to_s) rescue nil
+      identities           = response["identities"] || []
+
+      if created_at && confirmation_sent_at
+        if identities.any? && (confirmation_sent_at - created_at).abs <= 2
+          return [:success, nil]  # new user
+        else
+          return [:email_in_use, nil]  # already in DB
+        end
+      end
+    end
+
+    msg = response["msg"] || response.dig("error", "message") || response["message"]
     return [:invalid_password, msg] if msg.to_s.match?(/password/i)
     return [:email_in_use,     msg] if msg.to_s.match?(/already|exists|in use|duplicate|taken/i)
 
-    return [:unknown, msg]
+    [:unknown, msg]
   end
-
-  # 2) Successful-looking "user" payloads (no error_code)
-  if response["id"]
-    identities = response["identities"]
-
-    # Strong discriminator observed in real responses:
-    #   - identities.any?   => new signup
-    #   - identities.empty? => email already exists (verified account)
-    if identities.is_a?(Array)
-      return [:success,      nil] if identities.any?
-      return [:email_in_use, nil] if identities.empty?
-    end
-
-    # 3) Fallback to your original timestamp heuristic (kept as-is)
-    created_at           = Time.parse(response["created_at"].to_s)           rescue nil
-    confirmation_sent_at = Time.parse(response["confirmation_sent_at"].to_s)  rescue nil
-    if created_at && confirmation_sent_at
-      # Allow small processing skew
-      return [:success, nil] if (confirmation_sent_at - created_at).abs <= 2
-      return [:email_in_use, nil]
-    end
-  end
-
-  # 4) Final fallback: message-based classification (kept)
-  msg = response["msg"] || response.dig("error", "message") || response["message"]
-  return [:invalid_password, msg] if msg.to_s.match?(/password/i)
-  return [:email_in_use,     msg] if msg.to_s.match?(/already|exists|in use|duplicate|taken/i)
-
-  [:unknown, msg]
-end
 
 
   # ============================================================
