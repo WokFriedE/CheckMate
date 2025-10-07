@@ -363,7 +363,6 @@ CheckMate is an inventory and resource management platform for students, faculty
 --- 
 # User Personas 
 ---
-
 ## Persona: Professor
 
 * **Name:** Mark Smith  
@@ -500,7 +499,7 @@ Miranda Pecker controls the institute’s orientation and manages multiple aspec
 As a director, I want role based permissions to restrict access so that students cannot view the organization's inventory.
 
 * **Specific:** Restrict access to organization inventory and resources based on user roles  
-* **Measurable:** Only individuals assigned with proper permissions can access the organization’s resources  
+* **Measurable:** Only individuals assigned with proper permissions can access the organization’s resources, so have private and public access  
 * **Achievable:** Implementing role-based access control ensures appropriate visibility  
 * **Relevant:** Protecting inventory and resource information is essential for organizational privacy and security  
 * **Timeboxed:** Must be completed by the first development iteration within one sprint (2 weeks)
@@ -515,7 +514,7 @@ As a director, I want to add any student workers to my team so that they can als
 * **Timeboxed:** To be completed within the first development iteration (2 weeks)
 
 **Story 3**  
-As an event planner, I want to view a clear, organized timeline of upcoming events, each with its own plans, notes, and assigned individuals so that I can efficiently manage and prepare for future activities.
+As a director, I want to view a clear, organized timeline of upcoming events, each with its own plans, notes, and assigned individuals so that I can efficiently manage and prepare for future activities.
 
 * **Specific:** Create a dashboard that displays all upcoming events, with details such as tasks, notes, and participants  
 * **Measurable:** The system should include a functional calendar view summarizing all scheduled events  
@@ -568,7 +567,7 @@ As a club leader, I want to request multiple inventory items in a single reserva
 * **Measurable:** One approval covers all requested items  
 * **Achievable:** Can be implemented with request bundling, and allow people to select multiple items  
 * **Relevant:** Saves time for events  
-* **Timeboxed:** Must be available before next semester
+* **Timeboxed:** Must be available before next semester, one sprint (2 weeks)
 
 **Story 2:**   
 As a club leader, I want to view the availability calendar for equipment so that I can plan events around item availability.
@@ -577,7 +576,7 @@ As a club leader, I want to view the availability calendar for equipment so that
 * **Measurable:** Conflicts are displayed visually  
 * **Achievable:** Calendar integration can be added to the app  
 * **Relevant:** Prevents scheduling conflicts  
-* **Timeboxed:** Ready for first release of the system
+* **Timeboxed:** Ready for first release of the system, complete in one sprint (2 weeks)
 
 **Story 3:**   
 As a club leader, I want to duplicate past equipment requests so that I can easily prepare for recurring events without re-entering all the items.
@@ -586,7 +585,7 @@ As a club leader, I want to duplicate past equipment requests so that I can easi
 * **Measurable:** Reduces preparation time by reusing at least 80 percent of past event requests  
 * **Achievable:** Database can store and reapply prior request templates  
 * **Relevant:** Supports recurring events and competitions  
-* **Timeboxed:** Must be finished before the annual robotics competition
+* **Timeboxed:** complete in one sprint (2 weeks)
 
 **Story 4:**   
 As a club leader, I want to receive notifications when requested items are approved or denied so that I can adjust my event plans quickly.
@@ -595,7 +594,7 @@ As a club leader, I want to receive notifications when requested items are appro
 * **Measurable:** 100 percent of requests trigger a notification  
 * **Achievable:** System can use email or app alerts  
 * **Relevant:** Keeps planning on track  
-* **Timeboxed:** Implement before mid-term events
+* **Timeboxed:** complete in one sprint (2 weeks)
 
 ---
 
@@ -738,3 +737,4 @@ As a student, I want to track my borrowing history so that I know which items I 
 * **Achievable:** System should store check outs for users  
 * **Relevant:** Helps students track borrows and help with disputes  
 * **Timeboxed:** Should be completed in half a sprint (1 week)
+
