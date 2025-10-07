@@ -360,3 +360,381 @@ CheckMate is an inventory and resource management platform for students, faculty
   - **Low:** Minor issues affecting few users → addressed within 1 month  
 - Issues assigned via task board and reviewed by Product Manager and developers  
 
+--- 
+# User Personas 
+---
+## Persona: Professor
+
+* **Name:** Mark Smith  
+* **Age:** 64  
+* **Year:** N/A  
+* **Major:** Applied Physics Ph.D.
+
+**Background**  
+Mark Smith is a snarky professor who teaches 3 classes a week for applied physics and runs 2 hands-on labs weekly. He prefers familiar, older technology and avoids complex new tools. He is interested in sharing physics knowledge and mentoring students, and he can grasp new concepts quickly. However, he needs straightforward, simple design patterns. He struggles with advanced software systems or overly technical interfaces. He is reliant on his students to help him understand new technologies.   
+**Goals**
+
+* Help student clubs increase interest in physics  
+* Ensure expensive lab and classroom equipment is safe  
+* Keep lab stock organized and easy to track
+
+**Pain Points**
+
+* Dislikes complicated technology \- needs simplicity above all  
+* Difficulty carrying items between labs  
+* Limited access to university software and tools  
+* Manages many students and classes simultaneously  
+* Busy schedule with little time for tech learning  
+* Misses communications due to overwhelming email volume  
+* Unwilling to learn software with steep learning curves
+
+**What They Want**
+
+* A simple, easy-to-use application for tracking items loaned out for classes or clubs  
+* Minimal setup and intuitive controls suitable for older, less tech-savvy users
+
+**Scenario**: Getting Started
+
+* **Long Description:** Smith wants a simple system to track his textbooks, lab tools, and equipment loaned to students with a quick start. He would also like the set up to include a way to restrict or limit access to the application with something like passwords.   
+* **Traditional:** Keeps an Excel spreadsheet of all items and manually edits it when someone needs something, only through in person interactions or by email. This process becomes inefficient when he’s not in the office or buried in emails.  
+* **Expected from App**: Smith wants to import his existing inventory easily. When it comes to securing his app he wants to restrict access with his class or any clubs with a password. Smith also needs a clean and simple interface for handling the inventory items.
+
+**Story 1**  
+As a professor, I want to import my old inventory sheets in under a minute so I can quickly onboard my 40 items.
+
+* **Specific:** Import previous items from a CSV into current inventory  
+* **Measurable:** Each item imports in ≤ 1.5 seconds  
+* **Achievable:** Utilize CSV gem and template  
+* **Relevant:** Key feature for onboarding  
+* **Timeboxed:** Deliverable in 1 sprint (2 weeks)
+
+**Story 2**  
+As a professor, I want to set a password for item requests so that only my students and club members can access them.
+
+* **Specific:** Set up a password for requests  
+* **Measurable:** Only authorized users with the password can request items  
+* **Achievable:** Use secure password libraries  
+* **Relevant:** Prevents unauthorized access to important equipment  
+* **Timeboxed:** Can be done in 7 days
+
+**Story 3**  
+As a less tech-savvy person, I want a clear, simple display of my items so I don’t get overwhelmed taking stock.
+
+* **Specific:** Have a simple inventory screen  
+* **Measurable:** Only show essential item info  
+* **Achievable:** Focus on minimalist UI design patterns  
+* **Relevant:** Keeps the interface simple and approachable  
+* **Timeboxed:** UI is completable within 4 days 
+
+**Scenario**: Handling Order Requests
+
+* **Long Description:** Smith wants a system for professors to handle their requests seamlessly from students. Smith also wants to get the information through his email with a custom subject and be able to approve it or reject it quickly, in case a student needs it for a lab.  
+* **Traditional:** The students would need to email the professor or find him directly to ask to take out items, and only when he checks can he finally give it out.  
+* **Expected from App**:  Smith wants to be able to get an email to approve or deny student requests quickly and receive timely notifications.
+
+**Story 1**  
+As a professor, I want to approve or deny student requests as soon as I receive them so that I have full control of my inventory.
+
+* **Specific:** Approve an order request  
+* **Measurable:** All requests can be approved or denied as soon as it is in the system  
+* **Achievable**: The request should be sent when it is ready in the service  
+* **Relevant:** The professor wants control of requests   
+* **Timeboxed**: Can be completed in half a sprint  (1 week)
+
+**Story 2**  
+As a professor, I should receive request notifications within 5 minutes so I don’t have to manually check the dashboard.
+
+* **Specific:** Send notification for approval requests  
+* **Measurable:** 100% of requests received within 5 minutes  
+* **Achievable:** Use shared university email alert system  
+* **Relevant:** Allows quick approvals  
+* **Timeboxed:** Completable in a sprint with email system
+
+**Story 3**  
+As club professor, I want to be able to give club leaders higher limits so that they are not restricted like students for events.
+
+* **Specific:** Implement a permission level for club leaders for an inventory  
+* **Measurable:** Club leaders should be able to request more items than students   
+* **Achievable:** Set up a role based permission system that takes role into consideration for quantity requests  
+* **Relevant:** Club leaders should have different requests  
+* **Timeboxed:** Should be completed by the end of the second development iteration and within one sprint (2 weeks)
+
+---
+
+##  Persona: Staff
+
+* **Name:** Miranda Pecker  
+* **Age:** 35  
+* **Year:** N/A  
+* **Major:** Higher Education and Student Affairs (MA)
+
+**Background**  
+Miranda Pecker controls the institute’s orientation and manages multiple aspects of the department. She likes to leverage software to make her work easier, values strong communication, and is a fast learner. Miranda has limited student workers and manages a large variety of moving parts including time sheets, documents, inventory items, and event planning.  
+**Goals**
+
+* Keep the department in check  
+* Ensure there are no stolen items  
+* Run events to help new students get accustomed to the university
+
+**Pain Points**
+
+* Does not like inefficient or unresponsive software  
+* Large variety of items to track  
+* Hard time keeping track of all moving parts and allocated resources  
+* Difficulty managing student timesheets
+
+**What They Want**
+
+* A one-stop system that allows a variety of check-in and check-out options  
+* Glanceable dashboards for documents, inventory, and event plans  
+* Ability to assign and track tasks efficiently
+
+**Scenario**: Separation of Access
+
+* **Long Description:** Miranda has been working in Higher Education and Student Affairs for several years. She manages multiple moving parts including documents, time sheets, inventory items, and event planning. The current system is inefficient. A system that provides glanceable information and visibility into future plans will facilitate her workflow. She wants to ensure the inventory is properly separated so that students and her workers do not have the same level of access.  
+* **Traditional**: If I wanted to separate the data, I would have to duplicate the data between different spreadsheets or manually inform people what they are in charge of.  
+* **Expected from App**: Separate duties and responsibilities to make assigning and checking off tasks easier and hassle-free. Also, having role based access can help properly restrict who can access items that are being tracked.
+
+**Story 1**  
+As a director, I want role based permissions to restrict access so that students cannot view the organization's inventory.
+
+* **Specific:** Restrict access to organization inventory and resources based on user roles  
+* **Measurable:** Only individuals assigned with proper permissions can access the organization’s resources, so have private and public access  
+* **Achievable:** Implementing role-based access control ensures appropriate visibility  
+* **Relevant:** Protecting inventory and resource information is essential for organizational privacy and security  
+* **Timeboxed:** Must be completed by the first development iteration within one sprint (2 weeks)
+
+**Story 2**  
+As a director, I want to add any student workers to my team so that they can also handle the inventory.
+
+* **Specific:** Add student workers to inventory management roles  
+* **Measurable:** Assigned student workers can manage inventory tasks  
+* **Achievable:** Allow for role assignment with role based access control  
+* **Relevant:** Ensures workload is distributed and manageable  
+* **Timeboxed:** To be completed within the first development iteration (2 weeks)
+
+**Story 3**  
+As a director, I want to view a clear, organized timeline of upcoming events, each with its own plans, notes, and assigned individuals so that I can efficiently manage and prepare for future activities.
+
+* **Specific:** Create a dashboard that displays all upcoming events, with details such as tasks, notes, and participants  
+* **Measurable:** The system should include a functional calendar view summarizing all scheduled events  
+* **Achievable:** Implementing a calendar-based dashboard is feasible with existing tools  
+* **Relevant:** Improves overall event coordination and resource management efficiency  
+* **Timeboxed:** Should be completed within a sprint (2 weeks)
+
+---
+
+## Persona: Club Leader
+
+* **Name:** Mary Graham  
+* **Age:** 23  
+* **Year:** Junior  
+* **Major:** Mechanical Engineering
+
+**Background:**  
+Mary is president of the campus robotics club. She coordinates events and projects where members need access to shared equipment such as calipers, measurement tools, soldering kits, and other workshop items. She uses digital tools regularly for schoolwork and for organizing her club. She is responsible for managing equipment requests for competitions and workshops. Mary is a techy student but only considers herself average in skill. She is mostly adept at learning new technology, but there is a bit of a learning curve for her. She is enthusiastic about events and often has back to back events to run.  
+**Goals:**
+
+* Reserve and check out multiple items for upcoming club projects or events  
+* Coordinate scheduling smoothly   
+* Increase member retention and participation  
+* Host larger club events 
+
+**Pain Points:**
+
+* Current checkout process is manual and requires paperwork  
+* Hard to manage multiple requests at once  
+* Difficult to get visibility on overdue returns  
+* There are a lot mundane and repetitive tasks that could be automated
+
+**What they want:**
+
+* An online system that allows quick reservations and approvals  
+* Ability to request multiple items for events with one submission  
+* Notifications when items are overdue or available  
+* Extensibility and modularity, so clubs with their own inventory can make it work
+
+**Scenario:** Prepping For Club Event 
+
+* **Long Description:** Mary leads a team of 15 students in her club. Before competitions, she must request tools in advance and coordinate who picks them up. She needs a streamlined process to reduce back-and-forth emails and paperwork.  
+* **Traditional**: Fill paper forms, wait for faculty approval, track items manually  
+* **Expected from App**: Submit a single request for multiple tools, see approval status, and track returns digitally
+
+**Story 1:**  
+As a club leader, I want to request multiple inventory items in a single reservation so that I can prepare for club events without submitting separate forms for each item.
+
+* **Specific:** Multiple items in one request  
+* **Measurable:** One approval covers all requested items  
+* **Achievable:** Can be implemented with request bundling, and allow people to select multiple items  
+* **Relevant:** Saves time for events  
+* **Timeboxed:** Must be available before next semester, one sprint (2 weeks)
+
+**Story 2:**   
+As a club leader, I want to view the availability calendar for equipment so that I can plan events around item availability.
+
+* **Specific:** Calendar view shows equipment reservations  
+* **Measurable:** Conflicts are displayed visually  
+* **Achievable:** Calendar integration can be added to the app  
+* **Relevant:** Prevents scheduling conflicts  
+* **Timeboxed:** Ready for first release of the system, complete in one sprint (2 weeks)
+
+**Story 3:**   
+As a club leader, I want to duplicate past equipment requests so that I can easily prepare for recurring events without re-entering all the items.
+
+* **Specific:** Past request details can be copied into a new request  
+* **Measurable:** Reduces preparation time by reusing at least 80 percent of past event requests  
+* **Achievable:** Database can store and reapply prior request templates  
+* **Relevant:** Supports recurring events and competitions  
+* **Timeboxed:** complete in one sprint (2 weeks)
+
+**Story 4:**   
+As a club leader, I want to receive notifications when requested items are approved or denied so that I can adjust my event plans quickly.
+
+* **Specific:** Notifications are sent for each request status change  
+* **Measurable:** 100 percent of requests trigger a notification  
+* **Achievable:** System can use email or app alerts  
+* **Relevant:** Keeps planning on track  
+* **Timeboxed:** complete in one sprint (2 weeks)
+
+---
+
+## Persona: Teaching Assistant
+
+* **Name:** Arnold Shaw  
+* **Age:** 23  
+* **Year:** Second year  
+* **Major:** Computer Science M.S.
+
+**Background**  
+Arnold Shaw is a highly involved teaching assistant who takes part in multiple campus events and clubs. He is well-known among both students and faculty and is very comfortable with technology. Arnold dislikes inefficiency and prefers tools that save time. Because he juggles several commitments, he needs applications that streamline his workflow and make management easy.  
+**Goals**
+
+* Help with project management  
+* Work on multiple parallel matters with ease
+
+**Pain Points**
+
+* Needs quick response applications with easily accessible features  
+* Requires flexibility when returning borrowed items due to a busy schedule
+
+**What They Want**
+
+* An application that can quickly and easily return items  
+* Ability to manage various inventories and item statuses efficiently
+
+**Scenario**: Multi-tasked Management of Inventory and Users
+
+* **Long Description:** Arnold is involved in multiple organizations and wants to efficiently manage inventories across them. He wants a clear way to organize the items he has borrowed, view item statuses, and manage other users’ borrowed items for the organizations he oversees.  
+* **Traditional:** Uses a physical log book that fills up quickly and takes too much time to maintain. Tracking dues and borrowed items manually is inefficient.  
+* **Expected from App:** Arnold wants a single, centralized system to view, manage, and update inventory items for all organizations. The system should be fast, organized, and easy to navigate.
+
+**Story 1**  
+As a teaching assistant rushing to class, I want the system to process my item return in under 20 seconds so that I can use the remaining \~2 minutes to physically store the items.
+
+* **Specific:** Process returns quickly  
+* **Measurable:** ≤20 seconds to complete  
+* **Achievable:** Reasonable system response time  
+* **Relevant:** Helps TA return items efficiently  
+* **Timeboxed:** Explicit 2-minute total constraint which should be completed in a sprint (2 weeks)
+
+**Story 2**  
+As I take part in multiple organizations' inventories, I want to filter my borrowed items by organization or event so I can quickly identify which items belong to which group.
+
+* **Specific:** Filter by organization  
+* **Measurable:** Items grouped/displayed by organization  
+* **Achievable:** Straightforward query/filter feature  
+* **Relevant:** Helps manage items across multiple events  
+* **Timeboxed:** Whenever borrowed items are viewed \- can be completed in half a sprint (1 week)
+
+**Story 3**  
+As a TA, I want to generate an invite link or code within 1 minute of creating a new organization so that students can join immediately.
+
+* **Specific:** Generate invite for an organization  
+* **Measurable:** Invite created in ≤1 minute  
+* **Achievable:** Basic system functionality  
+* **Relevant:** Ensures quick onboarding of students  
+* **Timeboxed:** Any time during the organization lifecycle, requires at most a sprint (2 weeks)
+
+**Story 4**  
+As a TA, I want to be assigned higher-level access above students’ access at all times so I can oversee and update the inventory when needed.
+
+* **Specific:** Higher access than students  
+* **Measurable:** Role permissions differentiated with TAs being able to do more in an organization  
+* **Achievable:** Set up role based controls  
+* **Relevant:** Helps TA manage inventory and users effectively  
+* **Timeboxed:** Should take a sprint (2 weeks) to implement user roles
+
+---
+
+## Persona: Student
+
+* **Name:** Emily Carter  
+* **Age:** 20  
+* **Year:** Sophomore  
+* **Major:** Business Administration
+
+**Background**  
+Emily is an active student involved in multiple campus clubs as a volunteer, including the Yearbook club. She frequently needs access to equipment like cameras, SD cards, and other technical tools for events. Traditionally, Emily has to rely on paper sign-out sheets or coordinate with faculty, which often causes confusion and wasted time. She considers herself a little below average when it comes to understanding technology. Most of the time it is either fast and works or slow and broken.   
+**Goals**
+
+* Quickly find and reserve the equipment needed for club activities  
+* Ensure that items are available when required  
+* Avoid late returns or penalties  
+* Be able to track previous check outs
+
+**Pain Points**
+
+* Paper-based systems are slow and prone to errors  
+* Lack of transparency in equipment availability  
+* Forgetting due dates leads to penalties or conflicts with faculty  
+* Manual processes take time away from personal time
+
+**What They Want**
+
+* A digital solution to check equipment availability instantly  
+* Easy reservation and checkout without paperwork  
+* Automated reminders for returns  
+* A personal borrowing history log
+
+**Scenario**: Taking Out Equipment
+
+* **Long Description:** Emily is preparing for a cultural club event and needs to take out camera equipment to take pictures for the event.   
+* **Traditional:** She would rely on paper forms and memory for signing out items, often leading to last-minute issues or conflicts of other people also needing the cameras or SD cards.  
+* **Expected from App:** Emily can instantly see what’s available, reserve the items, and receive return reminders, making the process smoother and stress-free.
+
+**Story 1**  
+As a student, I want to search for available equipment that takes less than 5 seconds to show results so that I can quickly find what I need for club activities.
+
+* **Specific:** Search for equipment   
+* **Measurable:** There should be a search bar to look up items within 5 seconds   
+* **Achievable:** Search results should be able to look up the items of an organization and display them  
+* **Relevant:** Allows Emily to find stuff in large inventories   
+* **Timeboxed:** Should take half a sprint (1 week) 
+
+**Story 2**  
+As a student, I want to check out items through the website and take less than a minute to process so that I don’t need to fill out manual forms.
+
+* **Specific:** Emily should be able to check out items  
+* **Measurable:** A student can check out an item in less than a minute  
+* **Achievable:** The system should log the transaction, update the inventory, and provide an update  
+* **Relevant:** Students should be able to interact with checking out   
+* **Timeboxed:** Should be completed in a sprint (2 weeks)
+
+**Story 3**  
+As a student, I want to receive return reminders at least a day before it's due so that I avoid penalties or issues.
+
+* **Specific:** Receive a return reminder   
+* **Measurable:** Trigger notifications 95% of the time and one time   
+* **Achievable:** The system can calculate due dates and sends reminders when it needs to  
+* **Relevant:** Allows students to return items on time  
+* **Timeboxed:** Should be completed in a sprint (2 weeks)
+
+**Story 4**  
+As a student, I want to track my borrowing history so that I know which items I have used and when they were returned.
+
+* **Specific:** Look at the borrow history  
+* **Measurable:** History should show the past 12 months of items   
+* **Achievable:** System should store check outs for users  
+* **Relevant:** Helps students track borrows and help with disputes  
+* **Timeboxed:** Should be completed in half a sprint (1 week)
+
