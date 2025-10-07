@@ -372,7 +372,7 @@ CheckMate is an inventory and resource management platform for students, faculty
 * **Major:** Applied Physics Ph.D.
 
 **Background**  
-Mark Smith is a snarky professor who teaches 3 classes a week for applied physics and runs 2 hands-on labs weekly. He prefers familiar, older technology and avoids complex new tools. Though he is interested in sharing physics knowledge and mentoring students and can grasp new concepts quickly but needs straightforward, simple design patterns. He struggles with advanced software systems or overly technical interfaces. He is reliant on his students to help him understand new technologies.  
+Mark Smith is a snarky professor who teaches 3 classes a week for applied physics and runs 2 hands-on labs weekly. He prefers familiar, older technology and avoids complex new tools. He is interested in sharing physics knowledge and mentoring students, and he can grasp new concepts quickly. However, he needs straightforward, simple design patterns. He struggles with advanced software systems or overly technical interfaces. He is reliant on his students to help him understand new technologies.   
 **Goals**
 
 * Help student clubs increase interest in physics  
@@ -440,7 +440,7 @@ As a professor, I want to approve or deny student requests as soon as I receive 
 * **Measurable:** All requests can be approved or denied as soon as it is in the system  
 * **Achievable**: The request should be sent when it is ready in the service  
 * **Relevant:** The professor wants control of requests   
-* **Timeboxed**: Can be completed in half a sprint  (1 weeks)
+* **Timeboxed**: Can be completed in half a sprint  (1 week)
 
 **Story 2**  
 As a professor, I should receive request notifications within 5 minutes so I don’t have to manually check the dashboard.
@@ -737,4 +737,4 @@ As a student, I want to track my borrowing history so that I know which items I 
 * **Measurable:** History should show the past 12 months of items   
 * **Achievable:** System should store check outs for users  
 * **Relevant:** Helps students track borrows and help with disputes  
-* **Timeboxed:** Should be completed in half a sprint (1 weeks)
+* **Timeboxed:** Should be completed in half a sprint (1 week)
