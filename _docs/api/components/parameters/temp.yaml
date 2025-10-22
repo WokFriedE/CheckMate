@@ -1,0 +1,14 @@
+parameters:
+  - name: userId
+    in: query
+    description: The ID of the user to fetch
+    required: true
+    schema:
+      type: string
+  - name: page
+    in: query
+    description: The page number for pagination
+    required: false
+    schema:
+      type: integer
+      default: 1

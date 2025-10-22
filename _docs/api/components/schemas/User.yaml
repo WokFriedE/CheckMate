@@ -1,0 +1,25 @@
+type: object
+required: 
+    - user_id
+    - name
+    - contact_num
+    - designation
+properties: 
+    user_id:
+        type: string
+        format: int
+    name: 
+        type: string
+        example: "John Smith"
+    designation:
+        type: string
+        example:
+            - student
+            - faculty
+            - staff
+            - developer
+    createdAt:
+        type: string 
+        format: date-time
+    address:
+        type: string

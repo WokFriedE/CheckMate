@@ -1,0 +1,11 @@
+type: object
+required:
+  - error
+  - code
+properties:
+  error:
+    type: string
+    example: "Server Error"
+  code:
+    type: integer
+    example: 500

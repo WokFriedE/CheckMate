@@ -1,0 +1,11 @@
+type: object
+required:
+  - error
+  - code
+properties:
+  error:
+    type: string
+    example: "Resource inaccessible"
+  code:
+    type: integer
+    example: 403

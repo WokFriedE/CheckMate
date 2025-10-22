@@ -1,0 +1,23 @@
+openapi: "3.0.0"
+info:
+  version: "1.0.0"
+  title: "CheckMate API"
+
+servers:
+  - url: https://www.checkmate.com/api/v1
+
+components:
+  schemas:
+    User: { $ref: "./components/schemas/User.yaml" }
+    UserDetails: { $ref: "./components/schemas/UserLogin.yaml" }
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+security:
+  - BearerAuth: []
+
+paths:
+  /users/{id}:
+    $ref: "./paths/users/{id}.yaml"

@@ -1,0 +1,22 @@
+requestExample:
+  description: Example of a request payload
+  content:
+    application/json:
+      schema:
+        type: object
+        properties:
+          id:
+            type: string
+            description: Unique identifier
+            example: "12345"
+          name:
+            type: string
+            description: Name of the entity
+            example: "Sample Name"
+          active:
+            type: boolean
+            description: Status of the entity
+            example: true
+        required:
+          - id
+          - name

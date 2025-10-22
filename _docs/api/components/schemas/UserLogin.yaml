@@ -1,0 +1,14 @@
+type: object
+required:
+    - user_id
+    - user_pwd
+    - email
+properties:
+    user_id:
+        $ref: "./User.yaml#/properties/user_id"
+    email: 
+        type: string 
+        format: email 
+    user_pwd:
+        type: string
+        description: hash version of the pwd
