@@ -1,0 +1,28 @@
+type: object
+description: Records of returned items
+properties:
+  order_id:
+    type: integer
+    format: int64
+    description: Order identifier the return belongs to
+  item_id:
+    type: integer
+    format: int64
+    description: Item identifier being returned
+  return_count:
+    type: integer
+    format: int64
+    description: Number of items returned
+  return_date:
+    type: string
+    format: date-time
+    description: When the return was processed
+required:
+  - order_id
+  - item_id
+  - return_count
+example:
+  order_id: 987
+  item_id: 321
+  return_count: 1
+  return_date: "2025-11-01T10:00:00Z"

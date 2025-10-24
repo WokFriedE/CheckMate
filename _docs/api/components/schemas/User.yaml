@@ -1,25 +1,41 @@
 type: object
-required: 
-    - user_id
-    - name
-    - contact_num
-    - designation
-properties: 
+description: User profile information (from user_data table)
+properties:
     user_id:
-        type: string
-        format: int
-    name: 
+        type: integer
+        format: int64
+        description: Unique user identifier
+    name:
         type: string
         example: "John Smith"
-    designation:
+    contact_num:
         type: string
-        example:
-            - student
-            - faculty
-            - staff
-            - developer
-    createdAt:
-        type: string 
-        format: date-time
+        description: Contact phone number
     address:
         type: string
+    designation:
+        type: string
+        description: Role or designation
+        enum: [student, faculty, staff, developer]
+    createdAt:
+        type: string
+        format: date-time
+    njit_id:
+        type: integer
+        format: int64
+        description: Organization-specific identifier
+    returns_pending:
+        type: boolean
+        description: Whether the user has pending returns
+required:
+    - user_id
+    - name
+    - designation
+example:
+    user_id: 12345
+    name: "Jane Doe"
+    contact_num: "+1-555-1234"
+    address: "123 Main St, Some City, ST"
+    designation: "Student"
+    njit_id: 98765
+    returns_pending: false

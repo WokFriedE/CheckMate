@@ -8,8 +8,16 @@ servers:
 
 components:
   schemas:
-    User: { $ref: "./components/schemas/User.yaml" }
-    UserDetails: { $ref: "./components/schemas/UserLogin.yaml" }
+    UserLogin: { $ref: "./components/schemas/UserLogin.yaml" }
+    UserData: { $ref: "./components/schemas/User.yaml" }
+    ItemDetails: { $ref: "./components/schemas/ItemDetails.yaml" }
+    Items: { $ref: "./components/schemas/Items.yaml" }
+    OrderDetails: { $ref: "./components/schemas/OrderDetails.yaml" }
+    Orders: { $ref: "./components/schemas/Orders.yaml" }
+    Organizations: { $ref: "./components/schemas/Organizations.yaml" }
+    OrgLogs: { $ref: "./components/schemas/OrgLogs.yaml" }
+    OrgRoles: { $ref: "./components/schemas/OrgRoles.yaml" }
+    Returns: { $ref: "./components/schemas/Returns.yaml" }
   securitySchemes:
     BearerAuth:
       type: http

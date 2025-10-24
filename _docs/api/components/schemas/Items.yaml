@@ -1,0 +1,53 @@
+type: object
+description: Inventory item listing
+properties:
+  item_id:
+    type: integer
+    format: int64
+    description: Item identifier
+  owner_org:
+    type: string
+    description: Owning organization identifier or name
+  item_count:
+    type: integer
+    format: int64
+    description: Current available count
+  inventory_name:
+    type: string
+    description: Internal inventory name or code
+  item_category:
+    type: string
+    description: Category or classification
+  max_checkout:
+    type: integer
+    format: int64
+    description: Maximum number of concurrent checkouts per user
+  max_quantity:
+    type: integer
+    format: int64
+    description: Maximum quantity allowed per order
+  can_be_prebooked:
+    type: boolean
+    description: Whether the item is available for prebooking
+  prebook_timeframe:
+    type: number
+    format: float
+    description: Prebooking timeframe (hours/days - implementation-specific)
+  lock_status:
+    type: boolean
+    description: Whether the item is currently locked/reserved
+required:
+  - item_id
+  - owner_org
+  - item_count
+example:
+  item_id: 321
+  owner_org: "Campus Library"
+  item_count: 10
+  inventory_name: "PROJ-X-001"
+  item_category: "AV"
+  max_checkout: 1
+  max_quantity: 2
+  can_be_prebooked: true
+  prebook_timeframe: 48.0
+  lock_status: false

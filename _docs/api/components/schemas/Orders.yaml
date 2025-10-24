@@ -1,0 +1,27 @@
+type: object
+description: Order or checkout header
+properties:
+  order_id:
+    type: integer
+    format: int64
+    description: Unique order identifier
+  user_id:
+    type: integer
+    format: int64
+    description: User who placed the order
+  order_date:
+    type: string
+    format: date-time
+    description: When the order was created
+  return_status:
+    type: boolean
+    description: Whether the order has a returned status
+required:
+  - order_id
+  - user_id
+  - order_date
+example:
+  order_id: 987
+  user_id: 12345
+  order_date: "2025-10-23T09:00:00Z"
+  return_status: false
