@@ -1,0 +1,13 @@
+type: object
+properties:
+  order_id:
+    type: string
+  due_date:
+    type: string
+    format: date-time
+  item_count:
+    type: integer
+  user_id:
+    type: string
+  name:
+    type: string

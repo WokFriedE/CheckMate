@@ -1,0 +1,45 @@
+post:
+  summary: Checkout items
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: org_id
+      in: path
+      required: true
+      schema:
+        type: string
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "../../../components/schemas/CheckoutRequest.yaml"
+  responses:
+    "201":
+      description: Checkout complete
+      content:
+        application/json:
+          schema:
+            $ref: "../../../components/schemas/Message.yaml"
+          example:
+            message: checkout complete
+    "400":
+      description: Invalid item or user
+      content:
+        application/json:
+          schema:
+            $ref: "../../../components/schemas/Error.yaml"
+          example:
+            message: Example response for 400
+    "500":
+      description: Server error
+      content:
+        application/json:
+          schema:
+            $ref: "../../../components/schemas/Error.yaml"
+          example:
+            message: Example response for 500
+  tags:
+    - Taking Out Equipment
+  operationId: _orgs_org_id_item_checkout_post
+  description: POST operation for /orgs/{org_id}/item/checkout.

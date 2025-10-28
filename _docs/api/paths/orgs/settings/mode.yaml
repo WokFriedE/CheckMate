@@ -1,0 +1,68 @@
+get:
+  summary: Get request mode
+  parameters:
+    - name: org_id
+      in: path
+      required: true
+      schema:
+        type: string
+  responses:
+    "200":
+      description: Mode
+      content:
+        application/json:
+          schema:
+            $ref: "../../../components/schemas/ModeResponse.yaml"
+          examples:
+            self:
+              value:
+                message: success
+                mode: self
+            password:
+              value:
+                message: success
+                mode: password
+            request:
+              value:
+                message: success
+                mode: request
+  tags:
+    - Getting Started
+  operationId: _orgs_org_id_settings_mode_get
+  description: GET operation for /orgs/{org_id}/settings/mode.
+post:
+  summary: Update request mode
+  parameters:
+    - name: org_id
+      in: path
+      required: true
+      schema:
+        type: string
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "../../../components/schemas/ModeUpdate.yaml"
+  responses:
+    "200":
+      description: Updated
+      content:
+        application/json:
+          schema:
+            $ref: "../../../components/schemas/ModeResponse.yaml"
+          example:
+            message: updated
+            mode: self
+    "422":
+      description: Invalid mode
+      content:
+        application/json:
+          schema:
+            $ref: "../../../components/schemas/Error.yaml"
+          example:
+            message: invalid mode
+  tags:
+    - Getting Started
+  operationId: _orgs_org_id_settings_mode_post
+  description: POST operation for /orgs/{org_id}/settings/mode.

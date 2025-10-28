@@ -1,0 +1,23 @@
+get:
+  summary: List past orders for organization
+  parameters:
+    - name: org_id
+      in: path
+      required: true
+      schema:
+        type: string
+  responses:
+    "200":
+      description: History
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "../../../../components/schemas/OrderHistoryEntry.yaml"
+          example:
+            message: Example response for 200
+  tags:
+    - Prepping for Club Event
+  operationId: _orgs_org_id_inventory_order_history_get
+  description: GET operation for /orgs/{org_id}/inventory/order/history.

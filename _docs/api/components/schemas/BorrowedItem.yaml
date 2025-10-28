@@ -1,0 +1,10 @@
+type: object
+properties:
+  item_id:
+    type: string
+  organization:
+    type: string
+  event:
+    type: string
+  status:
+    type: string

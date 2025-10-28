@@ -1,0 +1,15 @@
+type: object
+properties:
+  item_id:
+    type: string
+  available_dates:
+    type: array
+    items:
+      type: string
+      format: date
+  reserved:
+    type: boolean
+required:
+  - item_id
+  - available_dates
+  - reserved

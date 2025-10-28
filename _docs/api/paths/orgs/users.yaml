@@ -1,0 +1,54 @@
+post:
+  summary: Create user role
+  parameters:
+    - name: org_id
+      in: path
+      required: true
+      schema:
+        type: string
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "../../components/schemas/RoleAssignment.yaml"
+  responses:
+    "201":
+      description: User created
+      content:
+        application/json:
+          schema:
+            $ref: "../../components/schemas/Message.yaml"
+          example:
+            message: Example response for 201
+  tags:
+    - Handling Order Requests
+  operationId: _orgs_org_id_users_post
+  description: POST operation for /orgs/{org_id}/users.
+put:
+  summary: Assign role to user
+  parameters:
+    - name: org_id
+      in: path
+      required: true
+      schema:
+        type: string
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "../../components/schemas/RoleAssignment.yaml"
+  responses:
+    "200":
+      description: Role assigned
+      content:
+        application/json:
+          schema:
+            $ref: "../../components/schemas/Message.yaml"
+          example:
+            message: Example response for 200
+  tags:
+    - Handling Order Requests
+  operationId: _orgs_org_id_users_put
+  description: PUT operation for /orgs/{org_id}/users.

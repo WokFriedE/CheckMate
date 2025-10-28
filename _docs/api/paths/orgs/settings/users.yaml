@@ -1,0 +1,23 @@
+get:
+  summary: List organization users and roles
+  parameters:
+    - name: org_id
+      in: path
+      required: true
+      schema:
+        type: string
+  responses:
+    "200":
+      description: Users
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "../../../components/schemas/RoleEntry.yaml"
+          example:
+            message: Example response for 200
+  tags:
+    - Handling Order Requests
+  operationId: _orgs_org_id_settings_users_get
+  description: GET operation for /orgs/{org_id}/settings/users.

@@ -1,0 +1,12 @@
+type: object
+properties:
+  item_id:
+    type: string
+  item_name:
+    type: string
+  borrow_date:
+    type: string
+    format: date-time
+  return_date:
+    type: string
+    format: date-time

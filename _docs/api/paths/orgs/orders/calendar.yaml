@@ -1,0 +1,35 @@
+get:
+  summary: Upcoming orders calendar view
+  parameters:
+    - name: org_id
+      in: path
+      required: true
+      schema:
+        type: string
+    - name: month
+      in: query
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 12
+    - name: year
+      in: query
+      required: false
+      schema:
+        type: integer
+  responses:
+    "200":
+      description: Upcoming orders
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "../../../components/schemas/CalendarOrderEntry.yaml"
+          example:
+            message: Example response for 200
+  tags:
+    - Separation of Access
+  operationId: _orgs_org_id_orders_calendar_get
+  description: GET operation for /orgs/{org_id}/orders/calendar.

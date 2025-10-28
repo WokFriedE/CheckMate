@@ -1,0 +1,53 @@
+post:
+  summary: Create an order with multiple items
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: org_id
+      in: path
+      required: true
+      schema:
+        type: string
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "../../../components/schemas/OrderCreate.yaml"
+  responses:
+    "201":
+      description: Order created
+      content:
+        application/json:
+          schema:
+            $ref: "../../../components/schemas/Message.yaml"
+          example:
+            message: order created
+    "400":
+      description: Invalid order
+      content:
+        application/json:
+          schema:
+            $ref: "../../../components/schemas/Error.yaml"
+          example:
+            message: Example response for 400
+    "403":
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: "../../../components/schemas/Error.yaml"
+          example:
+            message: Example response for 403
+    "500":
+      description: Server error
+      content:
+        application/json:
+          schema:
+            $ref: "../../../components/schemas/Error.yaml"
+          example:
+            message: Example response for 500
+  tags:
+    - Prepping for Club Event
+  operationId: _orgs_org_id_item_order_post
+  description: POST operation for /orgs/{org_id}/item/order.

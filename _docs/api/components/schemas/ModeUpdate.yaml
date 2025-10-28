@@ -1,0 +1,10 @@
+type: object
+properties:
+  mode:
+    type: string
+    enum:
+      - self
+      - password
+      - request
+required:
+  - mode

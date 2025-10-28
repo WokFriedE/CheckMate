@@ -1,0 +1,13 @@
+type: object
+properties:
+  item_id:
+    type: string
+  user_id:
+    type: string
+  return_time:
+    type: string
+    format: date-time
+required:
+  - item_id
+  - user_id
+  - return_time

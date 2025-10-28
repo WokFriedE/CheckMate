@@ -1,0 +1,11 @@
+type: object
+properties:
+  item_ids:
+    type: array
+    items:
+      type: string
+  due_date:
+    type: string
+    format: date-time
+required:
+  - item_ids

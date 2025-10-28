@@ -1,0 +1,12 @@
+type: object
+properties:
+  user_id:
+    type: string
+  role:
+    type: string
+    enum:
+      - upper
+      - user
+required:
+  - user_id
+  - role

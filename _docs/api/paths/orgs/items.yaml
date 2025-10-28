@@ -1,0 +1,35 @@
+get:
+  summary: Search available items
+  parameters:
+    - name: org_id
+      in: path
+      required: true
+      schema:
+        type: string
+    - name: search
+      in: query
+      schema:
+        type: string
+  responses:
+    "200":
+      description: Items
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "../../components/schemas/ItemSearchResult.yaml"
+          example:
+            message: Example response for 200
+    "500":
+      description: Server error
+      content:
+        application/json:
+          schema:
+            $ref: "../../components/schemas/Error.yaml"
+          example:
+            message: Example response for 500
+  tags:
+    - Taking Out Equipment
+  operationId: _orgs_org_id_items_get
+  description: GET operation for /orgs/{org_id}/items.

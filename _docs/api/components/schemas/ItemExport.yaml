@@ -1,0 +1,11 @@
+type: object
+properties:
+  item_id:
+    type: string
+  name:
+    type: string
+  quantity:
+    type: integer
+  details:
+    type: object
+    additionalProperties: true

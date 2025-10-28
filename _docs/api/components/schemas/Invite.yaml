@@ -1,0 +1,9 @@
+type: object
+properties:
+  invite_code:
+    type: string
+  expires_at:
+    type: integer
+required:
+  - invite_code
+  - expires_at

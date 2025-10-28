@@ -1,0 +1,12 @@
+type: object
+properties:
+  order_id:
+    type: string
+  item_id:
+    type: string
+  status:
+    type: string
+required:
+  - order_id
+  - item_id
+  - status

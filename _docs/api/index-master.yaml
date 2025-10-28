@@ -1,0 +1,1583 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: CheckMate Equipment Management API
+  description: 'Comprehensive OpenAPI 3.0 specification for the CheckMate Equipment
+    Management System.
+
+    This API enables organizations, professors, club leaders, teaching assistants,
+    and students to manage inventory, reservations, notifications, and user roles.
+
+
+    Each scenario represents a story grouping of endpoints that address real-world
+    workflows within the system.'
+servers:
+- url: https://api.checkmate.example.com
+security:
+- ApiKey: []
+paths:
+  /spacecrafts/{spacecraftId}:
+    get:
+      summary: Read a spacecraft
+      parameters:
+      - name: spacecraftId
+        in: path
+        required: true
+        description: The unique identifier of the spacecraft
+        schema:
+          $ref: '#/components/schemas/SpacecraftId'
+      responses:
+        '200':
+          description: The spacecraft corresponding to the provided spacecraftId
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Spacecraft'
+              example:
+                id: SC-001
+                name: Discovery
+                type: satellite
+                description: Research satellite in orbit
+        '404':
+          description: No spacecraft found for the provided spacecraftId
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                message: No spacecraft found for the provided spacecraftId
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                message: Internal server error
+  /orgs/{org_id}/items/transfer:
+    get:
+      summary: Export items and details for an organization
+      parameters:
+      - name: org_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: format
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - csv
+          - json
+        description: Export format
+      responses:
+        '200':
+          description: Export file
+          content:
+            text/csv:
+              schema:
+                type: string
+                format: binary
+              example:
+                message: Example response for 200
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ItemExport'
+              example:
+                message: Example response for 200
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                message: Example response for 500
+      tags:
+      - Getting Started
+      operationId: _orgs_org_id_items_transfer_get
+      description: GET operation for /orgs/{org_id}/items/transfer.
+    post:
+      summary: Import items and details for an organization
+      parameters:
+      - name: org_id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+              required:
+              - file
+      responses:
+        '201':
+          description: Complete
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ImportResult'
+              example:
+                message: complete
+        '415':
+          description: Wrong media
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                message: unsupported media type
+        '413':
+          description: Too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                message: payload too large
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                message: Example response for 500
+      tags:
+      - Getting Started
+      operationId: _orgs_org_id_items_transfer_post
+      description: POST operation for /orgs/{org_id}/items/transfer.
+  /orgs/{org_id}/settings/password:
+    post:
+      summary: Create or verify a password for item requests
+      parameters:
+      - name: org_id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PasswordRequest'
+            example:
+              password: hash123
+              type: create
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+              example:
+                message: success
+        '200':
+          description: Verified
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PasswordVerifyResponse'
+              examples:
+                ok:
+                  value:
+                    access: true
+                    message: ''
+                bad:
+                  value:
+                    access: false
+                    message: incorrect password
+      tags:
+      - Getting Started
+      operationId: _orgs_org_id_settings_password_post
+      description: POST operation for /orgs/{org_id}/settings/password.
+  /orgs/{org_id}/dashboard/items:
+    get:
+      summary: List items with sort, filter, and search
+      parameters:
+      - name: org_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: sort
+        in: query
+        schema:
+          type: string
+      - name: filter
+        in: query
+        schema:
+          type: string
+      - name: search
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Items
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Item'
+              example:
+                message: Example response for 200
+      tags:
+      - Getting Started
+      operationId: _orgs_org_id_dashboard_items_get
+      description: GET operation for /orgs/{org_id}/dashboard/items.
+  /orgs/{org_id}/settings/mode:
+    get:
+      summary: Get request mode
+      parameters:
+      - name: org_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Mode
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModeResponse'
+              examples:
+                self:
+                  value:
+                    message: success
+                    mode: self
+                password:
+                  value:
+                    message: success
+                    mode: password
+                request:
+                  value:
+                    message: success
+                    mode: request
+      tags:
+      - Getting Started
+      operationId: _orgs_org_id_settings_mode_get
+      description: GET operation for /orgs/{org_id}/settings/mode.
+    post:
+      summary: Update request mode
+      parameters:
+      - name: org_id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ModeUpdate'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModeResponse'
+              example:
+                message: updated
+                mode: self
+        '422':
+          description: Invalid mode
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                message: invalid mode
+      tags:
+      - Getting Started
+      operationId: _orgs_org_id_settings_mode_post
+      description: POST operation for /orgs/{org_id}/settings/mode.
+  /orgs/{org_id}/item/{item_id}/settings:
+    post:
+      summary: Create item settings
+      parameters:
+      - name: org_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: item_id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ItemSettings'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+              example:
+                message: settings created
+        '400':
+          description: Invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                message: Example response for 400
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                message: Example response for 500
+      tags:
+      - Separating Items in Inventory
+      operationId: _orgs_org_id_item_item_id_settings_post
+      description: POST operation for /orgs/{org_id}/item/{item_id}/settings.
+    put:
+      summary: Update item settings
+      parameters:
+      - name: org_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: item_id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ItemSettings'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+              example:
+                message: settings updated
+        '404':
+          description: Item not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                message: Example response for 404
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                message: Example response for 500
+      tags:
+      - Separating Items in Inventory
+      operationId: _orgs_org_id_item_item_id_settings_put
+      description: PUT operation for /orgs/{org_id}/item/{item_id}/settings.
+    patch:
+      summary: Partial update of item settings
+      parameters:
+      - name: org_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: item_id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ItemSettings'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+              example:
+                message: settings updated
+        '404':
+          description: Item not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                message: Example response for 404
+      tags:
+      - Separating Items in Inventory
+      operationId: _orgs_org_id_item_item_id_settings_patch
+      description: PATCH operation for /orgs/{org_id}/item/{item_id}/settings.
+  /orgs/{org_id}/item/order:
+    post:
+      summary: Create an order with multiple items
+      security:
+      - BearerAuth: []
+      parameters:
+      - name: org_id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderCreate'
+      responses:
+        '201':
+          description: Order created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+              example:
+                message: order created
+        '400':
+          description: Invalid order
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                message: Example response for 400
+        '403':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                message: Example response for 403
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                message: Example response for 500
+      tags:
+      - Prepping for Club Event
+      operationId: _orgs_org_id_item_order_post
+      description: POST operation for /orgs/{org_id}/item/order.
+  /orgs/{org_id}/inventory/order/history:
+    get:
+      summary: List past orders for organization
+      parameters:
+      - name: org_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: History
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OrderHistoryEntry'
+              example:
+                message: Example response for 200
+      tags:
+      - Prepping for Club Event
+      operationId: _orgs_org_id_inventory_order_history_get
+      description: GET operation for /orgs/{org_id}/inventory/order/history.
+  /orgs/{org_id}/inventory/order:
+    post:
+      summary: Recreate a past order
+      parameters:
+      - name: org_id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderRecreate'
+      responses:
+        '201':
+          description: Order recreated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+              example:
+                message: order recreated
+      tags:
+      - Prepping for Club Event
+      operationId: _orgs_org_id_inventory_order_post
+      description: POST operation for /orgs/{org_id}/inventory/order.
+  /order/availability:
+    get:
+      summary: Global availability view
+      parameters:
+      - name: from
+        in: query
+        schema:
+          type: string
+          format: date
+      - name: to
+        in: query
+        schema:
+          type: string
+          format: date
+      responses:
+        '200':
+          description: Availability list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AvailabilityEntry'
+              example:
+                message: Example response for 200
+      tags:
+      - Prepping for Club Event
+      operationId: _order_availability_get
+      description: GET operation for /order/availability.
+  /orgs/{org_id}/item/request/{order_id}:
+    get:
+      summary: Get a request details
+      parameters:
+      - name: org_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: order_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderRequest'
+              example:
+                message: Example response for 200
+      tags:
+      - Handling Order Requests
+      operationId: _orgs_org_id_item_request_order_id_get
+      description: GET operation for /orgs/{org_id}/item/request/{order_id}.
+    post:
+      summary: Approve or deny a request
+      parameters:
+      - name: org_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: order_id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderDecision'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+              example:
+                message: Example response for 200
+      tags:
+      - Handling Order Requests
+      operationId: _orgs_org_id_item_request_order_id_post
+      description: POST operation for /orgs/{org_id}/item/request/{order_id}.
+  /orgs/{org_id}/notifications:
+    get:
+      summary: List notifications
+      parameters:
+      - name: org_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Notifications
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Notification'
+              example:
+                message: Example response for 200
+      tags:
+      - Handling Order Requests
+      operationId: _orgs_org_id_notifications_get
+      description: GET operation for /orgs/{org_id}/notifications.
+    post:
+      summary: Create a notification
+      parameters:
+      - name: org_id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NotificationCreate'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+              example:
+                message: Example response for 201
+      tags:
+      - Handling Order Requests
+      operationId: _orgs_org_id_notifications_post
+      description: POST operation for /orgs/{org_id}/notifications.
+  /orgs/{org_id}/users:
+    post:
+      summary: Create user role
+      parameters:
+      - name: org_id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RoleAssignment'
+      responses:
+        '201':
+          description: User created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+              example:
+                message: Example response for 201
+      tags:
+      - Handling Order Requests
+      operationId: _orgs_org_id_users_post
+      description: POST operation for /orgs/{org_id}/users.
+    put:
+      summary: Assign role to user
+      parameters:
+      - name: org_id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RoleAssignment'
+      responses:
+        '200':
+          description: Role assigned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+              example:
+                message: Example response for 200
+      tags:
+      - Handling Order Requests
+      operationId: _orgs_org_id_users_put
+      description: PUT operation for /orgs/{org_id}/users.
+  /orgs/{org_id}/settings/users:
+    get:
+      summary: List organization users and roles
+      parameters:
+      - name: org_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Users
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RoleEntry'
+              example:
+                message: Example response for 200
+      tags:
+      - Handling Order Requests
+      operationId: _orgs_org_id_settings_users_get
+      description: GET operation for /orgs/{org_id}/settings/users.
+  /orgs/{org_id}/item/return:
+    post:
+      summary: Process an item return
+      parameters:
+      - name: org_id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReturnRequest'
+      responses:
+        '200':
+          description: Return processed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+              example:
+                message: return processed
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                message: Example response for 400
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                message: Example response for 500
+      tags:
+      - Multi-tasked Management
+      operationId: _orgs_org_id_item_return_post
+      description: POST operation for /orgs/{org_id}/item/return.
+  /orgs/{org_id}/items/borrowed:
+    get:
+      summary: List borrowed items with optional filters
+      parameters:
+      - name: org_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: filter_by
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - organization_id
+          - event_id
+      responses:
+        '200':
+          description: Borrowed items
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BorrowedItem'
+              example:
+                message: Example response for 200
+      tags:
+      - Multi-tasked Management
+      operationId: _orgs_org_id_items_borrowed_get
+      description: GET operation for /orgs/{org_id}/items/borrowed.
+  /orgs/{org_id}/invite:
+    post:
+      summary: Create invite code
+      parameters:
+      - name: org_id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InviteCreate'
+      responses:
+        '201':
+          description: Invite created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Invite'
+              example:
+                invite_code: ABC123
+                expires_at: 1761537596
+        '400':
+          description: Invalid data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                message: Example response for 400
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                message: Example response for 500
+      tags:
+      - Multi-tasked Management
+      operationId: _orgs_org_id_invite_post
+      description: POST operation for /orgs/{org_id}/invite.
+  /orgs/{org_id}/users/roles:
+    post:
+      summary: Assign organizer role
+      parameters:
+      - name: org_id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RoleAssignmentDetailed'
+      responses:
+        '201':
+          description: Role assigned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+              example:
+                message: Example response for 201
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                message: Example response for 400
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                message: Example response for 500
+      tags:
+      - Multi-tasked Management
+      operationId: _orgs_org_id_users_roles_post
+      description: POST operation for /orgs/{org_id}/users/roles.
+  /orgs/{org_id}/items:
+    get:
+      summary: Search available items
+      parameters:
+      - name: org_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: search
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Items
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ItemSearchResult'
+              example:
+                message: Example response for 200
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                message: Example response for 500
+      tags:
+      - Taking Out Equipment
+      operationId: _orgs_org_id_items_get
+      description: GET operation for /orgs/{org_id}/items.
+  /orgs/{org_id}/item/checkout:
+    post:
+      summary: Checkout items
+      security:
+      - BearerAuth: []
+      parameters:
+      - name: org_id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CheckoutRequest'
+      responses:
+        '201':
+          description: Checkout complete
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+              example:
+                message: checkout complete
+        '400':
+          description: Invalid item or user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                message: Example response for 400
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                message: Example response for 500
+      tags:
+      - Taking Out Equipment
+      operationId: _orgs_org_id_item_checkout_post
+      description: POST operation for /orgs/{org_id}/item/checkout.
+  /orgs/{org_id}/history:
+    get:
+      summary: Borrowing history for a user
+      security:
+      - BearerAuth: []
+      parameters:
+      - name: org_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: user_id
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Defaults to bearer if empty
+      responses:
+        '200':
+          description: History
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BorrowHistoryEntry'
+              example:
+                message: Example response for 200
+      tags:
+      - Taking Out Equipment
+      operationId: _orgs_org_id_history_get
+      description: GET operation for /orgs/{org_id}/history.
+  /orgs/{org_id}/settings/visibility:
+    get:
+      summary: Get organization visibility
+      parameters:
+      - name: org_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Visibility
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VisibilityResponse'
+              example:
+                message: Example response for 200
+      tags:
+      - Separation of Access
+      operationId: _orgs_org_id_settings_visibility_get
+      description: GET operation for /orgs/{org_id}/settings/visibility.
+    post:
+      summary: Set organization visibility
+      parameters:
+      - name: org_id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VisibilityUpdate'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+              example:
+                message: success
+      tags:
+      - Separation of Access
+      operationId: _orgs_org_id_settings_visibility_post
+      description: POST operation for /orgs/{org_id}/settings/visibility.
+  /orgs/{org_id}/orders/calendar:
+    get:
+      summary: Upcoming orders calendar view
+      parameters:
+      - name: org_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: month
+        in: query
+        required: false
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 12
+      - name: year
+        in: query
+        required: false
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Upcoming orders
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CalendarOrderEntry'
+              example:
+                message: Example response for 200
+      tags:
+      - Separation of Access
+      operationId: _orgs_org_id_orders_calendar_get
+      description: GET operation for /orgs/{org_id}/orders/calendar.
+components:
+  securitySchemes:
+    ApiKey:
+      type: apiKey
+      in: header
+      name: X-Api-Key
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Message:
+      type: object
+      properties:
+        message:
+          type: string
+      required:
+      - message
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+      required:
+      - message
+    Item:
+      type: object
+      properties:
+        item_id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        category:
+          type: string
+        availability:
+          type: boolean
+      required:
+      - item_id
+      - name
+      - availability
+    ItemExport:
+      type: object
+      properties:
+        item_id:
+          type: string
+        name:
+          type: string
+        quantity:
+          type: integer
+        details:
+          type: object
+          additionalProperties: true
+    ImportResult:
+      type: object
+      properties:
+        message:
+          type: string
+    PasswordRequest:
+      type: object
+      properties:
+        password:
+          type: string
+          description: hash
+        type:
+          type: string
+          enum:
+          - create
+          - verify
+      required:
+      - password
+      - type
+    PasswordVerifyResponse:
+      type: object
+      properties:
+        access:
+          type: boolean
+        message:
+          type: string
+      required:
+      - access
+      - message
+    ModeResponse:
+      type: object
+      properties:
+        message:
+          type: string
+        mode:
+          type: string
+          enum:
+          - self
+          - password
+          - request
+      required:
+      - message
+      - mode
+    ModeUpdate:
+      type: object
+      properties:
+        mode:
+          type: string
+          enum:
+          - self
+          - password
+          - request
+      required:
+      - mode
+    ItemSettings:
+      type: object
+      properties:
+        max_checkout:
+          type: integer
+        max_quantity:
+          type: integer
+        can_be_prebooked:
+          type: boolean
+        prebook_timeframe:
+          type: string
+          description: ISO 8601 duration or human readable
+        item_category:
+          type: string
+    OrderItem:
+      type: object
+      properties:
+        item_id:
+          type: string
+        org_id:
+          type: string
+        item_count:
+          type: integer
+        comment:
+          type: string
+      required:
+      - item_id
+      - org_id
+      - item_count
+    OrderCreate:
+      type: array
+      items:
+        $ref: '#/components/schemas/OrderItem'
+    OrderHistoryEntry:
+      type: object
+      properties:
+        order_id:
+          type: string
+        user_email:
+          type: string
+          format: email
+        return_status:
+          type: string
+        order_date:
+          type: string
+          format: date-time
+      required:
+      - order_id
+      - user_email
+      - order_date
+    OrderRecreate:
+      type: array
+      items:
+        type: object
+        properties:
+          item_id:
+            type: string
+          org_id:
+            type: string
+          item_count:
+            type: integer
+          auth_token:
+            type: string
+        required:
+        - item_id
+        - org_id
+        - item_count
+    AvailabilityEntry:
+      type: object
+      properties:
+        item_id:
+          type: string
+        available_dates:
+          type: array
+          items:
+            type: string
+            format: date
+        reserved:
+          type: boolean
+      required:
+      - item_id
+      - available_dates
+      - reserved
+    OrderRequest:
+      type: object
+      properties:
+        order_id:
+          type: string
+        item_id:
+          type: string
+        status:
+          type: string
+      required:
+      - order_id
+      - item_id
+      - status
+    OrderDecision:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+          - approve
+          - deny
+        due_date:
+          type: string
+          format: date-time
+      required:
+      - status
+    Notification:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+          - sent
+          - read
+          - pending
+        created_at:
+          type: string
+          format: date-time
+        message:
+          type: string
+        author:
+          type: string
+        entity_id:
+          type: string
+        entity_type:
+          type: string
+    NotificationCreate:
+      type: object
+      properties:
+        target:
+          type: string
+        message:
+          type: string
+      required:
+      - target
+      - message
+    RoleAssignment:
+      type: object
+      properties:
+        user_id:
+          type: string
+        role:
+          type: string
+          enum:
+          - upper
+          - user
+      required:
+      - user_id
+      - role
+    RoleAssignmentDetailed:
+      type: object
+      properties:
+        user_id:
+          type: string
+        role:
+          type: string
+          enum:
+          - organizer
+      required:
+      - user_id
+      - role
+    RoleEntry:
+      type: object
+      properties:
+        user_id:
+          type: string
+        role:
+          type: string
+    ReturnRequest:
+      type: object
+      properties:
+        item_id:
+          type: string
+        user_id:
+          type: string
+        return_time:
+          type: string
+          format: date-time
+      required:
+      - item_id
+      - user_id
+      - return_time
+    BorrowedItem:
+      type: object
+      properties:
+        item_id:
+          type: string
+        organization:
+          type: string
+        event:
+          type: string
+        status:
+          type: string
+    InviteCreate:
+      type: object
+      properties:
+        org_id:
+          type: string
+        expiration:
+          type: integer
+        created_by:
+          type: string
+      required:
+      - org_id
+      - expiration
+    Invite:
+      type: object
+      properties:
+        invite_code:
+          type: string
+        expires_at:
+          type: integer
+      required:
+      - invite_code
+      - expires_at
+    ItemSearchResult:
+      type: object
+      properties:
+        item_id:
+          type: string
+        item_name:
+          type: string
+        availability:
+          type: boolean
+      required:
+      - item_id
+      - item_name
+      - availability
+    CheckoutRequest:
+      type: object
+      properties:
+        item_ids:
+          type: array
+          items:
+            type: string
+        due_date:
+          type: string
+          format: date-time
+      required:
+      - item_ids
+    BorrowHistoryEntry:
+      type: object
+      properties:
+        item_id:
+          type: string
+        item_name:
+          type: string
+        borrow_date:
+          type: string
+          format: date-time
+        return_date:
+          type: string
+          format: date-time
+    VisibilityUpdate:
+      type: object
+      properties:
+        org_id:
+          type: string
+        visibility:
+          type: string
+          enum:
+          - public
+          - private
+      required:
+      - org_id
+      - visibility
+    VisibilityResponse:
+      type: object
+      properties:
+        visibility:
+          type: string
+          enum:
+          - public
+          - private
+      required:
+      - visibility
+    CalendarOrderEntry:
+      type: object
+      properties:
+        order_id:
+          type: string
+        due_date:
+          type: string
+          format: date-time
+        item_count:
+          type: integer
+        user_id:
+          type: string
+        name:
+          type: string
+    SpacecraftId:
+      type: string
+      description: The unique identifier of a spacecraft
+    Spacecraft:
+      type: object
+      required:
+      - id
+      - name
+      - type
+      properties:
+        id:
+          $ref: '#/components/schemas/SpacecraftId'
+        name:
+          type: string
+        type:
+          type: string
+          enum:
+          - capsule
+          - probe
+          - satellite
+          - spaceplane
+          - station
+        description:
+          type: string
+tags:
+- name: Getting Started
+  description: Endpoints related to onboarding, importing data, setting up organization
+    access modes, and configuring passwords for professors.
+- name: Separating Items in Inventory
+  description: Endpoints that allow professors to configure item-level settings such
+    as maximum quantity, booking timeframe, and prebooking rules.
+- name: Prepping for Club Event
+  description: Endpoints for club leaders to request, manage, and duplicate equipment
+    orders and view availability calendars.
+- name: Handling Order Requests
+  description: Endpoints enabling professors to approve or deny student requests,
+    manage notifications, and assign user roles within organizations.
+- name: Multi-tasked Management
+  description: Endpoints designed for teaching assistants to manage returns, borrowed
+    items, invites, and elevated user roles across multiple organizations.
+- name: Taking Out Equipment
+  description: Endpoints for students to search available items, check out equipment,
+    receive return reminders, and view borrowing history.
+- name: Separation of Access
+  description: Endpoints for staff and directors to control visibility, manage user
+    roles, and review upcoming events and organizational timelines.

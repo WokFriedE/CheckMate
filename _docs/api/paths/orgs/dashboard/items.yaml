@@ -1,0 +1,35 @@
+get:
+  summary: List items with sort, filter, and search
+  parameters:
+    - name: org_id
+      in: path
+      required: true
+      schema:
+        type: string
+    - name: sort
+      in: query
+      schema:
+        type: string
+    - name: filter
+      in: query
+      schema:
+        type: string
+    - name: search
+      in: query
+      schema:
+        type: string
+  responses:
+    "200":
+      description: Items
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "../../../components/schemas/Item.yaml"
+          example:
+            message: Example response for 200
+  tags:
+    - Getting Started
+  operationId: _orgs_org_id_dashboard_items_get
+  description: GET operation for /orgs/{org_id}/dashboard/items.
