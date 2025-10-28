@@ -738,3 +738,69 @@ As a student, I want to track my borrowing history so that I know which items I 
 * **Relevant:** Helps students track borrows and help with disputes  
 * **Timeboxed:** Should be completed in half a sprint (1 week)
 
+
+# UI Mock Up Initial
+https://www.figma.com/design/nJa5O0v9n1FZauaxqvenUZ/CS670?node-id=0-1&t=jcCnt7vt4YR1sdlS-1 
+
+# API Docs 
+refer to _docs/api/out/index.html for openAPI breakdown
+
+# Test Cases
+## **Scenario 1: Getting Started**
+
+| Test Case ID | Test Objective | Steps to Execute | Expected Result | Criteria | Time-bound |
+| :---- | :---- | :---- | :---- | :---- | :---- |
+| TC1.1 | Verify importing 40 items from CSV works correctly. | 1\. Log in as Professor. 2\. Upload valid CSV with 40 items. | System returns 201 Created with message 'complete'. All 40 items appear in the inventory list. | Ensures import and initialization reliability. | ≤ 1 minute |
+| TC1.2 | Validate password protection setup for item requests. | 1\. Set password with POST /settings/password. 2\. Verify using the created password. | Creation returns 201 success; verification 200 'access: True'; incorrect returns 401\. | Ensures secure access control. | ≤ 3 seconds |
+| TC1.3 | Confirm item list displays with sort, filter, and search. | 1\. Access GET /items. 2\. Apply sort, filter, and search features. | Returns 200 with accurate data and correct filters applied. | Confirms UI responsiveness. | ≤ 2 seconds |
+| TC1.4 | Verify invalid CSV upload rejected. | 1\. Upload malformed CSV. 2\. Observe response. | 415 Unsupported Media Type with descriptive error. | Ensures input validation. | ≤ 5 seconds |
+| TC1.5 | Validate incorrect password handling. | 1\. Attempt login with wrong password. 2\. Observe response. | 401 Unauthorized 'access: False'. | Verifies authentication security. | ≤ 3 seconds |
+| TC1.6 | Verify responsive UI for item list. | 1\. Open inventory on desktop/mobile. 2\. Observe layout. | UI adjusts properly without distortion. | Ensures accessibility. | Instant |
+| TC1.7 | Verify duplicate CSV imports are prevented. | 1\. Upload the same CSV twice. 2\. Observe response. | 409 Conflict returned, no duplicates created. | Maintains data integrity. | ≤ 10 seconds |
+
+## **Scenario 2: Separating Items in an Inventory**
+
+| Test Case ID | Test Objective | Steps to Execute | Expected Result | Criteria | Time-bound |
+| :---- | :---- | :---- | :---- | :---- | :---- |
+| TC2.1 | Verify ability to mark items as request-only. | 1\. Open item settings. 2\. Set can\_be\_prebooked \= false. | 201 Created. Item flagged as request-only. | Restricts unauthorized access. | Instant update |
+| TC2.2 | Verify max quantity per student enforced. | 1\. Attempt checkout exceeding max\_quantity. 2\. Observe response. | 400 Invalid requests returned. | Prevents overuse of stock. | Immediate validation |
+| TC2.3 | Verify booking timeframe enforcement. | 1\. Attempt prebooking outside the timeframe. 2\. Observe response. | 400 Invalid timeframe returned. | Maintains booking control. | ≤ 3 seconds |
+
+## **Scenario 3: Prepping for Club Event**
+
+| Test Case ID | Test Objective | Steps to Execute | Expected Result | Criteria | Time-bound |
+| :---- | :---- | :---- | :---- | :---- | :---- |
+| TC3.1 | Verify multi-item request functionality. | 1\. Log in as Club Leader. 2\. Submit POST /item/order with \>2 items. | 201 Created with 'order created'. | Validates batch ordering. | ≤ 5 seconds |
+| TC3.2 | Verify assignment of borrowed items to members. | 1\. Include member name in comment. 2\. View order log. | Comment saved as 'owned by student xyz'. | Improves accountability. | ≤ 5 seconds |
+| TC3.3 | Verify ability to duplicate past requests. | 1\. Access order history. 2\. Recreate past order. | 201 Created, 'order recreated'. | Simplifies recurring setup. | ≤ 10 seconds |
+| TC3.4 | Verify availability calendar displays accurate data. | 1\. GET /order. 2\. Review available/reserved flags. | 200 OK with correct availability data. | Supports event planning. | ≤ 3 seconds |
+
+## **Scenario 4: Handling Order Requests**
+
+| Test Case ID | Test Objective | Steps to Execute | Expected Result | Criteria | Time-bound |
+| :---- | :---- | :---- | :---- | :---- | :---- |
+| TC4.1 | Verify professors can approve/deny student requests. | 1\. View pending requests. 2\. Approve or deny. | Order status updates (200 OK). | Confirms approval workflow. | ≤ 2 seconds |
+| TC4.2 | Verify professors receive timely notifications. | 1\. Submit student requests. 2\. Check GET /notifications. | Notification appears ≤5 minutes. | Ensures prompt communication. | ≤ 5 minutes |
+| TC4.3 | Verified professors can assign higher limits to club leaders. | 1\. Update role via POST /users role='club'. 2\. Confirm via GET /settings/users. | 201 Created; role visible in list. | Enables role flexibility. | Immediate effect |
+
+## **Scenario 5: Multi-tasked Management of Inventory and Users**
+
+| Test Case ID | Test Objective | Steps to Execute | Expected Result | Criteria | Time-bound |
+| :---- | :---- | :---- | :---- | :---- | :---- |
+| TC5.1 | Verify items return within 20 seconds. | 1\. POST /item/return. 2\. Check response time. | 200 OK 'return processed' ≤20s. | Ensures smooth return process. | ≤ 20 seconds |
+| TC5.2 | Verify filtering borrowed items by organization/event. | 1\. GET /items/borrowed?filter\_by=organization\_id. 2\. Compare output. | 200 OK with correct filtered subset. | Simplifies tracking. | ≤ 2 seconds |
+| TC5.3 | Verify invite code creation for organization. | 1\. POST /orgs/\<org\_id\>/invite. 2\. Observe response. | 201 Created with valid code and expiration. | Supports fast onboarding. | ≤ 1 minute |
+
+## **Scenario 6: Taking Out Equipment**
+
+| Test Case ID | Test Objective | Steps to Execute | Expected Result | Criteria | Time-bound |
+| :---- | :---- | :---- | :---- | :---- | :---- |
+| TC6.1 | Verify successful checkout of an available item. | 1\. Log in as a Student. 2\. Search for available items by ID. 3\. Check out items. | Checkout successfully and recorded in the system. | Confirms basic borrowing workflow. | ≤ 5 seconds |
+| TC6.2 | Verify checkout is rejected for items marked as 'request-only'. | 1\. Attempt to check out an item marked as request-only. | System rejects checkout with appropriate message. | Protects restricted inventory. | Instant response |
+
+## **Scenario 7: Separation of Access**
+
+| Test Case ID | Test Objective | Steps to Execute | Expected Result | Criteria | Time-bound |
+| :---- | :---- | :---- | :---- | :---- | :---- |
+| TC7.1 | Verify a student cannot access the Admin/Settings endpoint. | 1\. Log in as a Student. 2\. Attempt to access Admin/Settings section. | Access denied with error message 403 Forbidden. | Ensures system integrity through access control. | Immediate validation |
+| TC7.2 | Verify an Admin can successfully update a user's role. | 1\. Log in as Admin. 2\. Navigate to User Management. 3\. Update a user's role. | User role updated successfully and reflected in list. | Supports hierarchical management. | Immediate effect |

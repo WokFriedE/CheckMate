@@ -1,0 +1,12 @@
+type: object
+properties:
+  item_id:
+    type: string
+  item_name:
+    type: string
+  availability:
+    type: boolean
+required:
+  - item_id
+  - item_name
+  - availability

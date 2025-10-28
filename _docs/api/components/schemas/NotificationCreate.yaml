@@ -1,0 +1,9 @@
+type: object
+properties:
+  target:
+    type: string
+  message:
+    type: string
+required:
+  - target
+  - message

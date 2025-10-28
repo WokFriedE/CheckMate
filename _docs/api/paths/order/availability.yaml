@@ -1,0 +1,28 @@
+get:
+  summary: Global availability view
+  parameters:
+    - name: from
+      in: query
+      schema:
+        type: string
+        format: date
+    - name: to
+      in: query
+      schema:
+        type: string
+        format: date
+  responses:
+    "200":
+      description: Availability list
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "../../components/schemas/AvailabilityEntry.yaml"
+          example:
+            message: Example response for 200
+  tags:
+    - Prepping for Club Event
+  operationId: _order_availability_get
+  description: GET operation for /order/availability.

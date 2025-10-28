@@ -1,0 +1,22 @@
+type: object
+description: Mapping of users to roles within organizations
+properties:
+  org_id:
+    type: integer
+    format: int64
+    description: Organization identifier
+  user_id:
+    type: integer
+    format: int64
+    description: User identifier
+  user_role:
+    type: string
+    description: Role of the user within the organization (e.g., admin, member)
+required:
+  - org_id
+  - user_id
+  - user_role
+example:
+  org_id: 10
+  user_id: 12345
+  user_role: "admin"

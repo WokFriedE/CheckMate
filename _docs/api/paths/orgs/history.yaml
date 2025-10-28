@@ -1,0 +1,31 @@
+get:
+  summary: Borrowing history for a user
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: org_id
+      in: path
+      required: true
+      schema:
+        type: string
+    - name: user_id
+      in: query
+      required: false
+      schema:
+        type: string
+      description: Defaults to bearer if empty
+  responses:
+    "200":
+      description: History
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "../../components/schemas/BorrowHistoryEntry.yaml"
+          example:
+            message: Example response for 200
+  tags:
+    - Taking Out Equipment
+  operationId: _orgs_org_id_history_get
+  description: GET operation for /orgs/{org_id}/history.

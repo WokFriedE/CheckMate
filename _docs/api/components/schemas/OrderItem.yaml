@@ -1,0 +1,14 @@
+type: object
+properties:
+  item_id:
+    type: string
+  org_id:
+    type: string
+  item_count:
+    type: integer
+  comment:
+    type: string
+required:
+  - item_id
+  - org_id
+  - item_count

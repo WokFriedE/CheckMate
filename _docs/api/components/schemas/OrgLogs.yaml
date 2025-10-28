@@ -1,0 +1,28 @@
+type: object
+description: Audit log entries for organization-related operations
+properties:
+  user_id:
+    type: integer
+    format: int64
+    description: User who performed the operation
+  org_id:
+    type: integer
+    format: int64
+    description: Organization affected
+  operation:
+    type: string
+    description: Operation performed (e.g., add_member, remove_role)
+  time:
+    type: string
+    format: date-time
+    description: Timestamp when the operation occurred
+required:
+  - user_id
+  - org_id
+  - operation
+  - time
+example:
+  user_id: 12345
+  org_id: 10
+  operation: "add_member"
+  time: "2025-10-23T12:34:56Z"

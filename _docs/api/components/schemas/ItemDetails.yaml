@@ -1,0 +1,25 @@
+type: object
+description: Metadata about individual items
+properties:
+  item_id:
+    type: integer
+    format: int64
+    description: Item identifier
+  item_name:
+    type: string
+    description: Human-readable item name
+  last_taken:
+    type: string
+    format: date
+    description: Date when the item was last taken
+  item_comment:
+    type: string
+    description: Optional comment about the item
+required:
+  - item_id
+  - item_name
+example:
+  item_id: 321
+  item_name: "Projector Model X"
+  last_taken: "2025-10-01"
+  item_comment: "Lamp replaced in 2024"

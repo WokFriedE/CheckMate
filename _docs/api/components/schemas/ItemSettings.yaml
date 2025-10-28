@@ -1,0 +1,13 @@
+type: object
+properties:
+  max_checkout:
+    type: integer
+  max_quantity:
+    type: integer
+  can_be_prebooked:
+    type: boolean
+  prebook_timeframe:
+    type: string
+    description: ISO 8601 duration or human readable
+  item_category:
+    type: string

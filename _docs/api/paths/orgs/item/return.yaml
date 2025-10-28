@@ -1,0 +1,43 @@
+post:
+  summary: Process an item return
+  parameters:
+    - name: org_id
+      in: path
+      required: true
+      schema:
+        type: string
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "../../../components/schemas/ReturnRequest.yaml"
+  responses:
+    "200":
+      description: Return processed
+      content:
+        application/json:
+          schema:
+            $ref: "../../../components/schemas/Message.yaml"
+          example:
+            message: return processed
+    "400":
+      description: Invalid request
+      content:
+        application/json:
+          schema:
+            $ref: "../../../components/schemas/Error.yaml"
+          example:
+            message: Example response for 400
+    "500":
+      description: Server error
+      content:
+        application/json:
+          schema:
+            $ref: "../../../components/schemas/Error.yaml"
+          example:
+            message: Example response for 500
+  tags:
+    - Multi-tasked Management
+  operationId: _orgs_org_id_item_return_post
+  description: POST operation for /orgs/{org_id}/item/return.

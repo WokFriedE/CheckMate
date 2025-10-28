@@ -1,0 +1,35 @@
+type: object
+description: Organization entity
+properties:
+  org_id:
+    type: integer
+    format: int64
+    description: Unique organization identifier
+  org_name:
+    type: string
+    description: Human-readable organization name
+  org_location:
+    type: string
+    description: Location or address
+  parent_org_id:
+    type: integer
+    format: int64
+    nullable: true
+    description: Parent organization id (if any)
+  prebook_timeframe:
+    type: number
+    format: float
+    description: Default prebooking timeframe in hours/days (implementation-specific)
+  public_access:
+    type: boolean
+    description: Whether the organization resources are public
+required:
+  - org_id
+  - org_name
+example:
+  org_id: 10
+  org_name: "Campus Library"
+  org_location: "Building A"
+  parent_org_id: null
+  prebook_timeframe: 72.0
+  public_access: true

@@ -1,0 +1,21 @@
+put:
+  summary: Update a user
+  operationId: updateUser
+  parameters:
+    - $ref: '../../components/parameters/authHeader.yaml'
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+  requestBody:
+    $ref: '../../components/requestBodies/UpdateUser.yaml'
+  responses:
+    '200':
+      description: User updated
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/User.yaml'
+    '400':
+      $ref: '../../components/responses/ValidationError.yaml'

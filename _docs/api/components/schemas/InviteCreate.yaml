@@ -1,0 +1,11 @@
+type: object
+properties:
+  org_id:
+    type: string
+  expiration:
+    type: integer
+  created_by:
+    type: string
+required:
+  - org_id
+  - expiration

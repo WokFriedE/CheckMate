@@ -1,0 +1,12 @@
+type: object
+properties:
+  org_id:
+    type: string
+  visibility:
+    type: string
+    enum:
+      - public
+      - private
+required:
+  - org_id
+  - visibility

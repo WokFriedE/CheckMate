@@ -1,0 +1,19 @@
+type: object
+properties:
+  status:
+    type: string
+    enum:
+      - sent
+      - read
+      - pending
+  created_at:
+    type: string
+    format: date-time
+  message:
+    type: string
+  author:
+    type: string
+  entity_id:
+    type: string
+  entity_type:
+    type: string

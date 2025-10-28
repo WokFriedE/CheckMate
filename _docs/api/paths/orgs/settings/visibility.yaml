@@ -1,0 +1,48 @@
+get:
+  summary: Get organization visibility
+  parameters:
+    - name: org_id
+      in: path
+      required: true
+      schema:
+        type: string
+  responses:
+    "200":
+      description: Visibility
+      content:
+        application/json:
+          schema:
+            $ref: "../../../components/schemas/VisibilityResponse.yaml"
+          example:
+            message: Example response for 200
+  tags:
+    - Separation of Access
+  operationId: _orgs_org_id_settings_visibility_get
+  description: GET operation for /orgs/{org_id}/settings/visibility.
+post:
+  summary: Set organization visibility
+  parameters:
+    - name: org_id
+      in: path
+      required: true
+      schema:
+        type: string
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "../../../components/schemas/VisibilityUpdate.yaml"
+  responses:
+    "200":
+      description: Updated
+      content:
+        application/json:
+          schema:
+            $ref: "../../../components/schemas/Message.yaml"
+          example:
+            message: success
+  tags:
+    - Separation of Access
+  operationId: _orgs_org_id_settings_visibility_post
+  description: POST operation for /orgs/{org_id}/settings/visibility.

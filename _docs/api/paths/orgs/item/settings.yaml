@@ -1,0 +1,136 @@
+post:
+  summary: Create item settings
+  parameters:
+    - name: org_id
+      in: path
+      required: true
+      schema:
+        type: string
+    - name: item_id
+      in: path
+      required: true
+      schema:
+        type: string
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "../../../components/schemas/ItemSettings.yaml"
+  responses:
+    "201":
+      description: Created
+      content:
+        application/json:
+          schema:
+            $ref: "../../../components/schemas/Message.yaml"
+          example:
+            message: settings created
+    "400":
+      description: Invalid
+      content:
+        application/json:
+          schema:
+            $ref: "../../../components/schemas/Error.yaml"
+          example:
+            message: Example response for 400
+    "500":
+      description: Server error
+      content:
+        application/json:
+          schema:
+            $ref: "../../../components/schemas/Error.yaml"
+          example:
+            message: Example response for 500
+  tags:
+    - Separating Items in Inventory
+  operationId: _orgs_org_id_item_item_id_settings_post
+  description: POST operation for /orgs/{org_id}/item/{item_id}/settings.
+put:
+  summary: Update item settings
+  parameters:
+    - name: org_id
+      in: path
+      required: true
+      schema:
+        type: string
+    - name: item_id
+      in: path
+      required: true
+      schema:
+        type: string
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "../../../components/schemas/ItemSettings.yaml"
+  responses:
+    "200":
+      description: Updated
+      content:
+        application/json:
+          schema:
+            $ref: "../../../components/schemas/Message.yaml"
+          example:
+            message: settings updated
+    "404":
+      description: Item not found
+      content:
+        application/json:
+          schema:
+            $ref: "../../../components/schemas/Error.yaml"
+          example:
+            message: Example response for 404
+    "500":
+      description: Server error
+      content:
+        application/json:
+          schema:
+            $ref: "../../../components/schemas/Error.yaml"
+          example:
+            message: Example response for 500
+  tags:
+    - Separating Items in Inventory
+  operationId: _orgs_org_id_item_item_id_settings_put
+  description: PUT operation for /orgs/{org_id}/item/{item_id}/settings.
+patch:
+  summary: Partial update of item settings
+  parameters:
+    - name: org_id
+      in: path
+      required: true
+      schema:
+        type: string
+    - name: item_id
+      in: path
+      required: true
+      schema:
+        type: string
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "../../../components/schemas/ItemSettings.yaml"
+  responses:
+    "200":
+      description: Updated
+      content:
+        application/json:
+          schema:
+            $ref: "../../../components/schemas/Message.yaml"
+          example:
+            message: settings updated
+    "404":
+      description: Item not found
+      content:
+        application/json:
+          schema:
+            $ref: "../../../components/schemas/Error.yaml"
+          example:
+            message: Example response for 404
+  tags:
+    - Separating Items in Inventory
+  operationId: _orgs_org_id_item_item_id_settings_patch
+  description: PATCH operation for /orgs/{org_id}/item/{item_id}/settings.

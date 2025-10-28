@@ -1,0 +1,168 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: CheckMate Equipment Management API
+  description:
+    "Comprehensive OpenAPI 3.0 specification for the CheckMate Equipment
+    Management System.
+
+    This API enables organizations, professors, club leaders, teaching assistants,
+    and students to manage inventory, reservations, notifications, and user roles.
+
+
+    Each scenario represents a story grouping of endpoints that address real-world
+    workflows within the system."
+servers:
+  - url: https://api.checkmate.example.com
+security:
+  - ApiKey: []
+paths:
+  /orgs/{org_id}/items/transfer:
+    $ref: "./paths/orgs/items/transfer.yaml"
+  /orgs/{org_id}/settings/password:
+    $ref: "./paths/orgs/settings/password.yaml"
+  /orgs/{org_id}/dashboard/items:
+    $ref: "./paths/orgs/dashboard/items.yaml"
+  /orgs/{org_id}/settings/mode:
+    $ref: "./paths/orgs/settings/mode.yaml"
+  /orgs/{org_id}/item/{item_id}/settings:
+    $ref: "./paths/orgs/item/settings.yaml"
+  /orgs/{org_id}/item/order:
+    $ref: "./paths/orgs/item/order.yaml"
+  /orgs/{org_id}/inventory/order/history:
+    $ref: "./paths/orgs/inventory/order/history.yaml"
+  /orgs/{org_id}/inventory/order:
+    $ref: "./paths/orgs/inventory/order.yaml"
+  /order/availability:
+    $ref: "./paths/order/availability.yaml"
+  /orgs/{org_id}/item/request/{order_id}:
+    $ref: "./paths/orgs/item/request.yaml"
+  /orgs/{org_id}/notifications:
+    $ref: "./paths/orgs/notifications.yaml"
+  /orgs/{org_id}/users:
+    $ref: "./paths/orgs/users.yaml"
+  /orgs/{org_id}/settings/users:
+    $ref: "./paths/orgs/settings/users.yaml"
+  /orgs/{org_id}/item/return:
+    $ref: "./paths/orgs/item/return.yaml"
+  /orgs/{org_id}/items/borrowed:
+    $ref: "./paths/orgs/items/borrowed.yaml"
+  /orgs/{org_id}/invite:
+    $ref: "./paths/orgs/invite.yaml"
+  /orgs/{org_id}/users/roles:
+    $ref: "./paths/orgs/users/roles.yaml"
+  /orgs/{org_id}/items:
+    $ref: "./paths/orgs/items.yaml"
+  /orgs/{org_id}/item/checkout:
+    $ref: "./paths/orgs/item/checkout.yaml"
+  /orgs/{org_id}/history:
+    $ref: "./paths/orgs/history.yaml"
+  /orgs/{org_id}/settings/visibility:
+    $ref: "./paths/orgs/settings/visibility.yaml"
+  /orgs/{org_id}/orders/calendar:
+    $ref: "./paths/orgs/orders/calendar.yaml"
+components:
+  securitySchemes:
+    ApiKey:
+      type: apiKey
+      in: header
+      name: X-Api-Key
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Message:
+      $ref: "./components/schemas/Message.yaml"
+    Error:
+      $ref: "./components/schemas/Error.yaml"
+    Item:
+      $ref: "./components/schemas/Item.yaml"
+    ItemExport:
+      $ref: "./components/schemas/ItemExport.yaml"
+    ImportResult:
+      $ref: "./components/schemas/ImportResult.yaml"
+    PasswordRequest:
+      $ref: "./components/schemas/PasswordRequest.yaml"
+    PasswordVerifyResponse:
+      $ref: "./components/schemas/PasswordVerifyResponse.yaml"
+    ModeResponse:
+      $ref: "./components/schemas/ModeResponse.yaml"
+    ModeUpdate:
+      $ref: "./components/schemas/ModeUpdate.yaml"
+    ItemSettings:
+      $ref: "./components/schemas/ItemSettings.yaml"
+    OrderItem:
+      $ref: "./components/schemas/OrderItem.yaml"
+    OrderCreate:
+      $ref: "./components/schemas/OrderCreate.yaml"
+    OrderHistoryEntry:
+      $ref: "./components/schemas/OrderHistoryEntry.yaml"
+    OrderRecreate:
+      $ref: "./components/schemas/OrderRecreate.yaml"
+    AvailabilityEntry:
+      $ref: "./components/schemas/AvailabilityEntry.yaml"
+    OrderRequest:
+      $ref: "./components/schemas/OrderRequest.yaml"
+    OrderDecision:
+      $ref: "./components/schemas/OrderDecision.yaml"
+    Notification:
+      $ref: "./components/schemas/Notification.yaml"
+    NotificationCreate:
+      $ref: "./components/schemas/NotificationCreate.yaml"
+    RoleAssignment:
+      $ref: "./components/schemas/RoleAssignment.yaml"
+    RoleAssignmentDetailed:
+      $ref: "./components/schemas/RoleAssignmentDetailed.yaml"
+    RoleEntry:
+      $ref: "./components/schemas/RoleEntry.yaml"
+    ReturnRequest:
+      $ref: "./components/schemas/ReturnRequest.yaml"
+    BorrowedItem:
+      $ref: "./components/schemas/BorrowedItem.yaml"
+    InviteCreate:
+      $ref: "./components/schemas/InviteCreate.yaml"
+    Invite:
+      $ref: "./components/schemas/Invite.yaml"
+    ItemSearchResult:
+      $ref: "./components/schemas/ItemSearchResult.yaml"
+    CheckoutRequest:
+      $ref: "./components/schemas/CheckoutRequest.yaml"
+    BorrowHistoryEntry:
+      $ref: "./components/schemas/BorrowHistoryEntry.yaml"
+    VisibilityUpdate:
+      $ref: "./components/schemas/VisibilityUpdate.yaml"
+    VisibilityResponse:
+      $ref: "./components/schemas/VisibilityResponse.yaml"
+    CalendarOrderEntry:
+      $ref: "./components/schemas/CalendarOrderEntry.yaml"
+tags:
+  - name: Getting Started
+    description:
+      Endpoints related to onboarding, importing data, setting up organization
+      access modes, and configuring passwords for professors.
+  - name: Separating Items in Inventory
+    description:
+      Endpoints that allow professors to configure item-level settings such
+      as maximum quantity, booking timeframe, and prebooking rules.
+  - name: Prepping for Club Event
+    description:
+      Endpoints for club leaders to request, manage, and duplicate equipment
+      orders and view availability calendars.
+  - name: Handling Order Requests
+    description:
+      Endpoints enabling professors to approve or deny student requests,
+      manage notifications, and assign user roles within organizations.
+  - name: Multi-tasked Management
+    description:
+      Endpoints designed for teaching assistants to manage returns, borrowed
+      items, invites, and elevated user roles across multiple organizations.
+  - name: Taking Out Equipment
+    description:
+      Endpoints for students to search available items, check out equipment,
+      receive return reminders, and view borrowing history.
+  - name: Separation of Access
+    description:
+      Endpoints for staff and directors to control visibility, manage user
+      roles, and review upcoming events and organizational timelines.
+# java -jar codegen.jar generate -i index.yaml -l dynamic-html -o ./out/js

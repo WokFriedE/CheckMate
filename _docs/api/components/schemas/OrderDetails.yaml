@@ -1,0 +1,36 @@
+type: object
+description: Line-item details for an order
+properties:
+  order_id:
+    $ref: "./Orders.yaml#/properties/order_id"
+  item_id:
+    type: integer
+    format: int64
+    description: Identifier of the item
+  item_count:
+    type: integer
+    format: int64
+    description: Quantity of the item in the order
+  due_date:
+    type: string
+    format: date-time
+    description: Due date for return
+  org_id:
+    type: integer
+    format: int64
+    description: Organization that owns the item
+  checkout_time:
+    type: string
+    format: time
+    description: Time portion when checkout occurred
+required:
+  - order_id
+  - item_id
+  - item_count
+example:
+  order_id: 987
+  item_id: 321
+  item_count: 1
+  due_date: "2025-11-06T09:00:00Z"
+  org_id: 10
+  checkout_time: "09:15:00"

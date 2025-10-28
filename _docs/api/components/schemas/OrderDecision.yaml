@@ -1,0 +1,12 @@
+type: object
+properties:
+  status:
+    type: string
+    enum:
+      - approve
+      - deny
+  due_date:
+    type: string
+    format: date-time
+required:
+  - status

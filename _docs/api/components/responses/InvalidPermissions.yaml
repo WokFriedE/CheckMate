@@ -1,0 +1,11 @@
+type: object
+required:
+  - error
+  - code
+properties:
+  error:
+    type: string
+    example: "Invalid Permissions"
+  code:
+    type: integer
+    example: 401

@@ -1,0 +1,44 @@
+post:
+  summary: Create invite code
+  parameters:
+    - name: org_id
+      in: path
+      required: true
+      schema:
+        type: string
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "../../components/schemas/InviteCreate.yaml"
+  responses:
+    "201":
+      description: Invite created
+      content:
+        application/json:
+          schema:
+            $ref: "../../components/schemas/Invite.yaml"
+          example:
+            invite_code: ABC123
+            expires_at: 1761537596
+    "400":
+      description: Invalid data
+      content:
+        application/json:
+          schema:
+            $ref: "../../components/schemas/Error.yaml"
+          example:
+            message: Example response for 400
+    "500":
+      description: Server error
+      content:
+        application/json:
+          schema:
+            $ref: "../../components/schemas/Error.yaml"
+          example:
+            message: Example response for 500
+  tags:
+    - Multi-tasked Management
+  operationId: _orgs_org_id_invite_post
+  description: POST operation for /orgs/{org_id}/invite.
