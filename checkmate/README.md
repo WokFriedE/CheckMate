@@ -6,6 +6,8 @@ application up and running.
 Things you may want to cover:
 
 * Ruby version
+set up rbenv 
+- rbenv install 3.4.5
 
 * System dependencies
 
