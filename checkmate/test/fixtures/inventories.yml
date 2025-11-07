@@ -1,0 +1,19 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  owner_org_id: 1
+  item_count: 1
+  inventory_name: MyString
+  item_category: MyString
+  can_prebook: false
+  lock_status: false
+  request_mode: MyString
+
+two:
+  owner_org_id: 1
+  item_count: 1
+  inventory_name: MyString
+  item_category: MyString
+  can_prebook: false
+  lock_status: false
+  request_mode: MyString

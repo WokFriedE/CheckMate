@@ -1,0 +1,21 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  org_id: 1
+  org_name: MyString
+  org_location: MyString
+  parent_org_id: 1
+  prebook_timeframe: 1.5
+  public_access: false
+  org_pwd: MyString
+  access_link: MyString
+
+two:
+  org_id: 1
+  org_name: MyString
+  org_location: MyString
+  parent_org_id: 1
+  prebook_timeframe: 1.5
+  public_access: false
+  org_pwd: MyString
+  access_link: MyString
