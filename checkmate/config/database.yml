@@ -7,22 +7,16 @@
 default: &default
   adapter: postgresql
   encoding: unicode
-  pool: 5
-  sslmode: require
-  host: <%= ENV['DB_HOST'] %>
-  port: <%= ENV['DB_PORT'] %>
-  database: <%= ENV['DB_NAME'] %>
-  username: <%= ENV['DB_USER'] %>
-  password: <%= ENV['DB_PASSWORD'] %>
-
-# development:
-#   <<: *default
-#   database: <%= ENV['DB_NAME'] %>_dev
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  timeout: 5000
 
 development:
   <<: *default
-  adapter: sqlite3
-  database: storage/development.sqlite3
+  # adapter: sqlite3
+  # database: storage/development.sqlite3
+  # pool: 5
+
+  url: <%= ENV['DEVELOPMENT_URL'] %>
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
@@ -33,10 +27,11 @@ development:
 
 test:
   <<: *default
-  adapter: sqlite3
-  database: storage/test.sqlite3
+  url: <%= ENV['DEVELOPMENT_URL'] %>
 
 # Store production database in the storage/ directory, which by default
 # is mounted as a persistent Docker volume in config/deploy.yml.
 production:
   <<: *default
+  url: <%= ENV['PRODUCTION_URL'] %>
+
