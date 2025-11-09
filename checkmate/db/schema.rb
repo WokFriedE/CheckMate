@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_11_07_060512) do
+ActiveRecord::Schema[8.0].define(version: 2025_11_09_032025) do
   create_schema "auth"
   create_schema "extensions"
   create_schema "graphql"
@@ -41,11 +41,12 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_07_060512) do
   end
 
   create_table "org_roles", force: :cascade do |t|
-    t.integer "org_id"
-    t.integer "user_id"
+    t.integer "org_id", null: false
+    t.uuid "user_id", null: false
     t.string "user_role"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["org_id", "user_id"], name: "index_org_roles_on_org_id_and_user_id", unique: true
   end
 
   create_table "organizations", force: :cascade do |t|
@@ -61,5 +62,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_07_060512) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "org_roles", "auth.users", name: "fk_org_roles_auth_users", on_delete: :cascade
   add_foreign_key "org_roles", "organizations", column: "org_id"
 end
