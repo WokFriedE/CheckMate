@@ -33,8 +33,8 @@ class AuthenticationController < ApplicationController
     email    = params[:email].to_s.strip
     password = params[:password].to_s
 
-    # Debug log: what is being sent to Supabase (be cautious with passwords)
-    Rails.logger.info("[signup] forwarding to Supabase: #{ { email: email, password: password } }")
+    # Debug log: what is being sent to Supabase (do NOT log passwords)
+    Rails.logger.info("[signup] forwarding to Supabase: #{ { email: email } }")
 
     # Call Supabase signup service
     begin
@@ -214,11 +214,11 @@ class AuthenticationController < ApplicationController
   def handle_invalid_authenticity_token
     if action_name.to_s == "signup"
       reset_session
-      flash[:alert] = "This email is already in use."
+      flash[:alert] = "Account/Password is incorrect please try again."
       redirect_to signup_path
     else
       reset_session
-      redirect_to login_path, alert: "Please try again."
+      redirect_to login_path, alert: "Account/Password is incorrect please try again."
     end
   end
 

@@ -4,11 +4,8 @@ module Admin
       org_roles = OrgRole.user_role_info
       organizations = Organization.all
 
-
-      @temp = OrgRole.user_role_info
       @info = {}
-      @info = {}
-      for org in organizations
+      organizations.each do |org|
         @info[org.org_name] = org_roles.select { |role| role[:org_id] == org.id }
       end
     end

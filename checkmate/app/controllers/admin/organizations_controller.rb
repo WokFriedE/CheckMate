@@ -17,7 +17,7 @@ module Admin
       if @organization.save
         redirect_to @organization
       else 
-        render :new, status, :unprocessable_entity
+        render :new, status: :unprocessable_entity
       end
     end
 
