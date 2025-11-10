@@ -1,0 +1,21 @@
+<h1>New Role</h1>
+
+<%= form_with model: @org_role, url: admin_org_roles_path do |form| %>
+  <div>
+    <%# TODO: make this a combo box instead of select %>
+    <%= form.label :user_id %>
+    <%= form.collection_select :user_id, @users, :id, :email, { prompt: 'Select user' } %>
+    <br/>
+    <%= form.label :org_id %>
+    <%= form.collection_select :org_id, @organizations, :id, :org_name, { prompt: 'Select Org' } %>
+    <br/>
+    <%= form.label :user_role %>
+    <%= form.select :user_role, options_for_select(["admin", "organizer", "upper", "user"]) %>
+    <br/>
+  </div>
+  <div>
+    <%= form.submit "Create Org Role"%>
+  </div>
+<% end %>
+
+<%= link_to "Cancel", admin_org_roles_path %>

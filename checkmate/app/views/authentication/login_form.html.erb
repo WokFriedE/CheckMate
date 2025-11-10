@@ -1,0 +1,42 @@
+<div style="max-width: 400px; margin: 40px auto; padding: 24px; border: 1px solid #ddd; border-radius: 8px; background: #fafafa; font-family: Arial, sans-serif;">
+  <h1 style="text-align: center; margin-bottom: 20px;">Log in</h1>
+
+  <% if flash[:notice] %>
+    <p style="color: green; text-align: center; margin-bottom: 16px;"><%= flash[:notice] %></p>
+  <% elsif flash[:alert] %>
+    <p style="color: red; text-align: center; margin-bottom: 16px;"><%= flash[:alert] %></p>
+  <% end %>
+
+  <%= form_with url: login_path, local: true do %>
+    <div style="margin-bottom: 16px;">
+      <%= label_tag :email, "Email", style: "display:block; margin-bottom:4px;" %>
+      <%= text_field_tag :email, params[:email], style: "width:100%; padding:8px; border:1px solid #ccc; border-radius:4px;" %>
+    </div>
+    <div style="margin-bottom: 20px;">
+      <%= label_tag :password, "Password", style: "display:block; margin-bottom:4px;" %>
+      <%= password_field_tag :password, nil, style: "width:100%; padding:8px; border:1px solid #ccc; border-radius:4px;" %>
+    </div>
+    <div>
+      <%= submit_tag "Log in", style: "width:100%; padding:10px; background:#007bff; color:#fff; border:none; border-radius:4px; cursor:pointer;" %>
+    </div>
+  <% end %>
+
+  <p style="text-align:center; margin-top: 20px;">
+    Don't have an account? <%= link_to "Sign up", signup_path %>
+  </p>
+</div>
+
+<% if params[:email].present? || params[:password].present? %>
+  <script>
+    console.log("Supabase login payload:", {
+      email: "<%= params[:email].to_s %>",
+      password: "<%= params[:password].to_s %>" 
+    });
+  </script>
+<% end %>
+
+<% if @supabase_response_json.present? %>
+  <script>
+    console.log("Supabase login response:", <%= raw @supabase_response_json %>);
+  </script>
+<% end %>

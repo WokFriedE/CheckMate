@@ -1,0 +1,18 @@
+<h1>Org Roles</h1>
+
+<%= link_to "New user role map", new_admin_org_role_path %>
+
+<div>
+    <h2>Users</h2>
+    <% @info.each do |org, roles| %>
+        <div>
+            <h3><%= org %></h3>
+            <ul>
+                <% roles.each do |role| %>
+                    <li><%= "#{role.user_role} - #{role.user&.email}" %></li>
+                <% end %>
+            </ul>
+        </div>
+    <% end %>
+</div>
+

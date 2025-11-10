@@ -1,0 +1,12 @@
+<h1>Organizations</h1>
+
+<%= link_to "New org", new_admin_organization_path %>
+
+<div id="organizations">
+    <h2>Current Orgs</h2>
+    <% @organizations.each do |organization| %>
+    <div>
+        <%= link_to organization.org_name, admin_organization_path(organization.id) %>
+    </div>
+    <% end %>
+</div>

@@ -1,0 +1,22 @@
+<h1>New Organization</h1>
+
+<%= form_with model: (@organization || Organization.new) do |form| %>
+  <div>
+    <%= form.label :org_name %>
+    <%= form.text_field :org_name %>
+    <br/>
+    <%= form.label :org_location %>
+    <%= form.text_field :org_location %>
+    <br/>
+    <%= form.label :public_access %>
+    <%= form.check_box :public_access %>
+    <br/>
+    <%= form.label :org_pwd, "Org password (optional)" %>
+    <%= form.text_field :org_pwd %>
+  </div>
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>
+
+<%= link_to "Cancel", admin_organizations_path %>
