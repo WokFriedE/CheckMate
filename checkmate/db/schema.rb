@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_11_09_032025) do
+ActiveRecord::Schema[8.0].define(version: 2025_11_11_230005) do
   create_schema "auth"
   create_schema "extensions"
   create_schema "graphql"
@@ -36,6 +36,15 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_09_032025) do
     t.boolean "can_prebook"
     t.boolean "lock_status"
     t.string "request_mode"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "item_details", force: :cascade do |t|
+    t.integer "item_id"
+    t.string "item_name"
+    t.datetime "last_taken"
+    t.string "item_comment"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
