@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_11_12_215609) do
+ActiveRecord::Schema[8.0].define(version: 2025_11_12_225116) do
   create_schema "auth"
   create_schema "extensions"
   create_schema "graphql"
@@ -38,6 +38,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_12_215609) do
     t.string "request_mode"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "item_id"
   end
 
   create_table "item_details", force: :cascade do |t|
@@ -98,7 +99,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_12_215609) do
   end
 
   create_table "organizations", force: :cascade do |t|
-    t.integer "org_id"
+    t.integer "org_id", null: false
     t.string "org_name"
     t.string "org_location"
     t.integer "parent_org_id"
@@ -108,6 +109,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_12_215609) do
     t.string "access_link"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["org_id"], name: "index_organizations_on_org_id", unique: true
   end
 
   create_table "returns", force: :cascade do |t|
@@ -120,7 +122,14 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_12_215609) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "inventories", "item_details", column: "item_id", primary_key: "item_id"
+  add_foreign_key "inventories", "organizations", column: "owner_org_id", primary_key: "org_id"
+  add_foreign_key "item_settings", "item_details", column: "item_id", primary_key: "item_id"
+  add_foreign_key "order_details", "item_details", column: "item_id", primary_key: "item_id"
   add_foreign_key "order_details", "orders", primary_key: "order_id"
+  add_foreign_key "order_details", "organizations", column: "owner_org_id", primary_key: "org_id"
   add_foreign_key "org_roles", "auth.users", name: "fk_org_roles_auth_users", on_delete: :cascade
   add_foreign_key "org_roles", "organizations", column: "org_id"
+  add_foreign_key "returns", "item_details", column: "item_id", primary_key: "item_id"
+  add_foreign_key "returns", "orders", primary_key: "order_id"
 end
