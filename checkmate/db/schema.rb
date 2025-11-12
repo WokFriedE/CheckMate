@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_11_12_183559) do
+ActiveRecord::Schema[8.0].define(version: 2025_11_12_190306) do
   create_schema "auth"
   create_schema "extensions"
   create_schema "graphql"
@@ -64,6 +64,28 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_12_183559) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "order_details", force: :cascade do |t|
+    t.integer "order_id"
+    t.integer "item_id"
+    t.integer "item_count"
+    t.datetime "due_date", precision: nil
+    t.integer "owner_org_id"
+    t.time "checkout_time"
+    t.string "approval_status"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "orders", force: :cascade do |t|
+    t.integer "order_id"
+    t.integer "user_id"
+    t.datetime "order_date", precision: nil
+    t.boolean "return_status"
+    t.string "order_type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "org_roles", force: :cascade do |t|
     t.integer "org_id", null: false
     t.uuid "user_id", null: false
@@ -82,6 +104,16 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_12_183559) do
     t.boolean "public_access"
     t.string "org_pwd"
     t.string "access_link"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "returns", force: :cascade do |t|
+    t.integer "order_id"
+    t.integer "item_id"
+    t.integer "return_count"
+    t.datetime "return_date", precision: nil
+    t.boolean "verify_status"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
