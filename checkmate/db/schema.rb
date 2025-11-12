@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_11_12_191927) do
+ActiveRecord::Schema[8.0].define(version: 2025_11_12_215609) do
   create_schema "auth"
   create_schema "extensions"
   create_schema "graphql"
@@ -41,12 +41,13 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_12_191927) do
   end
 
   create_table "item_details", force: :cascade do |t|
-    t.integer "item_id"
+    t.integer "item_id", null: false
     t.string "item_name"
     t.datetime "last_taken"
     t.string "item_comment"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["item_id"], name: "index_item_details_on_item_id", unique: true
   end
 
   create_table "item_settings", force: :cascade do |t|
@@ -77,13 +78,14 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_12_191927) do
   end
 
   create_table "orders", force: :cascade do |t|
-    t.integer "order_id"
+    t.integer "order_id", null: false
     t.datetime "order_date", precision: nil
     t.boolean "return_status"
     t.string "order_type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.uuid "user_id"
+    t.index ["order_id"], name: "index_orders_on_order_id", unique: true
   end
 
   create_table "org_roles", force: :cascade do |t|
@@ -118,6 +120,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_12_191927) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "order_details", "orders", primary_key: "order_id"
   add_foreign_key "org_roles", "auth.users", name: "fk_org_roles_auth_users", on_delete: :cascade
   add_foreign_key "org_roles", "organizations", column: "org_id"
 end
