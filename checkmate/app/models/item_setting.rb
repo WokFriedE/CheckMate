@@ -1,0 +1,2 @@
+class ItemSetting < ApplicationRecord
+end

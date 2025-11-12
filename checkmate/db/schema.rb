@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_11_11_230005) do
+ActiveRecord::Schema[8.0].define(version: 2025_11_12_183559) do
   create_schema "auth"
   create_schema "extensions"
   create_schema "graphql"
@@ -45,6 +45,21 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_11_230005) do
     t.string "item_name"
     t.datetime "last_taken"
     t.string "item_comment"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "item_settings", force: :cascade do |t|
+    t.integer "item_id"
+    t.integer "owner_org_id"
+    t.integer "reg_max_check"
+    t.integer "reg_max_total_quantity"
+    t.integer "reg_prebook_timeframe"
+    t.integer "reg_borrow_time"
+    t.integer "sup_max_checkout"
+    t.integer "sup_max_total_quantity"
+    t.integer "sup_prebook_timeframe"
+    t.integer "sup_borrow_time"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

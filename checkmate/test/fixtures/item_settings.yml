@@ -1,0 +1,25 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  item_id: 1
+  owner_org_id: 1
+  reg_max_check: 1
+  reg_max_total_quantity: 1
+  reg_prebook_timeframe: 1
+  reg_borrow_time: 1
+  sup_max_checkout: 1
+  sup_max_total_quantity: 1
+  sup_prebook_timeframe: 1
+  sup_borrow_time: 1
+
+two:
+  item_id: 1
+  owner_org_id: 1
+  reg_max_check: 1
+  reg_max_total_quantity: 1
+  reg_prebook_timeframe: 1
+  reg_borrow_time: 1
+  sup_max_checkout: 1
+  sup_max_total_quantity: 1
+  sup_prebook_timeframe: 1
+  sup_borrow_time: 1
