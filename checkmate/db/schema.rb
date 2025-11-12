@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_11_12_190306) do
+ActiveRecord::Schema[8.0].define(version: 2025_11_12_191927) do
   create_schema "auth"
   create_schema "extensions"
   create_schema "graphql"
@@ -78,12 +78,12 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_12_190306) do
 
   create_table "orders", force: :cascade do |t|
     t.integer "order_id"
-    t.integer "user_id"
     t.datetime "order_date", precision: nil
     t.boolean "return_status"
     t.string "order_type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.uuid "user_id"
   end
 
   create_table "org_roles", force: :cascade do |t|
