@@ -6,7 +6,7 @@ module Admin
 
       @info = {}
       organizations.each do |org|
-        @info[org.org_name] = org_roles.select { |role| role[:org_id] == org.id }
+        @info[org.org_name] = org_roles.select { |role| role[:org_id] == org.org_id }
       end
     end
 
@@ -31,6 +31,7 @@ module Admin
       if @org_role.save
         redirect_to admin_org_roles_path
       else
+        logger.debug "OrgRole save failed: #{ @org_role.errors.full_messages.join('; ') }"
         @organizations = Organization.all
         @users = User.all
         render :new, status: :unprocessable_entity

@@ -1,6 +1,6 @@
 <h1>New Organization</h1>
 
-<%= form_with model: (@organization || Organization.new) do |form| %>
+<%= form_with model: [:admin, @organization] do |form| %>
   <div>
     <%= form.label :org_name %>
     <%= form.text_field :org_name %>
