@@ -1,6 +1,7 @@
 <h1><%= @organization.org_name %></h1>
 <ul>
     <% @organization.attributes.each do |key, value| %>
+    <% next if ["org_pwd"].include? key %>
     <li><strong><%= key.capitalize %>:</strong> <%= value %></li>
     <% end %>
 </ul>

@@ -23,7 +23,9 @@ module Admin
 
     private
     def organization_params
-      params.require(:organization).permit(:org_name, :org_location, :public_access, :org_pwd, :parent_org_id, :prebook_timeframe)
+      # TODO: Adding password strength validation in the model
+      # TODO: Hashing the password before storage (using has_secure_password or similar)
+      params.require(:organization).permit(:org_name, :org_location, :public_access, :parent_org_id, :prebook_timeframe)
     end
   end
 end
