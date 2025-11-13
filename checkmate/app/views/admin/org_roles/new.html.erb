@@ -1,6 +1,6 @@
 <h1>New Role</h1>
 
-<%= form_with model: @org_role, url: admin_org_roles_path do |form| %>
+<%= form_with model: [:admin, @org_role] do |form| %>
   <div>
     <%# TODO: make this a combo box instead of select %>
     <%= form.label :user_id %>

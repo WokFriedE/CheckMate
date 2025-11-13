@@ -15,7 +15,7 @@ module Admin
     def create
       @organization = Organization.new(organization_params)
       if @organization.save
-        redirect_to @organization
+        redirect_to [:admin, @organization]
       else 
         render :new, status: :unprocessable_entity
       end
@@ -23,7 +23,7 @@ module Admin
 
     private
     def organization_params
-      params.expect(organization: [ :org_name ])
+      params.require(:organization).permit(:org_name, :org_location, :public_access, :org_pwd, :parent_org_id, :prebook_timeframe)
     end
   end
 end
