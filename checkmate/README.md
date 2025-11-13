@@ -15,11 +15,17 @@ set up rbenv
 
 * Database creation
 Example:
+Manual example
 - rails generate model Organization org_id:integer org_name:string org_location:string parent_org_id:integer prebook_timeframe:float public_access:boolean org_pwd:string access_link:string
+Specific sql
 - rails g migration RemoveColumnNameOrganizations org_id:integer
 - rails db:migrate
 - bin/rails db:rollback STEP=1
 - bin/rails db:migrate
+
+Create model, controller, view dir
+- rails generate resource Organization org_id:integer org_name:string org_location:string parent_org_id:integer prebook_timeframe:float public_access:boolean org_pwd:string access_link:string
+- rails db:migrate
 
 * Database initialization
 

@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  item_id: 1
+  item_name: MyString
+  last_taken: 2025-11-11 18:00:05
+  item_comment: MyString
+
+two:
+  item_id: 1
+  item_name: MyString
+  last_taken: 2025-11-11 18:00:05
+  item_comment: MyString

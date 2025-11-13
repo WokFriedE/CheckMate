@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_11_09_032025) do
+ActiveRecord::Schema[8.0].define(version: 2025_11_12_225116) do
   create_schema "auth"
   create_schema "extensions"
   create_schema "graphql"
@@ -38,6 +38,55 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_09_032025) do
     t.string "request_mode"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "item_id"
+  end
+
+  create_table "item_details", force: :cascade do |t|
+    t.integer "item_id", null: false
+    t.string "item_name"
+    t.datetime "last_taken"
+    t.string "item_comment"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["item_id"], name: "index_item_details_on_item_id", unique: true
+  end
+
+  create_table "item_settings", force: :cascade do |t|
+    t.integer "item_id"
+    t.integer "owner_org_id"
+    t.integer "reg_max_check"
+    t.integer "reg_max_total_quantity"
+    t.integer "reg_prebook_timeframe"
+    t.integer "reg_borrow_time"
+    t.integer "sup_max_checkout"
+    t.integer "sup_max_total_quantity"
+    t.integer "sup_prebook_timeframe"
+    t.integer "sup_borrow_time"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "order_details", force: :cascade do |t|
+    t.integer "order_id"
+    t.integer "item_id"
+    t.integer "item_count"
+    t.datetime "due_date", precision: nil
+    t.integer "owner_org_id"
+    t.time "checkout_time"
+    t.string "approval_status"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "orders", force: :cascade do |t|
+    t.integer "order_id", null: false
+    t.datetime "order_date", precision: nil
+    t.boolean "return_status"
+    t.string "order_type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.uuid "user_id"
+    t.index ["order_id"], name: "index_orders_on_order_id", unique: true
   end
 
   create_table "org_roles", force: :cascade do |t|
@@ -50,7 +99,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_09_032025) do
   end
 
   create_table "organizations", force: :cascade do |t|
-    t.integer "org_id"
+    t.integer "org_id", null: false
     t.string "org_name"
     t.string "org_location"
     t.integer "parent_org_id"
@@ -60,8 +109,27 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_09_032025) do
     t.string "access_link"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["org_id"], name: "index_organizations_on_org_id", unique: true
   end
 
+  create_table "returns", force: :cascade do |t|
+    t.integer "order_id"
+    t.integer "item_id"
+    t.integer "return_count"
+    t.datetime "return_date", precision: nil
+    t.boolean "verify_status"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_foreign_key "inventories", "item_details", column: "item_id", primary_key: "item_id"
+  add_foreign_key "inventories", "organizations", column: "owner_org_id", primary_key: "org_id"
+  add_foreign_key "item_settings", "item_details", column: "item_id", primary_key: "item_id"
+  add_foreign_key "order_details", "item_details", column: "item_id", primary_key: "item_id"
+  add_foreign_key "order_details", "orders", primary_key: "order_id"
+  add_foreign_key "order_details", "organizations", column: "owner_org_id", primary_key: "org_id"
   add_foreign_key "org_roles", "auth.users", name: "fk_org_roles_auth_users", on_delete: :cascade
   add_foreign_key "org_roles", "organizations", column: "org_id"
+  add_foreign_key "returns", "item_details", column: "item_id", primary_key: "item_id"
+  add_foreign_key "returns", "orders", primary_key: "order_id"
 end
