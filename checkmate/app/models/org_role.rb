@@ -8,4 +8,15 @@ class OrgRole < ApplicationRecord
     # Note: adds .user which is the auth.user table from supabase
     OrgRole.joins(:user).all
   end
+
+  def self.find_by_org org_id
+    OrgRole.where(org_id: org_id)
+  end
+
+  def self.destroy_by_org org_id
+    users = self.find_by_org org_id
+    users.each do |user|
+      user.destroy!
+    end
+  end
 end
