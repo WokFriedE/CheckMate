@@ -15,37 +15,14 @@
 
 <div class="overflow-x-auto overflow-y-scroll rounded-box border border-base-content/5 ">
 
-<table class="table table-pin-rows table-pin-col table-zebra table-xs">
-  <thead>
-    <tr>
-       <th>
-      <label>
-        <input type="checkbox" class="checkbox" />
-      </label>
-        </th>
-         <% @inventory_items[0].attribute_names.each do |name| %>
-        <th class="text-left"><%=name%></th>
-        <%end%>
-    </tr>
-  </thead>
-  <tbody>
-    <% @inventory_items.each do |item| %>
-      <tr class="hover:bg-base-300" >
-        <th><label><input type="checkbox" class="checkbox" /></label></th>
-        <% item.attributes.each_value do |value| %>
-        <td><%= value %></td>
-    <% end %>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+<%= render partial: "shared/table" , locals:{ header: @inventory_items[0].attribute_names, items: @inventory_items}  %>
 
 </div>
 
 <div class="join mx-auto">
-  <input class="join-item btn btn-square" type="radio" name="options" aria-label="1" checked="checked" />
-  <input class="join-item btn btn-square" type="radio" name="options" aria-label="2" />
-  <input class="join-item btn btn-square" type="radio" name="options" aria-label="3" />
-  <input class="join-item btn btn-square" type="radio" name="options" aria-label="4" />
+  <input class="join-item btn btn-xs btn-square" type="radio" name="options" aria-label="1" checked="checked" />
+  <input class="join-item btn btn-xs btn-square" type="radio" name="options" aria-label="2" />
+  <input class="join-item btn btn-xs btn-square" type="radio" name="options" aria-label="3" />
+  <input class="join-item btn btn-xs btn-square" type="radio" name="options" aria-label="4" />
 </div>
 </div>
