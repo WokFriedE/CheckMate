@@ -1,8 +1,14 @@
-<div style="max-width: 500px; margin: 60px auto; padding: 24px; border: 1px solid #ddd; border-radius: 8px; background: #fdfdfd; font-family: Arial, sans-serif; text-align: center;">
-  <h1 style="margin-bottom: 20px;">Welcome to the App</h1>
-  <p style="font-size: 18px; margin-bottom: 20px;">Please choose an option below:</p>
-  <p>
-    <%= link_to "Sign up", signup_path, style: "margin-right:12px; padding:10px 20px; background:#28a745; color:#fff; border-radius:4px; text-decoration:none;" %>
-    <%= link_to "Log in", login_path, style: "padding:10px 20px; background:#007bff; color:#fff; border-radius:4px; text-decoration:none;" %>
-  </p>
+<div class="h-screen flex justify-center items-center m-auto">
+  <div class=" flex flex-col items-center m-auto gap-2">
+    <div class="badge badge-dash rounded-full badge-primary">COMING SOON</div>
+
+
+  <h1 class="text-5xl font-bold">CheckMate</h1>
+  <div class="p-3"></div>
+  <span class="text-l font-bold text-gray-300">WELCOME</span>
+  <button class="btn btn-primary w-full" onclick="window.location='<%= login_path %>'">Log in </button>
+  <button class="btn btn-outline btn-primary w-full" onclick="window.location='<%= signup_path %>'">Sign up </button>
+
+  </div>
 </div>
+
