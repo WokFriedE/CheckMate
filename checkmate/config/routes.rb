@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
   resources :returns
   resources :orders
+  resources :inventories
+
   root "application#index"
   
   get  "signup", to: "authentication#signup_form"

@@ -8,3 +8,9 @@
  *
  * Consider organizing styles into separate files for maintainability.
  */
+
+@import "tailwindcss";
+
+@source not "./daisyui{,*}.mjs";
+
+@plugin "./daisyui.mjs";
