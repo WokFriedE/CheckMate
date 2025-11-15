@@ -16,7 +16,7 @@ Rails.application.routes.draw do
   get "landing", to: "landing#index"
   
   namespace :admin do 
-      resources :org_roles, only: [:index, :new]
+      resources :org_roles, only: [:index, :new, :create]
       resources :organizations
   end
 
