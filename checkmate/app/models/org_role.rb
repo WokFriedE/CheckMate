@@ -1,6 +1,10 @@
 class OrgRole < ApplicationRecord
   belongs_to :organization, foreign_key: :org_id, primary_key: :org_id, class_name: "Organization"
   belongs_to :user, foreign_key: :user_id, class_name: "User"
+  belongs_to :user_datum,
+             foreign_key: :user_id,
+             primary_key: :user_id
+
 
   validates :user_role, presence: true
 
@@ -19,4 +23,5 @@ class OrgRole < ApplicationRecord
       user.destroy!
     end
   end
+  
 end

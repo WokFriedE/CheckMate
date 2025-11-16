@@ -1,0 +1,2 @@
+class OrgLog < ApplicationRecord
+end
