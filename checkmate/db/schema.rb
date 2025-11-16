@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_11_14_184742) do
+ActiveRecord::Schema[8.0].define(version: 2025_11_14_190543) do
   create_schema "auth"
   create_schema "extensions"
   create_schema "graphql"
@@ -158,6 +158,20 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_14_184742) do
     t.boolean "verify_status"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "user_data", force: :cascade do |t|
+    t.uuid "user_id", null: false
+    t.string "name"
+    t.string "contact_num"
+    t.string "address"
+    t.string "designation"
+    t.bigint "njit_id"
+    t.boolean "returns_pending"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["njit_id"], name: "index_user_data_on_njit_id", unique: true
+    t.index ["user_id"], name: "index_user_data_on_user_id", unique: true
   end
 
   add_foreign_key "inventories", "item_details", column: "item_id", primary_key: "item_id"
