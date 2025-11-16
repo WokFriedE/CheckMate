@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_11_16_004844) do
+ActiveRecord::Schema[8.0].define(version: 2025_11_16_010039) do
   create_schema "auth"
   create_schema "extensions"
   create_schema "graphql"
@@ -189,6 +189,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_16_004844) do
   add_foreign_key "order_details", "item_details", column: "item_id", primary_key: "item_id"
   add_foreign_key "order_details", "orders", primary_key: "order_id"
   add_foreign_key "order_details", "organizations", column: "owner_org_id", primary_key: "org_id"
+  add_foreign_key "orders", "user_data", column: "user_id", primary_key: "user_id"
   add_foreign_key "org_roles", "auth.users", name: "fk_org_roles_auth_users", on_delete: :cascade
   add_foreign_key "org_roles", "organizations", column: "org_id", primary_key: "org_id"
   add_foreign_key "org_roles", "user_data", column: "user_id", primary_key: "user_id"
