@@ -39,7 +39,6 @@ module Admin
     end
 
     # DELETE /organizations/1 or /organizations/1.json
-    # TODO: fix delete
     def destroy
       OrgRole.where(org_id: @organization.org_id).destroy_all
       @organization.destroy!

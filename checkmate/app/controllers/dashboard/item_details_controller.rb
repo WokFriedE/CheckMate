@@ -14,6 +14,28 @@ class Dashboard::ItemDetailsController < ApplicationController
     @item_setting = ItemSetting.new
   end
 
+  def destroy
+    begin 
+      ActiveRecord::Base.transaction do
+        ItemSetting.where(item_id: @item_detail.item_id).destroy_all!
+        Inventory.where(item_id: @inventory.item_id).destroy_all!
+        @item_detail.destroy!
+      end 
+      respond_to do |format|
+        format.html { redirect_to organization_item_details_path(params[:organization_org_id]), notice: "Deleting item was successfully destroyed.", status: :see_other }
+        format.json { head :no_content }
+      end
+    rescue ActiveRecord::RecordInvalid => e
+      handle_transaction_error(e)
+    rescue StandardError => e
+      handle_unexpected_error(e)
+    end
+  end
+
+  def edit
+    # TODO: to be added
+  end
+
   def create
     load_organization
     # prefer the loaded organization so we are sure it exists
@@ -37,26 +59,26 @@ class Dashboard::ItemDetailsController < ApplicationController
         )
       end
 
-      redirect_to organization_item_details_path(org_id: org_id), notice: 'Item added.' and return
+      redirect_to organization_item_details_path(org_id), notice: 'Item added.' and return
 
     rescue ActiveRecord::RecordInvalid => e
-      handle_create_error(e, org_id, clean_inventory)
+      handle_transaction_error(e)
     rescue StandardError => e
-      handle_unexpected_error(e, org_id, clean_inventory)
+      handle_unexpected_error(e)
     end
   end
 
-  def handle_create_error(e, org_id, clean_inventory)
+  def handle_transaction_error(e)
     Rails.logger.error { "ActiveRecord::RecordInvalid: #{e.message}" }
-    flash.now[:alert] = "Error adding item: #{e.record.errors.full_messages.join(', ')}"
+    flash.now[:alert] = "Error with item: #{e.record.errors.full_messages.join(', ')}"
 
     rebuild_form_objects
     render :new, status: :unprocessable_entity
   end
 
-  def handle_unexpected_error(e, org_id, clean_inventory)
+  def handle_unexpected_error(e)
     Rails.logger.error { "Unexpected error: #{e.message}" }
-    flash.now[:alert] = "Error adding item: #{e.message}"
+    flash.now[:alert] = "Error with item: #{e.message}"
 
     rebuild_form_objects
     render :new, status: :unprocessable_entity
