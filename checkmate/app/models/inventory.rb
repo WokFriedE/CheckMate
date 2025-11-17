@@ -13,7 +13,6 @@ class Inventory < ApplicationRecord
     end
 
     def self.get_detailed_inventory_schema
-      return ["item_name", "item_comment", "inventory tag", "item_category", "created_at", "last_taken", "request_mode"].map { |attr| attr.titleize.gsub("_", " ")
- }
+      return ["item_name", "item_comment", "inventory tag", "item_category", "created_at", "last_taken", "request_mode"].map { |attr| attr.titleize.gsub("_", " ") }
     end
 end
