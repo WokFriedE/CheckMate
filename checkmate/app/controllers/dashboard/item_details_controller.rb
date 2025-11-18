@@ -16,13 +16,15 @@ class Dashboard::ItemDetailsController < ApplicationController
 
   def destroy
     begin 
+      @item_detail = ItemDetail.find(params[:id])
       ActiveRecord::Base.transaction do
-        ItemSetting.where(item_id: @item_detail.item_id).destroy_all!
-        Inventory.where(item_id: @inventory.item_id).destroy_all!
+        item_id = @item_detail.item_id
+        ItemSetting.where(item_id: item_id).destroy_all!
+        Inventory.where(item_id: item_id).destroy_all!
         @item_detail.destroy!
       end 
       respond_to do |format|
-        format.html { redirect_to organization_item_details_path(params[:organization_org_id]), notice: "Deleting item was successfully destroyed.", status: :see_other }
+        format.html { redirect_to organization_item_details_path(params[:organization_org_id]), notice: "Item was successfully deleted.", status: :see_other }
         format.json { head :no_content }
       end
     rescue ActiveRecord::RecordInvalid => e

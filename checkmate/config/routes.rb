@@ -23,7 +23,7 @@ Rails.application.routes.draw do
   # creates routes for /org/:org_id/*
   resources :organizations, path: 'org', param: :org_id do
     # creates routes for /org/:org_id/inventory
-    resources :item_details, path: 'inventory', controller: 'dashboard/item_details', only: [:index, :show, :new, :create]
+    resources :item_details, path: 'inventory', controller: 'dashboard/item_details', only: [:index, :show, :new, :create, :destroy]
   end
   
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
