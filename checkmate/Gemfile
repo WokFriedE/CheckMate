@@ -56,7 +56,10 @@ group :development, :test do
 
   # Static analysis for security vulnerabilities [https://brakemanscanner.org/]
   gem 'brakeman', require: false
+  gem 'htmlbeautifier', require: false
   gem 'rubocop', require: false
+  gem 'rubocop-erb', require: false
+  gem 'rubocop-rails', require: false
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem 'rubocop-rails-omakase', require: false
 end
@@ -75,5 +78,3 @@ group :test do
 end
 
 gem 'tailwindcss-rails', '~> 4.4'
-
-gem 'rubocop-erb', '~> 0.7.0'

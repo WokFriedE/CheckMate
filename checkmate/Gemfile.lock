@@ -155,6 +155,7 @@ GEM
     herb (0.8.2-arm-linux-musl)
     herb (0.8.2-x86_64-linux-gnu)
     herb (0.8.2-x86_64-linux-musl)
+    htmlbeautifier (1.4.3)
     http_parser.rb (0.8.0)
     httparty (0.23.2)
       csv
@@ -458,6 +459,7 @@ DEPENDENCIES
   dotenv-rails
   guard
   guard-livereload
+  htmlbeautifier
   httparty
   importmap-rails
   jbuilder
@@ -469,7 +471,8 @@ DEPENDENCIES
   puma (>= 5.0)
   rails (~> 8.0.2, >= 8.0.2.1)
   rubocop
-  rubocop-erb (~> 0.7.0)
+  rubocop-erb
+  rubocop-rails
   rubocop-rails-omakase
   selenium-webdriver
   solid_cable
