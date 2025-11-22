@@ -1,0 +1,24 @@
+<table class="table table-pin-rows table-pin-col table-zebra table-xs">
+  <thead>
+    <tr>
+      <th>
+        <label>
+          <input type="checkbox" class="checkbox" aria-label="Select all items" />
+        </label>
+      </th>
+      <% header.each do |name| %>
+        <th class="text-left"><%=name%></th>
+      <%end%>
+    </tr>
+  </thead>
+  <tbody>
+    <% items.each do |item| %>
+      <tr class="hover:bg-base-300" >
+        <th><label><input type="checkbox" class="checkbox" aria-label="Select item" /></label></th>
+        <% item.attributes.each_value do |value| %>
+          <td><%= value %></td>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

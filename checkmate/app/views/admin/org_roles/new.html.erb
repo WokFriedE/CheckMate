@@ -1,21 +1,23 @@
-<h1>New Role</h1>
+<div class="flex flex-col gap-2">
+  <h1 class="text-2xl">New Role</h1>
 
-<%= form_with model: [:admin, @org_role] do |form| %>
-  <div>
-    <%# TODO: make this a combo box instead of select %>
-    <%= form.label :user_id %>
-    <%= form.collection_select :user_id, @users, :id, :email, { prompt: 'Select user' } %>
-    <br/>
-    <%= form.label :org_id %>
-    <%= form.collection_select :org_id, @organizations, :org_id, :org_name, { prompt: 'Select Org' } %>
-    <br/>
-    <%= form.label :user_role %>
-    <%= form.select :user_role, options_for_select(["admin", "organizer", "upper", "user"]) %>
-    <br/>
-  </div>
-  <div>
-    <%= form.submit "Create Org Role"%>
-  </div>
-<% end %>
+  <%= form_with model: [:admin, @org_role] do |form| %>
+    <div class="flex flex-col">
+      <%# TODO: make this a combo box instead of select %>
+      <%= form.label :user_id %>
+      <%= form.collection_select :user_id, @users, :id, :email, { prompt: 'Select user' }, class: "border"%>
+      <br/>
+      <%= form.label :org_id %>
+      <%= form.collection_select :org_id, @organizations, :org_id, :org_name, { prompt: 'Select Org' }, class: "border" %>
+      <br/>
+      <%= form.label :user_role %>
+      <%= form.select :user_role, options_for_select(["admin", "organizer", "upper", "user"]), class: "border" %>
+      <br/>
+    </div>
+    <div class='btn btn-sm btn-primary'>
+      <%= form.submit "Create Org Role"%>
+    </div>
+  <% end %>
 
-<%= link_to "Cancel", admin_org_roles_path %>
+  <%= link_to "Cancel", admin_org_roles_path, class:'btn btn-sm btn-primary' %>
+</div>

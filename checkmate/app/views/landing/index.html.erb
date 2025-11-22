@@ -1,4 +1,6 @@
-<div style="max-width: 500px; margin: 60px auto; padding: 24px; border: 1px solid #ddd; border-radius: 8px; background: #f9f9f9; font-family: Arial, sans-serif; text-align: center;">
+
+<div class="card bg-base-100 w-96 shadow-sm">
+
   <h1 style="margin-bottom: 20px;">You are logged in</h1>
   <p style="margin-bottom: 12px;">Email: <strong><%= current_user[:email] %></strong></p>
   <%= button_to "Log out", logout_path, method: :delete, style: "padding:10px 20px; background:#dc3545; color:#fff; border:none; border-radius:4px; cursor:pointer;" %>
