@@ -5,10 +5,6 @@ on:
     push:
         branches: [main]
 
-defaults:
-    run:
-        working-directory: checkmate
-
 jobs:
     scan_ruby:
         runs-on: ubuntu-latest
@@ -16,21 +12,17 @@ jobs:
         steps:
             - name: Checkout code
               uses: actions/checkout@v4
-              with:
-                  path: checkmate
-
-            - name: Read Ruby version
-              id: read-ruby-version
-              run: echo "version=$(cat checkmate/.ruby-version)" >> $GITHUB_OUTPUT
 
             - name: Set up Ruby
               uses: ruby/setup-ruby@v1
               with:
-                  ruby-version: ${{ steps.read-ruby-version.outputs.version }}
+                  ruby-version: .ruby-version
                   bundler-cache: true
+                  working-directory: checkmate
 
-            - name: Scan for common Rails security vulnerabilities using static analysis
-              run: ./bin/brakeman --no-pager
+            - name: Scan for common Rails security vulnerabilities
+              working-directory: checkmate
+              run: bin/brakeman --no-pager
 
     scan_js:
         runs-on: ubuntu-latest
@@ -38,72 +30,59 @@ jobs:
         steps:
             - name: Checkout code
               uses: actions/checkout@v4
-              with:
-                  path: checkmate
-
-            - name: Read Ruby version
-              id: read-ruby-version
-              run: echo "version=$(cat checkmate/.ruby-version)" >> $GITHUB_OUTPUT
 
             - name: Set up Ruby
               uses: ruby/setup-ruby@v1
               with:
-                  ruby-version: ${{ steps.read-ruby-version.outputs.version }}
+                  ruby-version: .ruby-version
                   bundler-cache: true
+                  working-directory: checkmate
 
-            - name: Scan for security vulnerabilities in JavaScript dependencies
-              run: ./bin/importmap audit
+            - name: Audit JavaScript dependencies
+              working-directory: checkmate
+              run: bin/importmap audit
 
     lint:
         runs-on: ubuntu-latest
         steps:
             - name: Checkout code
               uses: actions/checkout@v4
-              with:
-                  path: checkmate
-
-            - name: Read Ruby version
-              id: read-ruby-version
-              run: echo "version=$(cat checkmate/.ruby-version)" >> $GITHUB_OUTPUT
 
             - name: Set up Ruby
               uses: ruby/setup-ruby@v1
               with:
-                  ruby-version: ${{ steps.read-ruby-version.outputs.version }}
+                  ruby-version: .ruby-version
                   bundler-cache: true
+                  working-directory: checkmate
 
-            - name: Lint code for consistent style
-              run: ./bin/rubocop -f github
+            - name: Lint Ruby code
+              working-directory: checkmate
+              run: bin/rubocop -f github
 
     test:
         runs-on: ubuntu-latest
 
         steps:
-            - name: Checkout code
-              uses: actions/checkout@v4
-              with:
-                  path: checkmate
-
             - name: Install packages
               run: sudo apt-get update && sudo apt-get install --no-install-recommends -y build-essential git libyaml-dev pkg-config google-chrome-stable
 
-            - name: Read Ruby version
-              id: read-ruby-version
-              run: echo "version=$(cat checkmate/.ruby-version)" >> $GITHUB_OUTPUT
+            - name: Checkout code
+              uses: actions/checkout@v4
 
             - name: Set up Ruby
               uses: ruby/setup-ruby@v1
               with:
-                  ruby-version: ${{ steps.read-ruby-version.outputs.version }}
+                  ruby-version: .ruby-version
                   bundler-cache: true
+                  working-directory: checkmate
 
             - name: Run tests
+              working-directory: checkmate
               env:
                   RAILS_ENV: test
-                  # REDIS_URL: redis://localhost:6379/0
-              run: ./bin/rails db:test:prepare test test:system
+              run: bin/rails db:test:prepare test test:system
 
-            - name: Keep screenshots from failed system tests
+            - name: Upload screenshots on failure
               uses: actions/upload-artifact@v4
               if: failure()
               with:
