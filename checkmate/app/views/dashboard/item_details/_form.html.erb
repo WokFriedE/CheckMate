@@ -1,4 +1,16 @@
-<%= form_with model: @inventory, url: organization_item_details_path(params[:organization_org_id]), local: true, html: { autocomplete: "off" } do |f| %>
+<%
+  # Determine proper URL + method for form: create (collection) vs update (member)
+  org_param = params[:organization_org_id]
+  item_id = @inventory.try(:item_id) || @item_detail.try(:item_id) || params[:item_id]
+  if @inventory && @inventory.persisted? && item_id.present?
+    form_url = organization_item_detail_path(org_param, item_id)
+    form_method = :patch
+  else
+    form_url = organization_item_details_path(org_param)
+    form_method = :post
+  end
+%>
+<%= form_with model: @inventory, url: form_url, method: form_method, local: true, html: { autocomplete: "off" } do |f| %>
   <%= f.fields_for :item_detail, @item_detail do |df| %>
     <fieldset>
       <legend class="text-2xl">Item Details</legend>
@@ -63,7 +75,7 @@
     </fieldset>
   <% end %>
   <div class="actions mt-2">
-    <%= f.submit 'Add Item', class: 'border p-1 hover:cursor-pointer' %>
+    <%= f.submit (@inventory && @inventory.persisted?) ? 'Save Changes' : 'Add Item', class: 'border p-1 hover:cursor-pointer' %>
     <%= link_to 'Cancel', organization_item_details_path(params[:organization_org_id]), class: 'border p-1' %>
   </div>
 <% end %>

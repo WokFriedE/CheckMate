@@ -18,6 +18,7 @@
       </tbody>
     </table>
     <%= button_to "Destroy this item", organization_destroy_path(params[:organization_org_id], @inventory_item.item_id), method: :delete, class: 'btn btn-sm btn-primary' %>
+    <%= link_to "Edit this item", organization_edit_path(params[:organization_org_id], @inventory_item.item_id), class: 'btn btn-sm btn-primary' %>
   <% else %>
     <h2 class="text-lg">Item not found.</h2>
   <% end %>

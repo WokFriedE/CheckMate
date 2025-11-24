@@ -20,8 +20,6 @@ class Dashboard::ItemDetailsController < ApplicationController
     return if performed?
 
     begin
-      Rails.logger.debug { "destroy params: #{params.inspect}" }
-      # use `||` (higher precedence) so we fall back to params[:id] when params[:item_id] is nil
       fetch_item_id = params[:item_id].presence || params[:id].presence
       unless fetch_item_id
         Rails.logger.warn { "No Item id in params: #{params.inspect}" }
@@ -62,7 +60,60 @@ class Dashboard::ItemDetailsController < ApplicationController
   end
 
   def edit
-    # TODO: to be added
+    load_organization
+    org_id = @organization.org_id
+    @inventory = Inventory.find_by(item_id: params[:item_id], owner_org_id: org_id)
+    @item_detail = ItemDetail.find_by(item_id: params[:item_id])
+    @item_setting = ItemSetting.find_by(item_id: params[:item_id], owner_org_id: org_id)
+  end
+
+  def update 
+    load_organization
+    return if performed?
+
+    org_id = @organization&.org_id
+    fetch_item_id = params[:item_id].presence || params[:id].presence
+    unless fetch_item_id
+      Rails.logger.warn { "No Item id in params: #{params.inspect}" }
+      redirect_back(fallback_location: organization_item_details_path(params[:organization_org_id])) and return
+    end
+
+    @item_detail = ItemDetail.find_by(item_id: fetch_item_id)
+    @item_setting = ItemSetting.find_by(item_id: fetch_item_id, owner_org_id: org_id)
+    @inventory = Inventory.find_by(item_id: fetch_item_id, owner_org_id: org_id)
+
+    unless @item_detail && @inventory
+      Rails.logger.warn { "Inventory or ItemDetail not found for item_id=#{fetch_item_id.inspect} org=#{org_id.inspect}" }
+      redirect_to organization_item_details_path(params[:organization_org_id]), alert: 'Item not found.' and return
+    end
+
+    clean_inventory = inventory_params.except(:item_detail, :item_setting)
+
+    begin
+      ActiveRecord::Base.transaction do
+        @item_detail.update!(item_detail_params)
+
+        if @item_setting
+          @item_setting.update!(inventory_settings_params)
+        else
+          ItemSetting.create!(inventory_settings_params.merge(owner_org_id: org_id, item_id: @item_detail.item_id))
+        end
+
+        @inventory.update!(clean_inventory)
+      end
+
+      redirect_to organization_item_details_path(org_id), notice: 'Item updated.' and return
+    rescue ActiveRecord::RecordInvalid => e
+      Rails.logger.error { "ActiveRecord::RecordInvalid: #{e.message}" }
+      flash.now[:alert] = "Error with item: #{e.record.errors.full_messages.join(', ')}"
+      rebuild_form_objects
+      render :edit, status: :unprocessable_entity
+    rescue StandardError => e
+      Rails.logger.error { "Unexpected error: #{e.message}" }
+      flash.now[:alert] = "Error with item: #{e.message}"
+      rebuild_form_objects
+      render :edit, status: :unprocessable_entity
+    end
   end
 
   def show
@@ -71,11 +122,7 @@ class Dashboard::ItemDetailsController < ApplicationController
 
     # scope the lookup to the current organization so we don't surface items from other orgs
     org_id = @organization&.org_id
-    @inventory_item = if org_id
-                        Inventory.joins(:item_detail).where(item_id: params[:item_id], owner_org_id: org_id).first
-                      else
-                        Inventory.get_detailed_inventory_item(params[:item_id]).first
-                      end
+    @inventory_item = Inventory.joins(:item_detail).where(item_id: params[:item_id], owner_org_id: org_id).first
 
     unless @inventory_item
       Rails.logger.warn { "Inventory item not found for item_id=#{params[:item_id].inspect} org=#{org_id.inspect}" }
