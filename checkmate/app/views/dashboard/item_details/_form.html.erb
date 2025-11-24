@@ -50,7 +50,7 @@
     </div>
     <div class="field">
       <%= f.label :request_mode, 'Request Mode*' %><br>
-      <%= f.select :request_mode, options_for_select(["self-checkout", "password", "request"]), required: true  %>
+      <%= f.select :request_mode, options_for_select(["self-checkout", "password", "request"]), {}, { required: true, class: "border" }  %>
     </div>
   </fieldset>
   <%= f.fields_for :item_setting, @item_setting do |sf| %>

@@ -36,8 +36,8 @@ class Dashboard::ItemDetailsController < ApplicationController
         item_id = @item_detail.item_id
         org_id = @organization&.org_id
 
-        ItemSetting.where(item_id: item_id, owner_org_id: org_id).find_each { |rec| rec.destroy! }
-        Inventory.where(item_id: item_id, owner_org_id: org_id).find_each { |rec| rec.destroy! }
+        ItemSetting.where(item_id: item_id, owner_org_id: org_id).destroy_all
+        Inventory.where(item_id: item_id, owner_org_id: org_id).destroy_all
 
         @item_detail.destroy!
       end
@@ -48,12 +48,12 @@ class Dashboard::ItemDetailsController < ApplicationController
       end
     rescue ActiveRecord::RecordInvalid => e
       Rails.logger.error { "Unexpected ActiveRecord error: #{e.message}" }
-      flash.now[:alert] = "Error with item: #{e.message}"
+      flash[:alert] = "Error with item: #{e.message}"
       redirect_back(fallback_location: root_path) 
       return 
     rescue StandardError => e
       Rails.logger.error { "Unexpected error: #{e.message}" }
-      flash.now[:alert] = "Error with item: #{e.message}"
+      flash[:alert] = "Error with item: #{e.message}"
       redirect_back(fallback_location: root_path) 
       return 
     end
@@ -63,8 +63,9 @@ class Dashboard::ItemDetailsController < ApplicationController
     load_organization
     org_id = @organization.org_id
     @inventory = Inventory.find_by(item_id: params[:item_id], owner_org_id: org_id)
-    @item_detail = ItemDetail.find_by(item_id: params[:item_id])
-    @item_setting = ItemSetting.find_by(item_id: params[:item_id], owner_org_id: org_id)
+    fetch_item_id = params[:item_id].presence || params[:id].presence
+    @item_detail = ItemDetail.find_by(item_id: fetch_item_id) || ItemDetail.new(item_id: fetch_item_id)
+    @item_setting = ItemSetting.find_by(item_id: fetch_item_id, owner_org_id: org_id) || ItemSetting.new(item_id: fetch_item_id, owner_org_id: org_id)
   end
 
   def update 
@@ -110,7 +111,7 @@ class Dashboard::ItemDetailsController < ApplicationController
       render :edit, status: :unprocessable_entity
     rescue StandardError => e
       Rails.logger.error { "Unexpected error: #{e.message}" }
-      flash.now[:alert] = "Error with item: #{e.message}"
+      flash[:alert] = "Error with item: #{e.message}"
       rebuild_form_objects
       render :edit, status: :unprocessable_entity
     end
@@ -174,7 +175,7 @@ class Dashboard::ItemDetailsController < ApplicationController
 
   def handle_unexpected_error(e)
     Rails.logger.error { "Unexpected error: #{e.message}" }
-    flash.now[:alert] = "Error with item: #{e.message}"
+    flash[:alert] = "Error with item: #{e.message}"
 
     rebuild_form_objects
     render :new, status: :unprocessable_entity
