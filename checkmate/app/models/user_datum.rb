@@ -11,4 +11,8 @@ class UserDatum < ApplicationRecord
              foreign_key: :user_id,
              primary_key: :id,
              class_name: "User"
+
+       has_many :org_logs,
+           foreign_key: :user_id,
+           primary_key: :user_id
 end
