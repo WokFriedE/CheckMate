@@ -57,6 +57,17 @@ class AuthenticationController < ApplicationController
     # Choose user-facing message based on outcome
     case outcome
     when :success
+      # Create user_data entry for profile info
+      begin
+        supabase_user_id = response["id"]
+        
+        if supabase_user_id.present?
+        UserDatum.find_or_create_by!(user_id: supabase_user_id)
+        end
+      rescue => e
+        Rails.logger.error("[signup] failed to create user_data: #{e.message}")
+      end
+
       flash.now[:notice] = "Account created. Please confirm your email before logging in."
       render :signup_form, status: :ok
     when :email_in_use
@@ -101,7 +112,7 @@ class AuthenticationController < ApplicationController
       session[:access_token]  = response["access_token"]
       session[:refresh_token] = response["refresh_token"]
       session[:user_email]    = response.dig("user", "email")
-      redirect_to landing_path, notice: "You are logged in."
+      redirect_to landing_path
     when :invalid_credentials
       flash.now[:alert] = "Incorrect password."
       render :login_form, status: :unprocessable_entity
