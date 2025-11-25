@@ -1,4 +1,6 @@
 module ApplicationHelper
+  include Heroicon::Engine.helpers
+
   def show_navbar?
     # Hide ALL authentication views
     return false if controller_path.start_with?('authentication') || current_page?(root_path)

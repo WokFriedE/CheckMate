@@ -1,0 +1,29 @@
+<div class="flex flex-col sm:flex-row gap-4">
+
+	<div class="my-auto">
+		<img class="size-fill sm:size-40 rounded-box object-cover " src="<%= item[:image_url] %>"/></div>
+	<div class="flex flex-col sm:max-w-1/2">
+		<p><%=item[:name]%></p>
+		<p class="text-xs uppercase font-semibold opacity-60 "><%= item[:description] %></p>
+	</div>
+
+	<div class="flex flex-col sm:w-1/4 gap-2">
+		<label class="label">Return Date</label>
+		<input type="date"  value="<%= item[:returndate]%>" class="input w-full validator" />
+
+		<label class="label">Count</label>
+		<div class="join">
+			<input type="number" class="input w-full validator join-item" required 
+            placeholder="count" 
+            value="<%=item[:count]%>" 
+            min="<%=item[:min]%>" 
+            max="<%=item[:max]%>" 
+            title="Must be between be 1 to 10" />
+			<button class="btn join-item btn-error"><%= heroicon "trash", variant: :solid, options: { class: "w-[1em] h-[1em] inline-block" } %></button>
+		</div>
+
+	</div>
+
+</div>
+
+<div class="divider" ></div>
