@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  get 'checkout/index'
   resources :returns
   resources :orders
   resources :inventories
