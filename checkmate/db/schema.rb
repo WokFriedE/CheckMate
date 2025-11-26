@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_11_14_001400) do
+ActiveRecord::Schema[8.0].define(version: 2025_11_22_190515) do
   create_schema "auth"
   create_schema "extensions"
   create_schema "graphql"
@@ -89,6 +89,21 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_14_001400) do
     t.datetime "updated_at"
   end
 
+  create_table "messages", force: :cascade do |t|
+    t.bigint "msg_id", null: false
+    t.string "from"
+    t.string "to"
+    t.datetime "scheduled_send_time", precision: nil
+    t.datetime "send_time", precision: nil
+    t.datetime "receive_time", precision: nil
+    t.datetime "read_time", precision: nil
+    t.text "msg_content"
+    t.string "msg_category"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["msg_id"], name: "index_messages_on_msg_id", unique: true
+  end
+
   create_table "order_details", force: :cascade do |t|
     t.integer "order_id"
     t.integer "item_id"
@@ -110,6 +125,15 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_14_001400) do
     t.datetime "updated_at", null: false
     t.uuid "user_id"
     t.index ["order_id"], name: "index_orders_on_order_id", unique: true
+  end
+
+  create_table "org_logs", force: :cascade do |t|
+    t.uuid "user_id"
+    t.integer "org_id"
+    t.text "operation"
+    t.datetime "time", precision: nil
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "org_roles", force: :cascade do |t|
@@ -145,14 +169,30 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_14_001400) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "user_data", force: :cascade do |t|
+    t.uuid "user_id", null: false
+    t.string "name"
+    t.string "contact_num"
+    t.string "address"
+    t.string "designation"
+    t.bigint "njit_id"
+    t.boolean "returns_pending"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["njit_id"], name: "index_user_data_on_njit_id", unique: true
+    t.index ["user_id"], name: "index_user_data_on_user_id", unique: true
+  end
+
   add_foreign_key "inventories", "item_details", column: "item_id", primary_key: "item_id"
   add_foreign_key "inventories", "organizations", column: "owner_org_id", primary_key: "org_id"
   add_foreign_key "item_settings", "item_details", column: "item_id", primary_key: "item_id"
   add_foreign_key "order_details", "item_details", column: "item_id", primary_key: "item_id"
   add_foreign_key "order_details", "orders", primary_key: "order_id"
   add_foreign_key "order_details", "organizations", column: "owner_org_id", primary_key: "org_id"
-  add_foreign_key "org_roles", "auth.users", name: "fk_org_roles_auth_users", on_delete: :cascade
+  add_foreign_key "orders", "user_data", column: "user_id", primary_key: "user_id"
   add_foreign_key "org_roles", "organizations", column: "org_id", primary_key: "org_id"
+  add_foreign_key "org_roles", "user_data", column: "user_id", primary_key: "user_id"
   add_foreign_key "returns", "item_details", column: "item_id", primary_key: "item_id"
   add_foreign_key "returns", "orders", primary_key: "order_id"
+  add_foreign_key "user_data", "auth.users", name: "fk_user_data_auth_users", on_delete: :cascade
 end
