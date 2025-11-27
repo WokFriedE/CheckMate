@@ -1,0 +1,26 @@
+<div class="flex flex-col justify-center gap-2">
+  <% if @inventory_item.present? %>
+    <h1 class="text-2xl">Inventory Breakdown for item - <%= @inventory_item.item_id %></h1>
+    <table class="table-auto border-separate border-spacing-2 border border-gray-400 dark:border-gray-500" style="border-collapse: separate; border-spacing: 0.5rem;">
+      <thead>
+        <tr>
+          <th class="border border-gray-300 dark:border-gray-600">Key</th>
+          <th class="border border-gray-300 dark:border-gray-600">Value</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @inventory_item.attributes.each do |key, val| %>
+          <tr>
+            <td class="border border-gray-300 dark:border-gray-700"><%= key %></td>
+            <td class="border border-gray-300 dark:border-gray-700"><%= [true, false].include?(val) ? (val ? "YES" : "NO") : val %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <%= button_to "Destroy this item", organization_item_detail_path(params[:organization_org_id], @inventory_item.item_id), method: :delete, data: { confirm: "Are you sure?" }, class: 'btn btn-sm btn-primary' %>
+    <%= link_to "Edit this item", edit_organization_item_detail_path(params[:organization_org_id], @inventory_item.item_id), class: 'btn btn-sm btn-primary' %>
+  <% else %>
+    <h2 class="text-lg">Item not found.</h2>
+  <% end %>
+  <%= link_to 'Return', organization_item_details_path(params[:organization_org_id]), class: 'btn btn-sm btn-primary' %>
+</div>

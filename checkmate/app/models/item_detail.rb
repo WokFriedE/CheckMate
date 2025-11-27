@@ -1,21 +1,26 @@
 class ItemDetail < ApplicationRecord
     has_many :order_details,
 								foreign_key: :item_id,
-								primary_key: :item_id
+								primary_key: :item_id,
+								dependent: :destroy
 
     has_many :inventories,
 								foreign_key: :item_id,
-								primary_key: :item_id
+								primary_key: :item_id,
+								dependent: :destroy
 
     has_many :item_settings,
 								foreign_key: :item_id,
-								primary_key: :item_id
+								primary_key: :item_id,
+								dependent: :destroy
 
     has_many :returns,
 								foreign_key: :item_id,
-								primary_key: :item_id
+								primary_key: :item_id,
+								dependent: :destroy
 
 		before_create :assign_unique_item_id
+
 
 		# Randomization prevents people from trying to iterate through orgs
 		def assign_unique_item_id

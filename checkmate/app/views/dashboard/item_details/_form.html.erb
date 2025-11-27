@@ -1,86 +1,81 @@
-<%= form_with model: @inventory, url: organization_item_details_path(params[:organization_org_id]), local: true, html: { autocomplete: "off" } do |f| %>
-    <%= f.fields_for :item_detail, @item_detail do |df| %>
-        <fieldset>
-            <legend class="text-2xl">Item Details</legend>
-
-            <div class="field">
-                <%= df.label :item_name, 'Item Name' %><br>
-                <%= df.text_field :item_name, class: 'border' %>
-            </div>
-
-            <div class="field">
-                <%= df.label :item_comment, 'Comment' %><br>
-                <%= df.text_area :item_comment, class: 'border' %>
-            </div>
-        </fieldset>
-    <% end %>
-
+<%
+  # Determine proper URL + method for form: create (collection) vs update (member)
+  org_param = params[:organization_org_id]
+  item_id = @inventory.try(:item_id) || @item_detail.try(:item_id) || params[:item_id]
+  if @inventory && @inventory.persisted? && item_id.present?
+    form_url = organization_item_detail_path(org_param, item_id)
+    form_method = :patch
+  else
+    form_url = organization_item_details_path(org_param)
+    form_method = :post
+  end
+%>
+<%= form_with model: @inventory, url: form_url, method: form_method, local: true, html: { autocomplete: "off" } do |f| %>
+  <%= f.fields_for :item_detail, @item_detail do |df| %>
     <fieldset>
-        <legend class="text-2xl">Stock</legend>
-
-        <!-- Inventory Name is no longer needed    
+      <legend class="text-2xl">Item Details</legend>
+      <div class="field">
+        <%= df.label :item_name, 'Item Name*' %><br>
+        <%= df.text_field :item_name, class: 'border', required: true %>
+      </div>
+      <div class="field">
+        <%= df.label :item_comment, 'Comment' %><br>
+        <%= df.text_area :item_comment, class: 'border' %>
+      </div>
+    </fieldset>
+  <% end %>
+  <fieldset>
+    <legend class="text-2xl">Stock</legend>
+    <!-- Inventory Name is no longer needed    
         <div class="field">
             <%= f.label :inventory_name, 'Inventory Name' %><br>
             <%= f.text_field :inventory_name, class: 'border'%>
         </div>
         -->
-    
-        <div class="field">
-            <%= f.label :item_category, 'Category' %><br>
-            <%= f.text_field :item_category, class: 'border' %>
-        </div>
-
-        <div class="field">
-            <%= f.label :item_count, 'Item Count' %><br>
-            <%= f.number_field :item_count, class: 'border' %>
-        </div>
-
-        <div class="field">
-            <%= f.check_box :can_prebook %>
-            <%= f.label :can_prebook, 'Can Prebook' %>
-        </div>
-
-        <div class="field">
-            <%= f.check_box :lock_status %>
-            <%= f.label :lock_status, 'Lock Status' %>
-        </div>
-
-        <div class="field">
-            <%= f.label :request_mode, 'Request Mode' %><br>
-            <%= f.select :request_mode, options_for_select(["self-checkout", "password", "request"]), class: "border" %>
-        </div>
-    </fieldset>
-
-    <%= f.fields_for :item_setting, @item_setting do |sf| %>
-        <fieldset>
-            <legend class="text-2xl">Inventory Settings</legend>
-            <div class="field">
-                <%= sf.label :reg_max_check, 'Reg Max Check' %><br>
-                <%= sf.number_field :reg_max_check, class: 'border'  %>
-            </div>
-
-            <div class="field">
-                <%= sf.label :reg_max_total_quantity, 'Reg Max Total Quantity' %><br>
-                <%= sf.number_field :reg_max_total_quantity, class: 'border'  %>
-            </div>
-
-            <div class="field">
-                <%= sf.label :reg_prebook_timeframe, 'Reg Prebook Timeframe' %><br>
-                <%= sf.number_field :reg_prebook_timeframe, class: 'border'  %>
-            </div>
-
-            <div class="field">
-                <%= sf.label :reg_borrow_time, 'Reg Borrow Time' %><br>
-                <%= sf.number_field :reg_borrow_time, class: 'border'  %>
-            </div>
-        </fieldset>
-    <% end %>
-
-
-
-    <div class="actions mt-2">
-        <%= f.submit 'Add Item', class: 'border p-1 hover:cursor-pointer' %>
-        <%= link_to 'Cancel', organization_item_details_path(params[:organization_org_id]), class: 'border p-1' %>
+    <div class="field">
+      <%= f.label :item_category, 'Category' %><br>
+      <%= f.text_field :item_category, class: 'border' %>
     </div>
-
+    <div class="field">
+      <%= f.label :item_count, 'Item Count*' %><br>
+      <%= f.number_field :item_count, class: 'border', placeholder: "Quantity...", value: 1, required: true %>
+    </div>
+    <div class="field">
+      <%= f.check_box :can_prebook %>
+      <%= f.label :can_prebook, 'Can Prebook' %>
+    </div>
+    <div class="field">
+      <%= f.check_box :lock_status %>
+      <%= f.label :lock_status, 'Lock Status' %>
+    </div>
+    <div class="field">
+      <%= f.label :request_mode, 'Request Mode*' %><br>
+      <%= f.select :request_mode, options_for_select(["self-checkout", "password", "request"]), {}, { required: true, class: "border" }  %>
+    </div>
+  </fieldset>
+  <%= f.fields_for :item_setting, @item_setting do |sf| %>
+    <fieldset>
+      <legend class="text-2xl">Inventory Settings</legend>
+      <div class="field">
+        <%= sf.label :reg_max_check, 'Reg Max Check' %><br>
+        <%= sf.number_field :reg_max_check, class: 'border'  %>
+      </div>
+      <div class="field">
+        <%= sf.label :reg_max_total_quantity, 'Reg Max Total Quantity' %><br>
+        <%= sf.number_field :reg_max_total_quantity, class: 'border'  %>
+      </div>
+      <div class="field">
+        <%= sf.label :reg_prebook_timeframe, 'Reg Prebook Timeframe' %><br>
+        <%= sf.number_field :reg_prebook_timeframe, class: 'border'  %>
+      </div>
+      <div class="field">
+        <%= sf.label :reg_borrow_time, 'Reg Borrow Time' %><br>
+        <%= sf.number_field :reg_borrow_time, class: 'border'  %>
+      </div>
+    </fieldset>
+  <% end %>
+  <div class="actions mt-2">
+    <%= f.submit (@inventory && @inventory.persisted?) ? 'Save Changes' : 'Add Item', class: 'border p-1 hover:cursor-pointer' %>
+    <%= link_to 'Cancel', organization_item_details_path(params[:organization_org_id]), class: 'border p-1' %>
+  </div>
 <% end %>
