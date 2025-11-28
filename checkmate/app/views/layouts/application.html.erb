@@ -2,7 +2,6 @@
 <html>
 	<head>
 		<title><%= content_for(:title) || "Checkmate" %></title>
-		<%# <meta name="viewport" content="width=device-width,initial-scale=1"> %>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<meta name="apple-mobile-web-app-capable" content="yes">
 		<meta name="mobile-web-app-capable" content="yes">
@@ -19,17 +18,12 @@
 		<%= stylesheet_link_tag :app, "data-turbo-track": "reload"%>
 		<%= javascript_include_tag "http://localhost:35729/livereload.js", defer: true if Rails.env.development? %>
 	</head>
-	<body>
-		<main class= "flex flex-col h-screen">
-			<%# render the nav bar as long as the page is not the following %>
-			<% if show_navbar? %>
-				<header class="sticky top-0 w-full z-50">
-					<%= render partial: "shared/nav_bar" , locals:{ }  %>
-				</header>
-			<%end%>
-			<div class="m-auto">
-				<%= yield %>
-			</div>
-		</main>
+	<body class="h-screen flex flex-col">
+
+		<% if show_navbar? %>
+			<%= render  "shared/nav_bar" %>
+		<%end %>
+
+		<%= yield %>
 	</body>
 </html>
