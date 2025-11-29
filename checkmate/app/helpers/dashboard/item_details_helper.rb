@@ -1,0 +1,2 @@
+module Dashboard::ItemDetailsHelper
+end

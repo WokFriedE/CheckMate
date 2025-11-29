@@ -5,8 +5,10 @@ class User < ApplicationRecord
   self.primary_key = "id"
 
   
-  has_many :org_roles, foreign_key: :user_id
-  has_many :organizations, through: :org_roles
+  has_one :user_datum,
+          foreign_key: :user_id,
+          primary_key: :id,
+          dependent: :destroy
 
   has_one :user_datum, foreign_key: :user_id
 

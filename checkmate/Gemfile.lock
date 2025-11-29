@@ -80,7 +80,7 @@ GEM
     benchmark (0.5.0)
     bigdecimal (3.3.1)
     bindex (0.8.1)
-    bootsnap (1.18.6)
+    bootsnap (1.19.0)
       msgpack (~> 1.2)
     brakeman (7.1.1)
       racc
@@ -149,6 +149,13 @@ GEM
       guard (~> 2.8)
       guard-compat (~> 1.0)
       multi_json (~> 1.8)
+    herb (0.8.2-aarch64-linux-gnu)
+    herb (0.8.2-aarch64-linux-musl)
+    herb (0.8.2-arm-linux-gnu)
+    herb (0.8.2-arm-linux-musl)
+    herb (0.8.2-x86_64-linux-gnu)
+    herb (0.8.2-x86_64-linux-musl)
+    htmlbeautifier (1.4.3)
     http_parser.rb (0.8.0)
     httparty (0.23.2)
       csv
@@ -206,7 +213,7 @@ GEM
     matrix (0.4.3)
     method_source (1.1.0)
     mini_mime (1.1.5)
-    minitest (5.26.1)
+    minitest (5.26.2)
     msgpack (1.8.0)
     multi_json (1.17.0)
     multi_xml (0.7.2)
@@ -336,20 +343,16 @@ GEM
     rubocop-ast (1.48.0)
       parser (>= 3.3.7.2)
       prism (~> 1.4)
-    rubocop-performance (1.26.1)
+    rubocop-erb (0.7.0)
+      herb (~> 0.7)
       lint_roller (~> 1.1)
-      rubocop (>= 1.75.0, < 2.0)
-      rubocop-ast (>= 1.47.1, < 2.0)
-    rubocop-rails (2.33.4)
+      rubocop (~> 1.72, >= 1.72.1)
+    rubocop-rails (2.34.0)
       activesupport (>= 4.2.0)
       lint_roller (~> 1.1)
       rack (>= 1.1)
       rubocop (>= 1.75.0, < 2.0)
       rubocop-ast (>= 1.44.0, < 2.0)
-    rubocop-rails-omakase (1.1.0)
-      rubocop (>= 1.72)
-      rubocop-performance (>= 1.24)
-      rubocop-rails (>= 2.30)
     ruby-progressbar (1.13.0)
     rubyzip (3.2.2)
     securerandom (0.4.1)
@@ -448,6 +451,7 @@ DEPENDENCIES
   dotenv-rails
   guard
   guard-livereload
+  htmlbeautifier
   httparty
   importmap-rails
   jbuilder
@@ -458,7 +462,9 @@ DEPENDENCIES
   propshaft
   puma (>= 5.0)
   rails (~> 8.0.2, >= 8.0.2.1)
-  rubocop-rails-omakase
+  rubocop
+  rubocop-erb
+  rubocop-rails
   selenium-webdriver
   solid_cable
   solid_cache
