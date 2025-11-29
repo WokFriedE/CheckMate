@@ -7,6 +7,9 @@ module.exports = {
     './app/javascript/**/*.js',
     './app/views/**/*.{erb,haml,html,slim}'
   ],
+  daisyui: {
+    themes: ["light", "dark", "cupcake", "business", "acid", "winter", "dracula", "cyberpunk", "forest", "lofi", "pastel", "retro", "valentine", "wireframe"],
+  },
   theme: {
     extend: {
       fontFamily: {
