@@ -13,6 +13,10 @@ class Organization < ApplicationRecord
             foreign_key: :owner_org_id,
             primary_key: :org_id
 
+  has_many :org_logs,
+           foreign_key: :org_id,
+           primary_key: :org_id
+
   before_create :assign_unique_org_id
 
   # Randomization prevents people from trying to iterate through orgs
