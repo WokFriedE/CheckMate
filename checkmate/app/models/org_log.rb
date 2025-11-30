@@ -8,4 +8,16 @@ class OrgLog < ApplicationRecord
              foreign_key: :org_id,
              primary_key: :org_id,
              optional: true  # allow logs for deleted/nonexistent organizations
+
+    def self.get_org_logs_with_user_info
+        OrgLog.includes(:user_datum).all
+    end
+
+    def self.get_org_logs_with_org_info
+        OrgLog.includes(:organization).all
+    end
+
+    def self.get_complete_org_logs_info
+        OrgLog.includes(:user_datum, :organization).all
+    end
 end

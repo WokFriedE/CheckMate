@@ -8,9 +8,20 @@ class Inventory < ApplicationRecord
              primary_key: :org_id
 
 
-    def self.get_detailed_inventory org_id
-      # TODO: add pagination
-      Inventory.joins(:item_detail).where(owner_org_id: org_id).select('item_details.item_name, item_details.item_comment, inventories.inventory_name, inventories.item_category, inventories.created_at, item_details.last_taken, inventories.request_mode')
+    def self.get_detailed_inventory 
+      Inventory.includes(:item_detail).all
+    end
+
+    def self.get_inventory_org_info
+      Inventory.includes(:organization).all
+    end
+
+    def self.get_complete_inventory_info
+      Inventory.includes(:item_detail, :organization).all
+    end
+
+    def self.get_organization_inventory org_id
+      Inventory.includes(:organization).where(owner_org_id: org_id)
     end
 
     def self.get_detailed_inventory_schema
