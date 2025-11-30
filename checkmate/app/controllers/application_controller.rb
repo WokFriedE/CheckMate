@@ -11,7 +11,6 @@ class ApplicationController < ActionController::Base
   end
 
   def index
-    require_auth
     @is_logged_in = !!current_user
   end
 

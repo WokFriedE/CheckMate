@@ -20,7 +20,7 @@ class AuthenticationController < ApplicationController
   # ============================================================
   def signup_form
     if current_user
-      redirect_to landing_path
+      redirect_to landing_path and return
     end
   end
 
@@ -28,7 +28,7 @@ class AuthenticationController < ApplicationController
   # POST /signup
   # - Takes email and password from form
   # - Sends them to Supabase for account creation
-  # - Logs request and Supabase response for debugging
+# - Logs request and Supabase response for debugging
   # - Displays result using flash messages
   # - Injects request + response into browser console for debugging
   # ============================================================
@@ -80,7 +80,7 @@ class AuthenticationController < ApplicationController
   # ============================================================
   def login_form
     if current_user
-      redirect_to landing_path
+      redirect_to landing_path and return
     end
   end
 
@@ -89,7 +89,7 @@ class AuthenticationController < ApplicationController
   # - Sends credentials to Supabase for validation
   # - Stores returned tokens in Rails session
   # - Redirects to landing page if successful
-  # - Injects response into browser console for debugging
+# - Injects response into browser console for debugging
   # ============================================================
   def login
     response = SupabaseAuthService.login(email: params[:email], password: params[:password])

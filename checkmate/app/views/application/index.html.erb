@@ -2,7 +2,7 @@
   <div class="badge badge-dash rounded-full badge-primary">COMING SOON</div>
   <h1 class="text-5xl font-bold"><%= link_to "CheckMate", root_path %></h1>
   <span class="text-l font-bold text-gray-500 pt-6">WELCOME</span>
-  <% if !@is_logged_in %>
+  <% if @is_logged_in %>
     <%= link_to "Go To Dashboard", landing_path, class: "btn btn-primary w-full"%>
   <% else %>
     <%= link_to "Log in", login_path, class: "btn btn-primary w-full"%>
