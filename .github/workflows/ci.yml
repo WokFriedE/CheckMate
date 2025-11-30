@@ -74,22 +74,17 @@ jobs:
     test:
         runs-on: ubuntu-latest
         environment: test
-        services:
-            postgres:
-                image: postgres:15
-                env:
-                    POSTGRES_USER: postgres
-                    POSTGRES_PASSWORD: postgres
-                    POSTGRES_DB: checkmate_test
-                ports:
-                    - 5432:5432
-                options: >-
-                    --health-cmd pg_isready
-                    --health-interval 10s
-                    --health-timeout 5s
-                    --health-retries 5
-
         steps:
+            - uses: supabase/setup-cli@v1
+              with:
+                  version: latest
+
+            - name: Start Supabase local database
+              run: supabase db start
+
+            - name: Run database tests
+              run: supabase test db
+
             - name: Install packages
               run: sudo apt-get update && sudo apt-get install --no-install-recommends -y build-essential git libyaml-dev pkg-config google-chrome-stable
 
@@ -107,11 +102,15 @@ jobs:
                   bundler-cache: true
                   working-directory: checkmate
 
+            - name: Configure Rails test DB URL from Supabase
+              run: |
+                  echo "TEST_DATABASE_URL=postgres://postgres:postgres@localhost:5432/checkmate_test" >> $GITHUB_ENV
+
             - name: Run tests
               working-directory: checkmate
               env:
                   RAILS_ENV: test
-                  DATABASE_URL: postgres://postgres:postgres@localhost:5432/checkmate_test
+                  TEST_DATABASE_URL: ${{ env.TEST_DATABASE_URL }}
               run: |
                   bin/rails db:create db:schema:load
                   bin/rails test test test:system
