@@ -10,17 +10,18 @@ class ApplicationController < ActionController::Base
     }
   end
 
+  def index
+    require_auth
+    @is_logged_in = !!current_user
+  end
+
   private
 
   def require_auth
     unless current_user
       flash[:alert] = "Please log in"
-      redirect_to login_path
+      redirect_to login_path and return
     end
-  end
-
-  def index
-    # Public homepage
   end
 
   def set_no_cache

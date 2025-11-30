@@ -19,6 +19,9 @@ class AuthenticationController < ApplicationController
   # Simply renders the signup form.
   # ============================================================
   def signup_form
+    if current_user
+      redirect_to landing_path
+    end
   end
 
   # ============================================================
@@ -76,6 +79,9 @@ class AuthenticationController < ApplicationController
   # Simply renders the login form.
   # ============================================================
   def login_form
+    if current_user
+      redirect_to landing_path
+    end
   end
 
   # ============================================================
@@ -122,6 +128,7 @@ class AuthenticationController < ApplicationController
   # Clears session and redirects to home page.
   # ============================================================
   def logout
+    require_auth
     reset_session
     redirect_to root_path, notice: 'You have been logged out.'
   end
