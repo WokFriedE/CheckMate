@@ -1,14 +1,11 @@
-<div class="h-screen flex justify-center items-center m-auto">
-  <div class=" flex flex-col items-center m-auto gap-2">
-    <div class="badge badge-dash rounded-full badge-primary">COMING SOON</div>
-
-
-  <h1 class="text-5xl font-bold">CheckMate</h1>
-  <div class="p-3"></div>
-  <span class="text-l font-bold text-gray-300">WELCOME</span>
-  <button class="btn btn-primary w-full" onclick="window.location='<%= login_path %>'">Log in </button>
-  <button class="btn btn-outline btn-primary w-full" onclick="window.location='<%= signup_path %>'">Sign up </button>
-
-  </div>
+<div class="flex flex-col w-fit justify-center items-center gap-2 m-auto">
+  <div class="badge badge-dash rounded-full badge-primary">COMING SOON</div>
+  <h1 class="text-5xl font-bold"><%= link_to "CheckMate", root_path %></h1>
+  <span class="text-l font-bold text-gray-500 pt-6">WELCOME</span>
+  <% if @is_logged_in %>
+    <%= link_to "Go To Dashboard", landing_path, class: "btn btn-primary w-full"%>
+  <% else %>
+    <%= link_to "Log in", login_path, class: "btn btn-primary w-full"%>
+    <%= link_to "Sign up", signup_path, class: "btn btn-outline btn-primary w-full"%>
+  <% end %>
 </div>
-

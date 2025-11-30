@@ -1,0 +1,23 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  msg_id: 
+  from: MyString
+  to: MyString
+  scheduled_send_time: 2025-11-14 13:45:25
+  send_time: 2025-11-14 13:45:25
+  receive_time: 2025-11-14 13:45:25
+  read_time: 2025-11-14 13:45:25
+  msg_content: MyText
+  msg_category: MyString
+
+two:
+  msg_id: 
+  from: MyString
+  to: MyString
+  scheduled_send_time: 2025-11-14 13:45:25
+  send_time: 2025-11-14 13:45:25
+  receive_time: 2025-11-14 13:45:25
+  read_time: 2025-11-14 13:45:25
+  msg_content: MyText
+  msg_category: MyString

@@ -1,0 +1,109 @@
+name: CI
+
+on:
+    pull_request:
+    push:
+        branches: [main]
+
+jobs:
+    scan_ruby:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v6
+
+            - name: Fix bin permissions
+              working-directory: checkmate
+              run: chmod +x bin/*
+
+            - name: Set up Ruby
+              uses: ruby/setup-ruby@v1
+              with:
+                  ruby-version: .ruby-version
+                  bundler-cache: true
+                  working-directory: checkmate
+
+            - name: Scan for common Rails security vulnerabilities using static analysis
+              working-directory: checkmate
+              run: bin/brakeman --no-pager
+
+    scan_js:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v6
+
+            - name: Fix bin permissions
+              working-directory: checkmate
+              run: chmod +x bin/*
+
+            - name: Set up Ruby
+              uses: ruby/setup-ruby@v1
+              with:
+                  ruby-version: .ruby-version
+                  bundler-cache: true
+                  working-directory: checkmate
+
+            - name: Scan for security vulnerabilities in JavaScript dependencies
+              working-directory: checkmate
+              run: bin/importmap audit
+
+    lint:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v6
+
+            - name: Fix bin permissions
+              working-directory: checkmate
+              run: chmod +x bin/*
+
+            - name: Set up Ruby
+              uses: ruby/setup-ruby@v1
+              with:
+                  ruby-version: .ruby-version
+                  bundler-cache: true
+                  working-directory: checkmate
+
+            - name: Lint code for consistent style
+              working-directory: checkmate
+              run: bin/rubocop -f github
+
+    test:
+        runs-on: ubuntu-latest
+        environment: test
+        steps:
+            - name: Install packages
+              run: sudo apt-get update && sudo apt-get install --no-install-recommends -y build-essential git libyaml-dev pkg-config google-chrome-stable
+
+            - name: Checkout code
+              uses: actions/checkout@v6
+
+            - name: Fix bin permissions
+              working-directory: checkmate
+              run: chmod +x bin/*
+
+            - name: Set up Ruby
+              uses: ruby/setup-ruby@v1
+              with:
+                  ruby-version: .ruby-version
+                  bundler-cache: true
+                  working-directory: checkmate
+
+            - name: Run tests
+              working-directory: checkmate
+              env:
+                  RAILS_ENV: test
+                  TEST_DATABASE_URL: ${{ secrets.DEVELOPMENT_URL }}
+              run: |
+                  bin/rails test test test:system
+
+            - name: Keep screenshots from failed system tests
+              uses: actions/upload-artifact@v5
+              if: failure()
+              with:
+                  name: screenshots
+                  path: ${{ github.workspace }}/checkmate/tmp/screenshots
+                  if-no-files-found: ignore

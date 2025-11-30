@@ -4,4 +4,8 @@ class Order < ApplicationRecord
     has_many :returns,
            foreign_key: :order_id,
            primary_key: :order_id
+
+    belongs_to :user_datum,
+             foreign_key: :user_id,
+             primary_key: :user_id
 end
