@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_11_22_190515) do
+ActiveRecord::Schema[8.0].define(version: 2025_11_30_062203) do
   create_schema "auth"
   create_schema "extensions"
   create_schema "graphql"
@@ -41,14 +41,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_22_190515) do
     t.integer "item_id"
   end
 
-  create_table "inventory_items", force: :cascade do |t|
-    t.string "name", null: false
-    t.integer "quantity", default: 0
-    t.text "description"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "item_details", force: :cascade do |t|
     t.integer "item_id", null: false
     t.string "item_name"
@@ -72,21 +64,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_22_190515) do
     t.integer "sup_borrow_time"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-  end
-
-  create_table "items", force: :cascade do |t|
-    t.integer "item_id"
-    t.integer "owner_org_id"
-    t.integer "reg_max_check"
-    t.integer "reg_max_total_quantity"
-    t.integer "reg_prebook_timeframe"
-    t.integer "reg_borrow_time"
-    t.integer "sup_max_checkout"
-    t.integer "sup_max_total_quantity"
-    t.integer "sup_prebook_timeframe"
-    t.integer "sup_borrow_time"
-    t.datetime "created_at"
-    t.datetime "updated_at"
   end
 
   create_table "messages", force: :cascade do |t|
