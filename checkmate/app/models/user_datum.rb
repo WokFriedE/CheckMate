@@ -15,4 +15,9 @@ class UserDatum < ApplicationRecord
        has_many :org_logs,
            foreign_key: :user_id,
            primary_key: :user_id
+
+        
+        def self.with_user_info user_id
+            UserDatum.includes(:user).where(user_id: user_id)
+        end
 end
