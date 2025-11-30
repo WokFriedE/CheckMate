@@ -73,9 +73,7 @@ jobs:
 
     test:
         runs-on: ubuntu-latest
-
-        env:
-            DEVELOPMENT_URL: ${{ secrets.DEVELOPMENT_URL }}
+        environment: test
 
         steps:
             - name: Install packages
@@ -99,6 +97,7 @@ jobs:
               working-directory: checkmate
               env:
                   RAILS_ENV: test
+                  DEVELOPMENT_URL: ${{ secrets.DEVELOPMENT_URL }}
               run: bin/rails db:test:prepare test test:system
 
             - name: Keep screenshots from failed system tests
