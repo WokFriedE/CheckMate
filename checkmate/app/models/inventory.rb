@@ -18,6 +18,22 @@ class Inventory < ApplicationRecord
       Inventory.joins(:item_detail).find_by(item_id: item_id)
     end
 
+    def self.get_inventory_with_item_info 
+      Inventory.includes(:item_detail).all
+    end
+
+    def self.get_inventory_org_info
+      Inventory.includes(:organization).all
+    end
+
+    def self.get_complete_inventory_info
+      Inventory.includes(:item_detail, :organization).all
+    end
+
+    def self.get_organization_inventory org_id
+      Inventory.includes(:organization).where(owner_org_id: org_id)
+    end
+
     def self.get_detailed_inventory_schema
       ITEM_DISPLAY_FIELDS.split(", ").map do |attr|
         field = attr.include?('.') ? attr.split('.').last : attr
