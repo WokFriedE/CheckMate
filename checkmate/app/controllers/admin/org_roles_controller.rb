@@ -1,7 +1,7 @@
 module Admin
   class OrgRolesController < ApplicationController
     def index
-      org_roles = OrgRole.user_role_info
+      org_roles = OrgRole.role_user_info
       organizations = Organization.all
 
       @info = {}
