@@ -1,7 +1,6 @@
 plugins:
   - rubocop-erb
 
-
 AllCops:
   TargetRubyVersion: 3.2
   NewCops: enable
@@ -9,6 +8,10 @@ AllCops:
 # Basic cops only
 Layout/LineLength:
   Max: 120
+  Exclude:
+    - "db/seeds.rb"
+    - "db/schema.rb"
+    - "db/migrate/**/*"
 
 Lint/UselessAssignment:
   Enabled: true

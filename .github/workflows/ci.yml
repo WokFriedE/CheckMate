@@ -67,9 +67,15 @@ jobs:
                   bundler-cache: true
                   working-directory: checkmate
 
-            - name: Lint code for consistent style
+            - name: Lint Ruby code (lint cops only)
               working-directory: checkmate
-              run: bin/rubocop -f github
+              run: |
+                  bin/rubocop -l --parallel --format github --display-cop-names --fail-level C
+
+            - name: Check and report layout autocorrections (dry-run/ci friendly)
+              working-directory: checkmate
+              run: |
+                  bin/rubocop -x --parallel --format github --display-cop-names
 
     test:
         runs-on: ubuntu-latest

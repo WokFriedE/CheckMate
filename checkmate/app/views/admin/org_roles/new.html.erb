@@ -11,7 +11,7 @@
       <%= form.collection_select :org_id, @organizations, :org_id, :org_name, { prompt: 'Select Org' }, class: "border" %>
       <br/>
       <%= form.label :user_role %>
-      <%= form.select :user_role, options_for_select(["admin", "organizer", "upper", "user"]), class: "border" %>
+      <%= form.select :user_role, options_for_select(%w[admin organizer upper user]), class: "border" %>
       <br/>
     </div>
     <div class='btn btn-sm btn-primary'>

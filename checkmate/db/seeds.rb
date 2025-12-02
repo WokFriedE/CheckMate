@@ -13,8 +13,9 @@
 Item.delete_all
 
 items = [
-  { item_id: 1,  owner_org_id: 10, reg_max_check: 3, reg_max_total_quantity: 15,
-    reg_prebook_timeframe: 24, reg_borrow_time: 72, sup_max_checkout: 5, sup_max_total_quantity: 20, sup_prebook_timeframe: 12, sup_borrow_time: 48, created_at: '2025-01-01 10:00:00', updated_at: '2025-01-02 12:00:00' },
+  { item_id: 1, owner_org_id: 10, reg_max_check: 3, reg_max_total_quantity: 15,
+    reg_prebook_timeframe: 24, reg_borrow_time: 72, sup_max_checkout: 5, sup_max_total_quantity: 20,
+    sup_prebook_timeframe: 12, sup_borrow_time: 48, created_at: '2025-01-01 10:00:00', updated_at: '2025-01-02 12:00:00' },
   { item_id: 2,  owner_org_id: 11, reg_max_check: 2, reg_max_total_quantity: 10,
     reg_prebook_timeframe: 48, reg_borrow_time: 96, sup_max_checkout: 4, sup_max_total_quantity: 18, sup_prebook_timeframe: 24, sup_borrow_time: 72, created_at: '2025-01-03 09:15:00', updated_at: '2025-01-04 14:20:00' },
   { item_id: 3,  owner_org_id: 12, reg_max_check: 4, reg_max_total_quantity: 12,

@@ -7,7 +7,17 @@ class Inventory < ApplicationRecord
              foreign_key: :owner_org_id,
              primary_key: :org_id
 
-  ITEM_DISPLAY_FIELDS = 'item_details.item_id, item_details.item_name, item_details.item_comment, inventories.inventory_name, inventories.item_category, inventories.created_at, item_details.last_taken, inventories.request_mode, inventories.item_count'.freeze
+  ITEM_DISPLAY_FIELDS = [
+    'item_details.item_id',
+    'item_details.item_name',
+    'item_details.item_comment',
+    'inventories.inventory_name',
+    'inventories.item_category',
+    'inventories.created_at',
+    'item_details.last_taken',
+    'inventories.request_mode',
+    'inventories.item_count'
+  ].join(', ').freeze
 
   def self.get_detailed_inventory(org_id)
     # TODO: add pagination

@@ -44,8 +44,9 @@ module Dashboard
 
         respond_to do |format|
           format.html do
-            redirect_to organization_item_details_path(params[:organization_org_id]), notice: 'Item was successfully deleted.',
-                                                                                      status: :see_other
+            redirect_to(organization_item_details_path(params[:organization_org_id]),
+                        notice: 'Item was successfully deleted.',
+                        status: :see_other)
           end
           format.json { head :no_content }
         end
