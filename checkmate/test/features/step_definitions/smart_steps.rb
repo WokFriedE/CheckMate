@@ -6,7 +6,8 @@ end
 
 When(/^I upload a valid CSV file containing (\d+) items$/) do |count|
   file_path = Rails.root.join('spec', 'fixtures', 'files', 'items_#{count}.csv')
-  attach_file('file', file_path) rescue post '/items/import', params: { file: fixture_file_upload(file_path, 'text/csv') }
+  attach_file('file',
+              file_path) rescue post '/items/import', params: { file: fixture_file_upload(file_path, 'text/csv') }
 end
 
 Then(/^I should receive a (\d+) Created response with message "([^"]+)"$/) do |code, message|

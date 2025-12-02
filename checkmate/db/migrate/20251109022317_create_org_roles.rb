@@ -3,7 +3,7 @@ class CreateOrgRoles < ActiveRecord::Migration[8.0]
     create_table :org_roles do |t|
       t.integer :org_id, null: false
       t.uuid :user_id, null: false
-      t.string  :user_role
+      t.string :user_role
 
       t.timestamps
     end

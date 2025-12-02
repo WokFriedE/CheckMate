@@ -1,9 +1,10 @@
 class ApplicationController < ActionController::Base
   helper_method :current_user
-  before_action :set_no_cache   # Prevents browser from caching any page (optional global fix)
+  before_action :set_no_cache # Prevents browser from caching any page (optional global fix)
 
   def current_user
     return nil unless session[:access_token]
+
     {
       email: session[:user_email],
       token: session[:access_token]

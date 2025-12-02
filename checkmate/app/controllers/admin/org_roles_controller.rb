@@ -1,6 +1,6 @@
 module Admin
   class OrgRolesController < ApplicationController
-    def index 
+    def index
       org_roles = OrgRole.user_role_info
       organizations = Organization.all
 
@@ -31,7 +31,7 @@ module Admin
       if @org_role.save
         redirect_to admin_org_roles_path
       else
-        logger.debug "OrgRole save failed: #{ @org_role.errors.full_messages.join('; ') }"
+        logger.debug "OrgRole save failed: #{@org_role.errors.full_messages.join('; ')}"
         @organizations = Organization.all
         @users = User.all
         render :new, status: :unprocessable_entity
@@ -39,6 +39,7 @@ module Admin
     end
 
     private
+
     def org_role_params
       # Permit both `user_role` (form name) and `role` (model column) to be flexible.
       params.require(:org_role).permit(:org_id, :user_id, :user_role)

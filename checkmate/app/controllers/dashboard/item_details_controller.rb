@@ -6,10 +6,9 @@ class Dashboard::ItemDetailsController < ApplicationController
     Rails.logger.debug {
       "Dashboard::ItemDetailsController#index headers: #{@inventory_attributes.inspect}"
     }
-
   end
 
-  def new 
+  def new
     @inventory = Inventory.new
     @item_detail = ItemDetail.new
     @item_setting = ItemSetting.new
@@ -23,7 +22,7 @@ class Dashboard::ItemDetailsController < ApplicationController
       fetch_item_id = params[:item_id].presence || params[:id].presence
       unless fetch_item_id
         Rails.logger.warn { "No Item id in params: #{params.inspect}" }
-        redirect_back(fallback_location: organization_item_details_path(params[:organization_org_id])) 
+        redirect_back(fallback_location: organization_item_details_path(params[:organization_org_id]))
         return
       end
       @item_detail = ItemDetail.find_by(item_id: fetch_item_id)
@@ -43,19 +42,22 @@ class Dashboard::ItemDetailsController < ApplicationController
       end
 
       respond_to do |format|
-        format.html { redirect_to organization_item_details_path(params[:organization_org_id]), notice: "Item was successfully deleted.", status: :see_other }
+        format.html {
+          redirect_to organization_item_details_path(params[:organization_org_id]), notice: "Item was successfully deleted.",
+                                                                                    status: :see_other
+        }
         format.json { head :no_content }
       end
     rescue ActiveRecord::RecordInvalid => e
       Rails.logger.error { "Unexpected ActiveRecord error: #{e.message}" }
       flash[:alert] = "Error with item: #{e.message}"
-      redirect_back(fallback_location: root_path) 
-      return 
+      redirect_back(fallback_location: root_path)
+      return
     rescue StandardError => e
       Rails.logger.error { "Unexpected error: #{e.message}" }
       flash[:alert] = "Error with item: #{e.message}"
-      redirect_back(fallback_location: root_path) 
-      return 
+      redirect_back(fallback_location: root_path)
+      return
     end
   end
 
@@ -65,10 +67,13 @@ class Dashboard::ItemDetailsController < ApplicationController
     @inventory = Inventory.find_by(item_id: params[:item_id], owner_org_id: org_id)
     fetch_item_id = params[:item_id].presence || params[:id].presence
     @item_detail = ItemDetail.find_by(item_id: fetch_item_id) || ItemDetail.new(item_id: fetch_item_id)
-    @item_setting = ItemSetting.find_by(item_id: fetch_item_id, owner_org_id: org_id) || ItemSetting.new(item_id: fetch_item_id, owner_org_id: org_id)
+    @item_setting = ItemSetting.find_by(item_id: fetch_item_id,
+                                        owner_org_id: org_id) || ItemSetting.new(
+                                          item_id: fetch_item_id, owner_org_id: org_id
+                                        )
   end
 
-  def update 
+  def update
     load_organization
     return if performed?
 
@@ -84,7 +89,9 @@ class Dashboard::ItemDetailsController < ApplicationController
     @inventory = Inventory.find_by(item_id: fetch_item_id, owner_org_id: org_id)
 
     unless @item_detail && @inventory
-      Rails.logger.warn { "Inventory or ItemDetail not found for item_id=#{fetch_item_id.inspect} org=#{org_id.inspect}" }
+      Rails.logger.warn {
+        "Inventory or ItemDetail not found for item_id=#{fetch_item_id.inspect} org=#{org_id.inspect}"
+      }
       redirect_to organization_item_details_path(params[:organization_org_id]), alert: 'Item not found.' and return
     end
 
@@ -131,10 +138,10 @@ class Dashboard::ItemDetailsController < ApplicationController
     end
   end
 
-
   def create
     load_organization
     return if performed?
+
     # prefer the loaded organization so we are sure it exists
     org_id = @organization&.org_id
     unless org_id
@@ -157,7 +164,6 @@ class Dashboard::ItemDetailsController < ApplicationController
       end
 
       redirect_to organization_item_details_path(org_id), notice: 'Item added.' and return
-
     rescue ActiveRecord::RecordInvalid => e
       handle_transaction_error(e)
     rescue StandardError => e
@@ -208,10 +214,10 @@ class Dashboard::ItemDetailsController < ApplicationController
   end
 
   def inventory_params
-      params.require(:inventory)
-        .permit(:item_category, :item_count, :can_prebook, :lock_status, :request_mode,
-        item_detail: [:item_name, :item_comment],
-        item_setting: [:reg_max_check, :reg_max_total_quantity, :reg_prebook_timeframe, :reg_borrow_time])
+    params.require(:inventory)
+          .permit(:item_category, :item_count, :can_prebook, :lock_status, :request_mode,
+                  item_detail: [:item_name, :item_comment],
+                  item_setting: [:reg_max_check, :reg_max_total_quantity, :reg_prebook_timeframe, :reg_borrow_time])
   end
 
   def inventory_settings_params
@@ -225,9 +231,11 @@ class Dashboard::ItemDetailsController < ApplicationController
     return if @organization
 
     Rails.logger.debug { "Organization not found for org_id=#{params[:organization_org_id].inspect}" }
-    
+
     if action_name == 'create'
-      Rails.logger.warn { "Organization not found for org param=#{params[:organization_org_id].inspect}; deferring handling to caller" }
+      Rails.logger.warn {
+        "Organization not found for org param=#{params[:organization_org_id].inspect}; deferring handling to caller"
+      }
       @organization = nil
       return
     end

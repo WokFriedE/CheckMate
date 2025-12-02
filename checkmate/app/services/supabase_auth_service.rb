@@ -8,6 +8,7 @@ require "jwt"
 
 class SupabaseAuthService
   include HTTParty
+
   base_uri ENV["SUPABASE_URL"] + "/auth/v1"
   headers "Content-Type" => "application/json"
 
