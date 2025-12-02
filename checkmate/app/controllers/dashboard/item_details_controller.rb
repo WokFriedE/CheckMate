@@ -1,21 +1,20 @@
 class Dashboard::ItemDetailsController < ApplicationController
   def index
     load_organization
+    load_user_role @organization.org_id
     @inventory_items = Inventory.get_detailed_inventory(params[:organization_org_id])
     @inventory_attributes = Inventory.get_detailed_inventory_schema
-    Rails.logger.debug {
-      "Dashboard::ItemDetailsController#index headers: #{@inventory_attributes.inspect}"
-    }
-
   end
 
-  def new 
+  def new
+    # TODO: add a user role check
     @inventory = Inventory.new
     @item_detail = ItemDetail.new
     @item_setting = ItemSetting.new
   end
 
   def destroy
+    # TODO: add a user role check
     load_organization
     return if performed?
 
@@ -23,7 +22,7 @@ class Dashboard::ItemDetailsController < ApplicationController
       fetch_item_id = params[:item_id].presence || params[:id].presence
       unless fetch_item_id
         Rails.logger.warn { "No Item id in params: #{params.inspect}" }
-        redirect_back(fallback_location: organization_item_details_path(params[:organization_org_id])) 
+        redirect_back(fallback_location: organization_item_details_path(params[:organization_org_id]))
         return
       end
       @item_detail = ItemDetail.find_by(item_id: fetch_item_id)
@@ -43,32 +42,40 @@ class Dashboard::ItemDetailsController < ApplicationController
       end
 
       respond_to do |format|
-        format.html { redirect_to organization_item_details_path(params[:organization_org_id]), notice: "Item was successfully deleted.", status: :see_other }
+        format.html do
+          redirect_to organization_item_details_path(params[:organization_org_id]), notice: 'Item was successfully deleted.',
+                                                                                    status: :see_other
+        end
         format.json { head :no_content }
       end
     rescue ActiveRecord::RecordInvalid => e
       Rails.logger.error { "Unexpected ActiveRecord error: #{e.message}" }
       flash[:alert] = "Error with item: #{e.message}"
-      redirect_back(fallback_location: root_path) 
-      return 
+      redirect_back(fallback_location: root_path)
+      nil
     rescue StandardError => e
       Rails.logger.error { "Unexpected error: #{e.message}" }
       flash[:alert] = "Error with item: #{e.message}"
-      redirect_back(fallback_location: root_path) 
-      return 
+      redirect_back(fallback_location: root_path)
+      nil
     end
   end
 
   def edit
+    # TODO: add a user role check
     load_organization
     org_id = @organization.org_id
     @inventory = Inventory.find_by(item_id: params[:item_id], owner_org_id: org_id)
     fetch_item_id = params[:item_id].presence || params[:id].presence
     @item_detail = ItemDetail.find_by(item_id: fetch_item_id) || ItemDetail.new(item_id: fetch_item_id)
-    @item_setting = ItemSetting.find_by(item_id: fetch_item_id, owner_org_id: org_id) || ItemSetting.new(item_id: fetch_item_id, owner_org_id: org_id)
+    @item_setting = ItemSetting.find_by(item_id: fetch_item_id,
+                                        owner_org_id: org_id) || ItemSetting.new(
+                                          item_id: fetch_item_id, owner_org_id: org_id
+                                        )
   end
 
-  def update 
+  def update
+    # TODO: add a user role check
     load_organization
     return if performed?
 
@@ -84,7 +91,9 @@ class Dashboard::ItemDetailsController < ApplicationController
     @inventory = Inventory.find_by(item_id: fetch_item_id, owner_org_id: org_id)
 
     unless @item_detail && @inventory
-      Rails.logger.warn { "Inventory or ItemDetail not found for item_id=#{fetch_item_id.inspect} org=#{org_id.inspect}" }
+      Rails.logger.warn do
+        "Inventory or ItemDetail not found for item_id=#{fetch_item_id.inspect} org=#{org_id.inspect}"
+      end
       redirect_to organization_item_details_path(params[:organization_org_id]), alert: 'Item not found.' and return
     end
 
@@ -125,16 +134,17 @@ class Dashboard::ItemDetailsController < ApplicationController
     org_id = @organization&.org_id
     @inventory_item = Inventory.joins(:item_detail).where(item_id: params[:item_id], owner_org_id: org_id).first
 
-    unless @inventory_item
-      Rails.logger.warn { "Inventory item not found for item_id=#{params[:item_id].inspect} org=#{org_id.inspect}" }
-      redirect_to organization_item_details_path(params[:organization_org_id]), alert: 'Item not found.' and return
-    end
+    return if @inventory_item
+
+    Rails.logger.warn { "Inventory item not found for item_id=#{params[:item_id].inspect} org=#{org_id.inspect}" }
+    redirect_to organization_item_details_path(params[:organization_org_id]), alert: 'Item not found.' and return
   end
 
-
   def create
+    # TODO: add a user role check
     load_organization
     return if performed?
+
     # prefer the loaded organization so we are sure it exists
     org_id = @organization&.org_id
     unless org_id
@@ -157,7 +167,6 @@ class Dashboard::ItemDetailsController < ApplicationController
       end
 
       redirect_to organization_item_details_path(org_id), notice: 'Item added.' and return
-
     rescue ActiveRecord::RecordInvalid => e
       handle_transaction_error(e)
     rescue StandardError => e
@@ -208,10 +217,10 @@ class Dashboard::ItemDetailsController < ApplicationController
   end
 
   def inventory_params
-      params.require(:inventory)
-        .permit(:item_category, :item_count, :can_prebook, :lock_status, :request_mode,
-        item_detail: [:item_name, :item_comment],
-        item_setting: [:reg_max_check, :reg_max_total_quantity, :reg_prebook_timeframe, :reg_borrow_time])
+    params.require(:inventory)
+          .permit(:item_category, :item_count, :can_prebook, :lock_status, :request_mode,
+                  item_detail: %i[item_name item_comment],
+                  item_setting: %i[reg_max_check reg_max_total_quantity reg_prebook_timeframe reg_borrow_time])
   end
 
   def inventory_settings_params
@@ -225,14 +234,25 @@ class Dashboard::ItemDetailsController < ApplicationController
     return if @organization
 
     Rails.logger.debug { "Organization not found for org_id=#{params[:organization_org_id].inspect}" }
-    
+
     if action_name == 'create'
-      Rails.logger.warn { "Organization not found for org param=#{params[:organization_org_id].inspect}; deferring handling to caller" }
+      Rails.logger.warn do
+        "Organization not found for org param=#{params[:organization_org_id].inspect}; deferring handling to caller"
+      end
       @organization = nil
       return
     end
 
     redirect_to landing_path, alert: 'Organization not found.'
-    return
+    nil
   end
 end
+
+# TODO: make it so that we have a user and a admin render --> render the page according to the role instead
+# Migrate the path to just be org_inventory -> if organizer or admin, allow them to edit the pages
+# when selecting items, allow it to create an order id -> order id will be used for checkout -> store in session
+# When session is cleared up / user disconnects, delete the order (reclaim items)
+# We also need a function to breakdown which items are still available in quantity
+# Checkout screen should allow people to change the pending status of the order to confirmed or create an order with the items (for simplicity lets do that)
+#   - store items wanted into session / flash to checkout or cookies
+# Todo: add an action that would create an order and send them to the order page -> if they exit the order page delete it after x time
