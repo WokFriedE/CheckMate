@@ -8,7 +8,7 @@ class OrderDetail < ApplicationRecord
              foreign_key: :owner_org_id,
              primary_key: :org_id
 
-  def self.get_order_details_with_item_info order_id
+  def self.get_order_details_with_item_info(order_id)
     OrderDetail.includes(:item_detail).where(order_id: order_id)
   end
 

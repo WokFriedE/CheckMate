@@ -1,6 +1,6 @@
 module Admin
   class OrganizationsController < ApplicationController
-    before_action :set_organization, only: [:show, :edit, :update, :destroy]
+    before_action :set_organization, only: %i[show edit update destroy]
     def index
       @organizations = Organization.all
     end
@@ -22,16 +22,15 @@ module Admin
       end
     end
 
-    def edit
-    end
+    def edit; end
 
     # PATCH/PUT /organizations/1 or /organizations/1.json
     def update
       respond_to do |format|
         if @organization.update(organization_params)
-          format.html {
-            redirect_to @organization, notice: "Organization was successfully updated.", status: :see_other
-          }
+          format.html do
+            redirect_to @organization, notice: 'Organization was successfully updated.', status: :see_other
+          end
           format.json { render :show, status: :ok, location: @organization }
         else
           format.html { render :edit, status: :unprocessable_entity }
@@ -45,9 +44,9 @@ module Admin
       OrgRole.where(org_id: @organization.org_id).destroy_all
       @organization.destroy!
       respond_to do |format|
-        format.html {
-          redirect_to admin_organizations_path, notice: "Organization was successfully destroyed.", status: :see_other
-        }
+        format.html do
+          redirect_to admin_organizations_path, notice: 'Organization was successfully destroyed.', status: :see_other
+        end
         format.json { head :no_content }
       end
     end

@@ -19,9 +19,9 @@ class AuthenticationController < ApplicationController
   # Simply renders the signup form.
   # ============================================================
   def signup_form
-    if current_user
-      redirect_to landing_path and return
-    end
+    return unless current_user
+
+    redirect_to landing_path and return
   end
 
   # ============================================================
@@ -79,9 +79,9 @@ class AuthenticationController < ApplicationController
   # Simply renders the login form.
   # ============================================================
   def login_form
-    if current_user
-      redirect_to landing_path and return
-    end
+    return unless current_user
+
+    redirect_to landing_path and return
   end
 
   # ============================================================
@@ -228,12 +228,11 @@ class AuthenticationController < ApplicationController
   # Handle expired or invalid CSRF tokens without crashing.
   # ============================================================
   def handle_invalid_authenticity_token
+    reset_session
     if action_name.to_s == 'signup'
-      reset_session
       flash[:alert] = 'Account/Password is incorrect please try again.'
       redirect_to signup_path
     else
-      reset_session
       redirect_to login_path, alert: 'Account/Password is incorrect please try again.'
     end
   end

@@ -9,7 +9,7 @@ class CreateOrgRoles < ActiveRecord::Migration[8.0]
     end
 
     # Add composite unique index so (org_id, user_id) is unique
-    add_index :org_roles, [:org_id, :user_id], unique: true
+    add_index :org_roles, %i[org_id user_id], unique: true
 
     # If you need a foreign key to auth.users (Postgres schema), run raw SQL:
     execute <<-SQL

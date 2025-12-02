@@ -1,2 +1,4 @@
-module Dashboard::ItemDetailsHelper
+module Dashboard
+  module ItemDetailsHelper
+  end
 end

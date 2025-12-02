@@ -25,7 +25,7 @@ class Organization < ApplicationRecord
     retries = 0
     loop do
       self.org_id = SecureRandom.random_number(1_000_000_000)
-      break unless self.class.exists?(org_id: self.org_id)
+      break unless self.class.exists?(org_id: org_id)
 
       retries += 1
       raise "Unable to generate unique org_id after #{max_retries} attempts" if retries >= max_retries

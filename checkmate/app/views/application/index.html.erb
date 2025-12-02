@@ -5,7 +5,7 @@
   <% if @is_logged_in %>
     <%= link_to "Go To Dashboard", landing_path, class: "btn btn-primary w-full"%>
   <% else %>
-    <%= link_to "Log in", login_path, class: "btn btn-primary w-full"%>
-    <%= link_to "Sign up", signup_path, class: "btn btn-outline btn-primary w-full"%>
+    <%= link_to 'Log in', login_path, class: 'btn btn-primary w-full'%>
+    <%= link_to 'Sign up', signup_path, class: 'btn btn-outline btn-primary w-full'%>
   <% end %>
 </div>

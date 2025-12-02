@@ -4,10 +4,14 @@ Given(/^I am logged in as a (.+)$/) do |role|
   login_as(@user, scope: :user)
 end
 
-When(/^I upload a valid CSV file containing (\d+) items$/) do |count|
-  file_path = Rails.root.join('spec', 'fixtures', 'files', 'items_#{count}.csv')
-  attach_file('file',
-              file_path) rescue post '/items/import', params: { file: fixture_file_upload(file_path, 'text/csv') }
+When(/^I upload a valid CSV file containing (\d+) items$/) do |_count|
+  file_path = Rails.root.join('spec', 'fixtures', 'files', "items_#{count}.csv")
+  begin
+    attach_file('file',
+                file_path)
+  rescue StandardError
+    post '/items/import', params: { file: fixture_file_upload(file_path, 'text/csv') }
+  end
 end
 
 Then(/^I should receive a (\d+) Created response with message "([^"]+)"$/) do |code, message|
@@ -49,7 +53,7 @@ Given(/^I POST to "([^"]+)"$/) do |path|
   post path, params: {}
 end
 
-Then(/^I should receive (\d+) OK "([^"]+)" within (\d+) seconds$/) do |code, message, seconds|
+Then(/^I should receive (\d+) OK "([^"]+)" within (\d+) seconds$/) do |code, message, _seconds|
   expect(last_response.status).to eq(code.to_i)
   expect(last_response.body).to include(message)
 end
@@ -73,6 +77,6 @@ When(/^I click "Edit" next to "([^"]+)"$/) do |name|
   end
 end
 
-When(/^I update "([^"]+)" to "([^\"]+)"$/) do |field, value|
+When(/^I update "([^"]+)" to "([^"]+)"$/) do |field, value|
   fill_in field, with: value
 end

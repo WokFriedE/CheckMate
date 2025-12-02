@@ -1,9 +1,9 @@
-require "test_helper"
+require 'test_helper'
 
 class AuthenticationControllerTest < ActionController::TestCase
   tests AuthenticationController
 
-  test "GET /login redirects to landing when already logged in" do
+  test 'GET /login redirects to landing when already logged in' do
     session[:access_token] = 'fake-token'
     session[:user_email] = 'test@example.com'
     get :login_form
@@ -11,7 +11,7 @@ class AuthenticationControllerTest < ActionController::TestCase
     assert_redirected_to landing_path
   end
 
-  test "GET /signup redirects to landing when already logged in" do
+  test 'GET /signup redirects to landing when already logged in' do
     session[:access_token] = 'fake-token'
     session[:user_email] = 'test@example.com'
     get :signup_form

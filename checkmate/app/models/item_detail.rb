@@ -27,7 +27,7 @@ class ItemDetail < ApplicationRecord
     retries = 0
     loop do
       self.item_id = SecureRandom.random_number(1_000_000_000)
-      break unless self.class.exists?(item_id: self.item_id)
+      break unless self.class.exists?(item_id: item_id)
 
       retries += 1
       raise "Unable to generate unique item_id after #{max_retries} attempts" if retries >= max_retries

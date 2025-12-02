@@ -75,7 +75,7 @@
     </fieldset>
   <% end %>
   <div class="actions mt-2">
-    <%= f.submit (@inventory && @inventory.persisted?) ? 'Save Changes' : 'Add Item', class: 'border p-1 hover:cursor-pointer' %>
+    <%= f.submit @inventory&.persisted? ? 'Save Changes' : 'Add Item', class: 'border p-1 hover:cursor-pointer' %>
     <%= link_to 'Cancel', organization_item_details_path(params[:organization_org_id]), class: 'border p-1' %>
   </div>
 <% end %>

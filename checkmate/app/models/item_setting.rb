@@ -7,7 +7,7 @@ class ItemSetting < ApplicationRecord
     ItemSetting.includes(:item_detail).all
   end
 
-  def self.settings_for_item item_id
+  def self.settings_for_item(item_id)
     ItemSetting.where(item_id: item_id)
   end
 end
