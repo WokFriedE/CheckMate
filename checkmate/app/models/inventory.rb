@@ -8,7 +8,11 @@ class Inventory < ApplicationRecord
              primary_key: :org_id
 
 
-    def self.get_detailed_inventory 
+    def self.get_detailed_inventory org_id
+      Inventory.joins(:item_detail).where(owner_org_id: org_id).select('item_details.item_name, item_details.item_comment, inventories.inventory_name, inventories.item_category, inventories.created_at, item_details.last_taken, inventories.request_mode')
+    end
+
+    def self.get_inventory_with_item_info 
       Inventory.includes(:item_detail).all
     end
 
