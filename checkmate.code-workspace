@@ -1,0 +1,10 @@
+{
+  "folders": [
+    {
+      "path": "checkmate"
+    }
+  ],
+  "settings": {
+    "rubyLsp.formatter": "rubocop"
+  }
+}
