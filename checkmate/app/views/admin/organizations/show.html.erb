@@ -1,19 +1,2 @@
-<div class="card  sm:w-sm h-fit  bg-base-100 card-md shadow-lg ">
-	<div class="card-body">
-		<h1 class="card-title text-2xl mx-auto"><%= @organization.org_name %></h1>
-		<ul class="list">
-			<% @organization.attributes.each do |key, value| %>
-				<% next if ["org_pwd"].include? key %>
-				<li class="flex justify-between ">
-					<span class=" font-bold" ><%= key.capitalize %>:</span>
-					<span class="label"> <%= value.blank? ? ( heroicon "question-mark-circle", variant: :outline, options: { class: "size-4 opacity-50" }): value %></span>
-				</li>
-			<% end %>
-		</ul>
-		<div class="flex  flex-col-reverse sm:flex-row justify-between gap-2 sm:gap-0 mt-4">
-			<%= button_to (( heroicon "x-mark", options: { class: "size-4" })+ "Destroy"), [:admin, @organization], method: :delete, class: 'btn btn-error btn-soft w-full' %>
-			<%= link_to (( heroicon "pencil-square", options: { class: "size-4" })+ "Edit"), edit_admin_organization_path(@organization), class: 'btn btn-primary btn-outline ' %>
-		</div>
-	</div>
-</div>
+<%= render partial: "org_info", locals:{ organization: @organization}  %>
 <%= link_to "Back to organizations", admin_organizations_path, class: 'btn btn-sm btn-primary' %>
