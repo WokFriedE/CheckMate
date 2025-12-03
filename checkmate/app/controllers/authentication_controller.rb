@@ -116,10 +116,6 @@ class AuthenticationController < ApplicationController
     case outcome
     when :success
       reset_session
-      session[:access_token]  = response["access_token"]
-      session[:refresh_token] = response["refresh_token"]
-      session[:user_email]    = response.dig("user", "email")
-      redirect_to landing_path
       session[:access_token]  = response['access_token']
       session[:refresh_token] = response['refresh_token']
       session[:user_email]    = response.dig('user', 'email')
