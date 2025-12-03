@@ -9,6 +9,8 @@ class User < ApplicationRecord
           primary_key: :id,
           dependent: :destroy
 
+  has_one :user_datum, foreign_key: :user_id
+
   # Other fields
   # display_name
   # email
