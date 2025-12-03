@@ -1,61 +1,37 @@
-<div class="flex flex-col items-center">
-  <h1 class="text-4xl font-bold mb-4">Sign Up</h1>
-
+<div class="flex flex-col items-center" >
+  <h1 class="text-4xl font-bold mb-4">
+    <%= link_to "CheckMate", root_path %>
+  </h1>
   <%= form_with url: signup_path, method: :post, local: true do %>
-    <fieldset class="fieldset bg-base-200 border-base-300 rounded-box w-xs border p-4">
-      <legend class="fieldset-legend">Create your account</legend>
-
-      <% if flash[:notice] %>
-        <div class="badge badge-soft badge-success mx-auto mb-4">
-          <%= flash[:notice] %>
-        </div>
-      <% elsif flash[:alert] %>
-        <div class="badge badge-soft badge-error mx-auto mb-4">
-          <%= flash[:alert] %>
-        </div>
-      <% end %>
-
+    <fieldset class="fieldset bg-base-200 border-base-300 rounded-box w-xs border p-4 ">
+      <legend class="fieldset-legend">Sign up</legend>
       <div class="mb-4">
         <%= label_tag :email, "Email", class: "label" %>
-        <%= text_field_tag :email, params[:email],
-            class: "input w-full",
-            placeholder: "Email" %>
+        <%= text_field_tag :email, params[:email], class: "input w-full", placeholder: "Email" %>
       </div>
-
       <div class="mb-4">
         <%= label_tag :password, "Password", class: "label" %>
-        <%= password_field_tag :password, nil,
-            class: "input w-full",
-            placeholder: "Password" %>
+        <%= password_field_tag :password, nil, class: "input w-full", placeholder: "Password" %>
       </div>
-
-      <!-- Keep your green button -->
+      <% if flash[:notice] %>
+        <div class="badge badge-soft badge-success mx-auto mb-4"><%= flash[:notice] %></div>
+      <% elsif flash[:alert] %>
+        <div class="badge badge-soft badge-error mx-auto mb-4"><%= flash[:alert] %></div>
+      <% end %>
       <div class="w-full card-actions">
-        <%= submit_tag "Create account",
-            class: "btn w-full",
-            style: "background:#28a745; color:white; border:none;" %>
+        <%= submit_tag "Create account", class: "btn btn-primary w-full" %>
       </div>
-
       <div class="divider">OR</div>
-
-      <p class="mx-auto text-center">
-        Already have an account?
-        <%= link_to "Log in",
-                    login_path,
-                    class: "font-semibold",
-                    style: "color: #2563eb;" %> <!-- Tailwind blue-600 -->
-        </p>
-
+      <p class=" mx-auto">Already have an account?</p>
+      <%= link_to "Log in", login_path , class: "btn btn-outline" %>
     </fieldset>
   <% end %>
 </div>
-
 <% if @supabase_request_json.present? %>
   <script>
     console.log("Supabase signup request:", <%= raw @supabase_request_json %>);
   </script>
 <% end %>
-
 <% if @supabase_response_json.present? %>
   <script>
     console.log("Supabase signup response:", <%= raw @supabase_response_json %>);

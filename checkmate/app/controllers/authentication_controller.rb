@@ -6,7 +6,7 @@
 
 class AuthenticationController < ApplicationController
   # Allow unauthenticated access to signup/login pages
-  skip_before_action :require_auth, raise: false, only: [:signup_form, :signup, :login_form, :login]
+  skip_before_action :require_auth, raise: false, only: %i[signup_form signup login_form login]
 
   # Handle invalid or missing CSRF tokens gracefully
   rescue_from ActionController::InvalidAuthenticityToken, with: :handle_invalid_authenticity_token
@@ -19,13 +19,16 @@ class AuthenticationController < ApplicationController
   # Simply renders the signup form.
   # ============================================================
   def signup_form
+    if current_user
+      redirect_to landing_path and return
+    end
   end
 
   # ============================================================
   # POST /signup
   # - Takes email and password from form
   # - Sends them to Supabase for account creation
-  # - Logs request and Supabase response for debugging
+# - Logs request and Supabase response for debugging
   # - Displays result using flash messages
   # - Injects request + response into browser console for debugging
   # ============================================================
@@ -34,16 +37,16 @@ class AuthenticationController < ApplicationController
     password = params[:password].to_s
 
     # Debug log: what is being sent to Supabase (do NOT log passwords)
-    Rails.logger.info("[signup] forwarding to Supabase: #{ { email: email } }")
+    Rails.logger.info("[signup] forwarding to Supabase: #{{ email: email }}")
 
     # Call Supabase signup service
     begin
       response = SupabaseAuthService.signup(email: email, password: password)
       Rails.logger.info("[signup] Supabase raw response: #{response.inspect}")
-    rescue => e
+    rescue StandardError => e
       # Network or service failure
       Rails.logger.error("[signup] provider error: #{e.class}: #{e.message}")
-      flash.now[:alert] = "Sign up failed. Please try again."
+      flash.now[:alert] = 'Sign up failed. Please try again.'
       render :signup_form, status: :unprocessable_entity and return
     end
 
@@ -69,15 +72,16 @@ class AuthenticationController < ApplicationController
       end
 
       flash.now[:notice] = "Account created. Please confirm your email before logging in."
+      flash.now[:notice] = 'Account created. Please confirm your email before logging in.'
       render :signup_form, status: :ok
     when :email_in_use
-      flash.now[:alert] = "This email is already in use."
+      flash.now[:alert] = 'This email is already in use.'
       render :signup_form, status: :unprocessable_entity
     when :invalid_password
-      flash.now[:alert] = msg.presence || "The password is not valid."
+      flash.now[:alert] = msg.presence || 'The password is not valid.'
       render :signup_form, status: :unprocessable_entity
     else
-      flash.now[:alert] = msg.presence || "Sign up failed. Please try again."
+      flash.now[:alert] = msg.presence || 'Sign up failed. Please try again.'
       render :signup_form, status: :unprocessable_entity
     end
   end
@@ -87,6 +91,9 @@ class AuthenticationController < ApplicationController
   # Simply renders the login form.
   # ============================================================
   def login_form
+    if current_user
+      redirect_to landing_path and return
+    end
   end
 
   # ============================================================
@@ -94,7 +101,7 @@ class AuthenticationController < ApplicationController
   # - Sends credentials to Supabase for validation
   # - Stores returned tokens in Rails session
   # - Redirects to landing page if successful
-  # - Injects response into browser console for debugging
+# - Injects response into browser console for debugging
   # ============================================================
   def login
     response = SupabaseAuthService.login(email: params[:email], password: params[:password])
@@ -113,17 +120,21 @@ class AuthenticationController < ApplicationController
       session[:refresh_token] = response["refresh_token"]
       session[:user_email]    = response.dig("user", "email")
       redirect_to landing_path
+      session[:access_token]  = response['access_token']
+      session[:refresh_token] = response['refresh_token']
+      session[:user_email]    = response.dig('user', 'email')
+      redirect_to landing_path, notice: 'You are logged in.'
     when :invalid_credentials
-      flash.now[:alert] = "Incorrect password."
+      flash.now[:alert] = 'Incorrect password.'
       render :login_form, status: :unprocessable_entity
     when :email_not_confirmed
-      flash.now[:alert] = "Please confirm your email before logging in."
+      flash.now[:alert] = 'Please confirm your email before logging in.'
       render :login_form, status: :unprocessable_entity
     when :user_not_found
-      flash.now[:alert] = "No user with that email found."
+      flash.now[:alert] = 'No user with that email found.'
       render :login_form, status: :unprocessable_entity
     else
-      flash.now[:alert] = msg.presence || "Login failed."
+      flash.now[:alert] = msg.presence || 'Login failed.'
       render :login_form, status: :unprocessable_entity
     end
   end
@@ -133,8 +144,9 @@ class AuthenticationController < ApplicationController
   # Clears session and redirects to home page.
   # ============================================================
   def logout
+    require_auth
     reset_session
-    redirect_to root_path, notice: "You have been logged out."
+    redirect_to root_path, notice: 'You have been logged out.'
   end
 
   private
@@ -151,46 +163,55 @@ class AuthenticationController < ApplicationController
   #      - Mentions "already/exists/in use" → :email_in_use
   #      - Otherwise → :unknown
   # ============================================================
-# Decides signup outcome from Supabase response without removing any
-# existing behavior. We first rely on explicit signals (error_code,
-# identities), then fall back to the original time/message heuristics.
+  # Decides signup outcome from Supabase response without removing any
+  # existing behavior. We first rely on explicit signals (error_code,
+  # identities), then fall back to the original time/message heuristics.
   def extract_signup_outcome(response)
     return [:unknown, nil] unless response.is_a?(Hash)
 
-  # 1) Explicit error payloads (Supabase returns code + error_code + msg)
-    if response["error_code"] || response["code"]
-      code = response["error_code"].to_s
-      msg  = response["msg"] || response.dig("error", "message") || response["message"]
+    # 1) Explicit error payloads (Supabase returns code + error_code + msg)
+    if response['error_code'] || response['code']
+      code = response['error_code'].to_s
+      msg  = response['msg'] || response.dig('error', 'message') || response['message']
 
-      return [:email_in_use,     msg] if code == "email_address_invalid"
-      return [:invalid_password, msg] if code == "validation_failed"
-      return [:rate_limited,     msg] if code == "over_email_send_rate_limit"
+      return [:email_in_use,     msg] if code == 'email_address_invalid'
+      return [:invalid_password, msg] if code == 'validation_failed'
+      return [:rate_limited,     msg] if code == 'over_email_send_rate_limit'
       return [:invalid_password, msg] if msg.to_s.match?(/password/i)
       return [:email_in_use,     msg] if msg.to_s.match?(/already|exists|in use|duplicate|taken/i)
+
       return [:unknown, msg]
     end
 
-    if response["id"]
-      created_at           = Time.parse(response["created_at"].to_s) rescue nil
-      confirmation_sent_at = Time.parse(response["confirmation_sent_at"].to_s) rescue nil
-      identities           = response["identities"] || []
+    if response['id']
+      created_at = begin
+        Time.parse(response['created_at'].to_s)
+      rescue StandardError
+        nil
+      end
+      confirmation_sent_at = begin
+        Time.parse(response['confirmation_sent_at'].to_s)
+      rescue StandardError
+        nil
+      end
+      identities = response['identities'] || []
 
       if created_at && confirmation_sent_at
-        if identities.any? && (confirmation_sent_at - created_at).abs <= 2
-          return [:success, nil]  # new user
-        else
-          return [:email_in_use, nil]  # already in DB
-        end
+        return [:success, nil] if identities.any? && (confirmation_sent_at - created_at).abs <= 2
+
+        # new user
+
+        return [:email_in_use, nil] # already in DB
+
       end
     end
 
-    msg = response["msg"] || response.dig("error", "message") || response["message"]
+    msg = response['msg'] || response.dig('error', 'message') || response['message']
     return [:invalid_password, msg] if msg.to_s.match?(/password/i)
     return [:email_in_use,     msg] if msg.to_s.match?(/already|exists|in use|duplicate|taken/i)
 
     [:unknown, msg]
   end
-
 
   # ============================================================
   # Analyze Supabase’s login response and return an outcome.
@@ -204,13 +225,13 @@ class AuthenticationController < ApplicationController
   def extract_login_outcome(response)
     return [:unknown, nil] unless response.is_a?(Hash)
 
-    if response["error"] || response["msg"]
-      code = response["error_code"].to_s
-      msg  = response.dig("error", "message") || response["msg"]
+    if response['error'] || response['msg']
+      code = response['error_code'].to_s
+      msg  = response.dig('error', 'message') || response['msg']
 
-      return [:invalid_credentials, msg] if code == "invalid_credentials"
-      return [:email_not_confirmed, msg] if code == "email_not_confirmed"
-      return [:user_not_found, msg] if code == "user_not_found"
+      return [:invalid_credentials, msg] if code == 'invalid_credentials'
+      return [:email_not_confirmed, msg] if code == 'email_not_confirmed'
+      return [:user_not_found, msg] if code == 'user_not_found'
 
       return [:unknown, msg]
     end
@@ -223,13 +244,13 @@ class AuthenticationController < ApplicationController
   # Handle expired or invalid CSRF tokens without crashing.
   # ============================================================
   def handle_invalid_authenticity_token
-    if action_name.to_s == "signup"
+    if action_name.to_s == 'signup'
       reset_session
-      flash[:alert] = "Account/Password is incorrect please try again."
+      flash[:alert] = 'Account/Password is incorrect please try again.'
       redirect_to signup_path
     else
       reset_session
-      redirect_to login_path, alert: "Account/Password is incorrect please try again."
+      redirect_to login_path, alert: 'Account/Password is incorrect please try again.'
     end
   end
 
@@ -237,8 +258,8 @@ class AuthenticationController < ApplicationController
   # Prevent browser caching (fixes back button issue after logout).
   # ============================================================
   def set_no_cache
-    response.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0"
-    response.headers["Pragma"] = "no-cache"
-    response.headers["Expires"] = "Fri, 01 Jan 1990 00:00:00 GMT"
+    response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, max-age=0'
+    response.headers['Pragma'] = 'no-cache'
+    response.headers['Expires'] = 'Fri, 01 Jan 1990 00:00:00 GMT'
   end
 end
