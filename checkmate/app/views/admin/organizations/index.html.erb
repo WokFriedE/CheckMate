@@ -15,15 +15,6 @@
 				<%= render partial: "org_info", locals:{ organization: organization}  %>
 			<% end %>
 		<% end %>
-		<% @organizations.each do |organization| %>
-			<%= link_to admin_organization_path(organization.id) do %>
-				<%= render partial: "org_info", locals:{ organization: organization}  %>
-			<% end %>
-		<% end %>
-		<% @organizations.each do |organization| %>
-			<%= link_to admin_organization_path(organization.id) do %>
-				<%= render partial: "org_info", locals:{ organization: organization}  %>
-			<% end %>
-		<% end %>
+
 	</div>
 </div>
