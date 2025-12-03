@@ -75,7 +75,7 @@ jobs:
             - name: Check and report layout autocorrections (dry-run/ci friendly)
               working-directory: checkmate
               run: |
-                  bin/rubocop -x --parallel --format github --display-cop-names
+                  bin/rubocop --parallel --format github --display-cop-names
 
     test:
         runs-on: ubuntu-latest
