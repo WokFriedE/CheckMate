@@ -1,6 +1,5 @@
 class LandingController < ApplicationController
   before_action :require_auth
 
-  def index
-  end
+  def index; end
 end

@@ -12,13 +12,15 @@
         <% @inventory_item.attributes.each do |key, val| %>
           <tr>
             <td class="border border-gray-300 dark:border-gray-700"><%= key %></td>
-            <td class="border border-gray-300 dark:border-gray-700"><%= [true, false].include?(val) ? (val ? "YES" : "NO") : val %></td>
+            <td class="border border-gray-300 dark:border-gray-700"><%= [true, false].include?(val) ? (val ? 'YES' : 'NO') : val %></td>
           </tr>
         <% end %>
       </tbody>
     </table>
-    <%= button_to "Destroy this item", organization_item_detail_path(params[:organization_org_id], @inventory_item.item_id), method: :delete, data: { confirm: "Are you sure?" }, class: 'btn btn-sm btn-primary' %>
-    <%= link_to "Edit this item", edit_organization_item_detail_path(params[:organization_org_id], @inventory_item.item_id), class: 'btn btn-sm btn-primary' %>
+    <%= button_to 'Destroy this item', organization_item_detail_path(params[:organization_org_id], @inventory_item.item_id), 
+method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-sm btn-primary' %>
+    <%= link_to 'Edit this item', edit_organization_item_detail_path(params[:organization_org_id], @inventory_item.item_id), 
+class: 'btn btn-sm btn-primary' %>
   <% else %>
     <h2 class="text-lg">Item not found.</h2>
   <% end %>

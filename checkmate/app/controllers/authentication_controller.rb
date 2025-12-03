@@ -4,7 +4,7 @@
 # All API calls are performed in Ruby (via SupabaseAuthService), which
 # keeps API keys hidden from the browser and ensures secure handling.
 
-class AuthenticationController < ApplicationController
+class AuthenticationController < ApplicationController # rubocop:disable Metrics/ClassLength
   # Allow unauthenticated access to signup/login pages
   skip_before_action :require_auth, raise: false, only: %i[signup_form signup login_form login]
 
@@ -19,20 +19,20 @@ class AuthenticationController < ApplicationController
   # Simply renders the signup form.
   # ============================================================
   def signup_form
-    if current_user
-      redirect_to landing_path and return
-    end
+    return unless current_user
+
+    redirect_to landing_path and return
   end
 
   # ============================================================
   # POST /signup
   # - Takes email and password from form
   # - Sends them to Supabase for account creation
-# - Logs request and Supabase response for debugging
+  # - Logs request and Supabase response for debugging
   # - Displays result using flash messages
   # - Injects request + response into browser console for debugging
   # ============================================================
-  def signup
+  def signup # rubocop:disable Metrics/AbcSize,Metrics/PerceivedComplexity,Metrics/CyclomaticComplexity
     email    = params[:email].to_s.strip
     password = params[:password].to_s
 
@@ -62,16 +62,14 @@ class AuthenticationController < ApplicationController
     when :success
       # Create user_data entry for profile info
       begin
-        supabase_user_id = response["id"]
-        
-        if supabase_user_id.present?
-        UserDatum.find_or_create_by!(user_id: supabase_user_id)
-        end
-      rescue => e
+        supabase_user_id = response['id']
+
+        UserDatum.find_or_create_by!(user_id: supabase_user_id) if supabase_user_id.present?
+      rescue StandardError => e
         Rails.logger.error("[signup] failed to create user_data: #{e.message}")
       end
 
-      flash.now[:notice] = "Account created. Please confirm your email before logging in."
+      flash.now[:notice] = 'Account created. Please confirm your email before logging in.'
       flash.now[:notice] = 'Account created. Please confirm your email before logging in.'
       render :signup_form, status: :ok
     when :email_in_use
@@ -91,9 +89,9 @@ class AuthenticationController < ApplicationController
   # Simply renders the login form.
   # ============================================================
   def login_form
-    if current_user
-      redirect_to landing_path and return
-    end
+    return unless current_user
+
+    redirect_to landing_path and return
   end
 
   # ============================================================
@@ -101,9 +99,9 @@ class AuthenticationController < ApplicationController
   # - Sends credentials to Supabase for validation
   # - Stores returned tokens in Rails session
   # - Redirects to landing page if successful
-# - Injects response into browser console for debugging
+  # - Injects response into browser console for debugging
   # ============================================================
-  def login
+  def login # rubocop:disable Metrics/AbcSize
     response = SupabaseAuthService.login(email: params[:email], password: params[:password])
     Rails.logger.info("[login] Supabase raw response: #{response.inspect}")
 
@@ -162,7 +160,7 @@ class AuthenticationController < ApplicationController
   # Decides signup outcome from Supabase response without removing any
   # existing behavior. We first rely on explicit signals (error_code,
   # identities), then fall back to the original time/message heuristics.
-  def extract_signup_outcome(response)
+  def extract_signup_outcome(response) # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
     return [:unknown, nil] unless response.is_a?(Hash)
 
     # 1) Explicit error payloads (Supabase returns code + error_code + msg)
@@ -218,7 +216,7 @@ class AuthenticationController < ApplicationController
   # - "user_not_found"      → no such user
   # Otherwise: unknown with raw msg
   # ============================================================
-  def extract_login_outcome(response)
+  def extract_login_outcome(response) # rubocop:disable Metrics/CyclomaticComplexity
     return [:unknown, nil] unless response.is_a?(Hash)
 
     if response['error'] || response['msg']
@@ -240,12 +238,11 @@ class AuthenticationController < ApplicationController
   # Handle expired or invalid CSRF tokens without crashing.
   # ============================================================
   def handle_invalid_authenticity_token
+    reset_session
     if action_name.to_s == 'signup'
-      reset_session
       flash[:alert] = 'Account/Password is incorrect please try again.'
       redirect_to signup_path
     else
-      reset_session
       redirect_to login_path, alert: 'Account/Password is incorrect please try again.'
     end
   end

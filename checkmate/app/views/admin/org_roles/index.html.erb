@@ -1,14 +1,14 @@
 <div class="flex flex-col gap-2">
     <h1 class="text-2xl">Org Roles</h1>
-    <%= link_to "New user role map", new_admin_org_role_path, class: 'btn btn-sm btn-primary'%>
-    <%= link_to "Organizations", admin_organizations_path, class: 'btn btn-sm btn-primary'%>
+    <%= link_to 'New user role map', new_admin_org_role_path, class: 'btn btn-sm btn-primary'%>
+    <%= link_to 'Organizations', admin_organizations_path, class: 'btn btn-sm btn-primary'%>
     <h2 class="text-2xl">Users</h2>
     <% @info.each do |org, roles| %>
         <div>
             <h3 class="font-bold"><%= org %></h3>
             <ul>
                 <% roles.each do |role| %>
-                    <li><%= "#{role.user_role} - #{role.user&.email}" %></li>
+                    <li><%= "#{role.user_role} - #{role.user_data&.email}" %></li>
                 <% end %>
             </ul>
         </div>
