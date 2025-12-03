@@ -18,7 +18,7 @@
 		<%= stylesheet_link_tag :app, "data-turbo-track": "reload"%>
 		<%= javascript_include_tag "http://localhost:35729/livereload.js", defer: true if Rails.env.development? %>
 	</head>
-	<body class="h-screen flex flex-col">
+	<body class="h-screen flex bg-base-200 flex-col">
 
 		<% if show_navbar? %>
 			<%= render  "shared/nav_bar" %>
