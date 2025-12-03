@@ -20,4 +20,7 @@ class UserDatum < ApplicationRecord
         def self.with_user_info user_id
             UserDatum.includes(:user).where(user_id: user_id)
         end
+
+       validates :user_id, 
+           presence: true
 end
