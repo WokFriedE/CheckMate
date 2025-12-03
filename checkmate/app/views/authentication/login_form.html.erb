@@ -1,17 +1,17 @@
 <div class="flex flex-col items-center" >
   <h1 class="text-4xl font-bold mb-4">
-    <%= link_to "CheckMate", root_path %>
+    <%= link_to 'CheckMate', root_path %>
   </h1>
   <%= form_with url: login_path, local: true do %>
     <fieldset class="fieldset bg-base-200 border-base-300 rounded-box w-xs border p-4 ">
       <legend class="fieldset-legend">Login</legend>
       <div class="mb-4">
-        <%= label_tag :email, "Email", class: "label" %>
-        <%= text_field_tag :email, params[:email], class: "input w-full", placeholder: "Email" %>
+        <%= label_tag :email, 'Email', class: 'label' %>
+        <%= text_field_tag :email, params[:email], class: 'input w-full', placeholder: 'Email' %>
       </div>
       <div class="mb-4">
-        <%= label_tag :password, "Password", class: "label" %>
-        <%= password_field_tag :password, nil, class: "input w-full", placeholder: "Password" %>
+        <%= label_tag :password, 'Password', class: 'label' %>
+        <%= password_field_tag :password, nil, class: 'input w-full', placeholder: 'Password' %>
       </div>
       <% if flash[:notice] %>
         <div class="badge badge-soft badge-success mx-auto mb-4"><%= flash[:notice] %></div>

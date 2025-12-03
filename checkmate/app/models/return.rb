@@ -7,15 +7,15 @@ class Return < ApplicationRecord
              foreign_key: :order_id,
              primary_key: :order_id
 
-  def self.get_all_returns_with_item_info
+  def self.all_returns_with_item_info
     Return.includes(:item_detail).all
   end
 
-  def self.get_all_returns_with_order_info
+  def self.all_returns_with_order_info
     Return.includes(:order).all
   end
 
-  def self.get_complete_returns_info
+  def self.complete_returns_info
     Return.includes(:item_detail, :order).all
   end
 end

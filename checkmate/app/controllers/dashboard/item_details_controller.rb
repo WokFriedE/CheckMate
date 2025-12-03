@@ -1,5 +1,6 @@
 module Dashboard
-  class ItemDetailsController < ApplicationController
+  # TODO: separate out this file
+  class ItemDetailsController < ApplicationController # rubocop:disable Metrics/ClassLength
     def index
       load_organization
       @inventory_items = Inventory.get_detailed_inventory(params[:organization_org_id])
@@ -15,7 +16,7 @@ module Dashboard
       @item_setting = ItemSetting.new
     end
 
-    def destroy
+    def destroy # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity
       load_organization
       return if performed?
 
@@ -75,7 +76,8 @@ module Dashboard
                                           )
     end
 
-    def update
+    # TODO: refactor this function
+    def update # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
       load_organization
       return if performed?
 
@@ -126,7 +128,7 @@ module Dashboard
       end
     end
 
-    def show
+    def show # rubocop:disable Metrics/AbcSize
       load_organization
       return if performed?
 
@@ -140,7 +142,7 @@ module Dashboard
       redirect_to organization_item_details_path(params[:organization_org_id]), alert: 'Item not found.' and return
     end
 
-    def create
+    def create # rubocop:disable Metrics/AbcSize
       load_organization
       return if performed?
 
@@ -173,17 +175,17 @@ module Dashboard
       end
     end
 
-    def handle_transaction_error(e)
-      Rails.logger.error { "ActiveRecord::RecordInvalid: #{e.message}" }
-      flash.now[:alert] = "Error with item: #{e.record.errors.full_messages.join(', ')}"
+    def handle_transaction_error(err)
+      Rails.logger.error { "ActiveRecord::RecordInvalid: #{err.message}" }
+      flash.now[:alert] = "Error with item: #{err.record.errors.full_messages.join(', ')}"
 
       rebuild_form_objects
       render :new, status: :unprocessable_entity
     end
 
-    def handle_unexpected_error(e)
-      Rails.logger.error { "Unexpected error: #{e.message}" }
-      flash[:alert] = "Error with item: #{e.message}"
+    def handle_unexpected_error(err)
+      Rails.logger.error { "Unexpected error: #{err.message}" }
+      flash[:alert] = "Error with item: #{err.message}"
 
       rebuild_form_objects
       render :new, status: :unprocessable_entity
