@@ -20,7 +20,7 @@ module Admin
       @users = User.all
     end
 
-    def create # rubocop:disable Metrics/AbcSize
+    def create
       processed = org_role_params.to_h.symbolize_keys
       processed[:org_id] = processed[:org_id].to_i if processed[:org_id].present?
 

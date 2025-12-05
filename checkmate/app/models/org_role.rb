@@ -27,8 +27,6 @@ class OrgRole < ApplicationRecord
 
   def self.destroy_by_org(org_id)
     users = find_by_org org_id
-    users.each do |user|
-      user.destroy!
-    end
+    users.each(&:destroy!)
   end
 end

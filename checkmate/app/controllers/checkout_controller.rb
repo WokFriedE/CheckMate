@@ -7,6 +7,6 @@ class CheckoutController < ApplicationController
   def update
     # Used to create or change the order history tbd
     require_auth
-    current_order = Order.get_order_details(params[:order_id])
+    Order.get_order_details(params[:order_id])
   end
 end
