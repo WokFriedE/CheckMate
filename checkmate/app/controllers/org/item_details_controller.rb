@@ -9,9 +9,8 @@ class Org::ItemDetailsController < Org::BaseController
   end
 
   def new
-    # TODO: add a user role check
     load_user_role
-    redirect_based_on_role
+    redirect_based_on_role organization_item_details_path(@org_id), 'admin'
     @inventory = Inventory.new
     @item_detail = ItemDetail.new
     @item_setting = ItemSetting.new

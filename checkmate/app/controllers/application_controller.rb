@@ -46,8 +46,10 @@ class ApplicationController < ActionController::Base
 
   def redirect_based_on_role(path, expected_role, user_role = nil)
     user_role ||= @current_user_role
-    return unless expected_role != user_role
+    roles = expected_role.is_a?(Array) ? expected_role : [expected_role]
+    return unless roles.include?(user_role)
 
+    flash.alert = 'Unauthorized access'
     redirect_to path
   end
 
