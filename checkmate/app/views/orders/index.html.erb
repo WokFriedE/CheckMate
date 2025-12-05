@@ -1,0 +1,37 @@
+<div class=" flex flex-col flex-1 justify-center  overflow-auto gap-6 p-3" >
+	<div role="tablist" class="tabs tabs-box bg-base-100 max-w-fit mx-auto rounded-full">
+		<a role="tab" class="tab tab-active rounded-full">Current</a>
+		<a role="tab" class="tab rounded-full">History</a>
+		<a role="tab" class="tab rounded-full">Favorites</a>
+	</div>
+
+	<div class=" flex  flex-col flex-1 overflow-auto gap-6 sm:px-3 w-full lg:w-3/4 mx-auto" >
+
+		<div class=" flex flex-col gap-3">
+
+			<% for i in 15.times do %>
+				<div class="collapse bg-base-100 border-base-300 border collapse-arrow">
+					<input type="checkbox" />
+					<div class="collapse-title font-semibold flex flex-row justify-between ">
+						<h1 class="text-">Order #92384</h1>
+						<h1 class="">09/45/3003</h1>
+					</div>
+
+					<div class="collapse-content  ">
+
+						<%= render partial: 'order_item', locals:  
+                            { item: 
+                            { name: 'Item Name', 
+                            description: "Item description goes here 
+                                        and it can go really hard lololol",
+                            imageUrl: asset_path('item_img.jpg'),
+                            count: i,   
+                            min: 1,
+                            max: 5,
+                            returnDate: '2026-07-22' } }  %>
+					</div>
+				</div>
+			<% end %>
+		</div>
+	</div>
+</div>
