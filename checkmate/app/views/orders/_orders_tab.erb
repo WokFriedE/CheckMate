@@ -1,0 +1,10 @@
+<div role="tablist" class="tabs tabs-box bg-base-100 max-w-fit mx-auto rounded-full">
+	<%[:current, :history, :favorites].each do |tab|%>
+		<% path = send("#{tab}_orders_path") %>
+
+		<%= link_to  tab.to_s.capitalize ,
+              path,
+              role: "tab",
+              class: "tab rounded-full #{'tab-active' if current_page?(path)}" %>
+	<%end%>
+</div>

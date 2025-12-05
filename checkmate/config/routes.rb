@@ -1,9 +1,19 @@
 Rails.application.routes.draw do
   resources :messages
   resources :returns
-  resources :orders
   resources :inventories, only: %i[index new create]
   resources :checkout
+
+  resources :orders, only: [] do
+    collection do
+      # default route
+      get '/' => redirect('/orders/current')
+
+      get :current
+      get :history
+      get :favorites
+    end
+  end
 
   root 'application#index'
 
