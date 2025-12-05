@@ -8,7 +8,7 @@
             <h3 class="font-bold"><%= org %></h3>
             <ul>
                 <% roles.each do |role| %>
-                    <li><%= "#{role.user_role} - #{role.user_id}" %></li>
+                    <li><%= "#{role.user_role} - #{role.email || role.user_id}" %></li>
                 <% end %>
             </ul>
         </div>

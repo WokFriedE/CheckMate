@@ -64,7 +64,11 @@ class AuthenticationController < ApplicationController # rubocop:disable Metrics
       begin
         supabase_user_id = response['id']
 
-        UserDatum.find_or_create_by!(user_id: supabase_user_id) if supabase_user_id.present?
+        if supabase_user_id.present?
+          UserDatum.find_or_create_by!(user_id: supabase_user_id) do |user_datum|
+            user_datum.email = email
+          end
+        end
       rescue StandardError => e
         Rails.logger.error("[signup] failed to create user_data: #{e.message}")
       end

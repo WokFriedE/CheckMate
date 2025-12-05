@@ -1,11 +1,12 @@
 class OrgRole < ApplicationRecord
   belongs_to :organization, foreign_key: :org_id, primary_key: :org_id, class_name: 'Organization'
-  belongs_to :user_datum, foreign_key: :user_id, primary_key: :user_id
+  belongs_to :user_datum, foreign_key: :user_id, primary_key: :user_id, class_name: 'UserDatum'
   validates :user_role, presence: true
 
   def self.role_user_info
     # Use includes to eager-load associated user data to avoid N+1
-    OrgRole.includes(:user_datum).all
+    OrgRole.left_joins(:user_datum)
+           .select('org_roles.*, user_data.email, user_data.name')
   end
 
   def self.role_org_info

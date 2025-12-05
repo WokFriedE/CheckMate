@@ -13,6 +13,7 @@ Rails.application.routes.draw do
   post 'login', to: 'authentication#login'
 
   delete 'logout', to: 'authentication#logout'
+  get 'logout', to: 'authentication#logout'
 
   get 'landing', to: 'landing#index'
 
