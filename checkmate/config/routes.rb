@@ -3,7 +3,6 @@ Rails.application.routes.draw do
   resources :returns
   resources :orders
   resources :inventories, only: %i[index new create]
-  resources :checkout
 
   root 'application#index'
 
@@ -14,6 +13,7 @@ Rails.application.routes.draw do
   post 'login', to: 'authentication#login'
 
   delete 'logout', to: 'authentication#logout'
+  get 'logout', to: 'authentication#logout'
 
   get 'landing', to: 'landing#index'
 
@@ -24,9 +24,12 @@ Rails.application.routes.draw do
 
   # creates routes for /org/:org_id/*
   resources :organizations, path: 'org', param: :org_id do
-    # creates routes for /org/:org_id/inventory
-    resources :item_details, path: 'inventory', controller: 'dashboard/item_details', param: :item_id,
+    # creates routes for /org/:org_id/dashboard/inventory
+    resources :item_details, path: 'dashboard/inventory', controller: 'org/item_details', param: :item_id,
                              only: %i[index new create show edit update destroy]
+    resources :checkout, controller: 'checkout', param: :order_id, only: %i[show]
+
+    # get 'inventory', param: :item_id, to: 'org/item_details'
   end
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.

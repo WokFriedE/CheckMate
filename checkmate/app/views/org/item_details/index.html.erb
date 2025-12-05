@@ -5,8 +5,7 @@
 <div class="container mx-auto p-4">
 
     <div class="tabs tabs-box rounded-box overflow-x-auto" >
-        <%= link_to 'Create Item', new_organization_item_detail_path(params[:organization_org_id]), 
-class: 'btn btn-sm btn-primary' %>
+        <%= link_to 'Create Item', new_organization_item_detail_path(@org_id), class: 'btn btn-sm btn-primary' %>
         <input type="radio" name="my_tabs_6" class="tab" aria-label="Tab 1" checked="checked" />
         <input type="radio" name="my_tabs_6" class="tab" aria-label="Tab 2" />
         <input type="radio" name="my_tabs_6" class="tab" aria-label="Tab 3" />

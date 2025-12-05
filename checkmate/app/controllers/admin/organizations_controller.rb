@@ -1,4 +1,6 @@
 module Admin
+  # TODO: add admin base controller, check super user
+
   class OrganizationsController < ApplicationController
     before_action :set_organization, only: %i[show edit update destroy]
     def index

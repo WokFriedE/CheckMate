@@ -1,11 +1,12 @@
 class OrgRole < ApplicationRecord
   belongs_to :organization, foreign_key: :org_id, primary_key: :org_id, class_name: 'Organization'
-  belongs_to :user_datum, foreign_key: :user_id, primary_key: :user_id
+  belongs_to :user_datum, foreign_key: :user_id, primary_key: :user_id, class_name: 'UserDatum'
   validates :user_role, presence: true
 
   def self.role_user_info
     # Use includes to eager-load associated user data to avoid N+1
-    OrgRole.includes(:user_datum).all
+    OrgRole.left_joins(:user_datum)
+           .select('org_roles.*, user_data.email, user_data.name')
   end
 
   def self.role_org_info
@@ -18,6 +19,11 @@ class OrgRole < ApplicationRecord
 
   def self.find_by_org(org_id)
     OrgRole.where(org_id: org_id)
+  end
+
+  def self.provide_user_role(user_id, org_id)
+    user_role_raw = OrgRole.where(org_id: org_id, user_id: user_id).first
+    user_role_raw&.user_role
   end
 
   def self.destroy_by_org(org_id)

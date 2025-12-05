@@ -1,23 +1,24 @@
-module Dashboard
-  # TODO: separate out this file
-  class ItemDetailsController < ApplicationController # rubocop:disable Metrics/ClassLength
+module Org
+  class ItemDetailsController < Org::BaseController # rubocop:disable Metrics/ClassLength
     def index
-      load_organization
+      load_user_role
       @inventory_items = Inventory.get_detailed_inventory(params[:organization_org_id])
-      @inventory_attributes = Inventory.get_detailed_inventory_schema
+      @inventory_attributes = Inventory.detailed_inventory_schema
       Rails.logger.debug do
         "Dashboard::ItemDetailsController#index headers: #{@inventory_attributes.inspect}"
       end
     end
 
     def new
+      load_user_role
+      redirect_based_on_role organization_item_details_path(@org_id), %w[admin organizer]
       @inventory = Inventory.new
       @item_detail = ItemDetail.new
       @item_setting = ItemSetting.new
     end
 
-    def destroy # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity
-      load_organization
+    def destroy # rubocop:disable Metrics/CyclomaticComplexity
+      redirect_based_on_role organization_item_details_path(@org_id), %w[admin organizer]
       return if performed?
 
       begin
@@ -36,18 +37,15 @@ module Dashboard
         ActiveRecord::Base.transaction do
           item_id = @item_detail.item_id
           org_id = @organization&.org_id
-
           ItemSetting.where(item_id: item_id, owner_org_id: org_id).destroy_all
           Inventory.where(item_id: item_id, owner_org_id: org_id).destroy_all
-
           @item_detail.destroy!
         end
 
         respond_to do |format|
           format.html do
-            redirect_to(organization_item_details_path(params[:organization_org_id]),
-                        notice: 'Item was successfully deleted.',
-                        status: :see_other)
+            redirect_to organization_item_details_path(params[:organization_org_id]), notice: 'Item was successfully deleted.',
+                                                                                      status: :see_other
           end
           format.json { head :no_content }
         end
@@ -65,7 +63,7 @@ module Dashboard
     end
 
     def edit
-      load_organization
+      # TODO: add a user role check
       org_id = @organization.org_id
       @inventory = Inventory.find_by(item_id: params[:item_id], owner_org_id: org_id)
       fetch_item_id = params[:item_id].presence || params[:id].presence
@@ -76,9 +74,8 @@ module Dashboard
                                           )
     end
 
-    # TODO: refactor this function
-    def update # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
-      load_organization
+    def update # rubocop:disable Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
+      redirect_based_on_role organization_item_details_path(@org_id), %w[admin organizer]
       return if performed?
 
       org_id = @organization&.org_id
@@ -128,8 +125,7 @@ module Dashboard
       end
     end
 
-    def show # rubocop:disable Metrics/AbcSize
-      load_organization
+    def show
       return if performed?
 
       # scope the lookup to the current organization so we don't surface items from other orgs
@@ -142,8 +138,8 @@ module Dashboard
       redirect_to organization_item_details_path(params[:organization_org_id]), alert: 'Item not found.' and return
     end
 
-    def create # rubocop:disable Metrics/AbcSize
-      load_organization
+    def create
+      redirect_based_on_role organization_item_details_path(@org_id), %w[admin organizer]
       return if performed?
 
       # prefer the loaded organization so we are sure it exists
@@ -175,17 +171,17 @@ module Dashboard
       end
     end
 
-    def handle_transaction_error(err)
-      Rails.logger.error { "ActiveRecord::RecordInvalid: #{err.message}" }
-      flash.now[:alert] = "Error with item: #{err.record.errors.full_messages.join(', ')}"
+    def handle_transaction_error(e)
+      Rails.logger.error { "ActiveRecord::RecordInvalid: #{e.message}" }
+      flash.now[:alert] = "Error with item: #{e.record.errors.full_messages.join(', ')}"
 
       rebuild_form_objects
       render :new, status: :unprocessable_entity
     end
 
-    def handle_unexpected_error(err)
-      Rails.logger.error { "Unexpected error: #{err.message}" }
-      flash[:alert] = "Error with item: #{err.message}"
+    def handle_unexpected_error(e)
+      Rails.logger.error { "Unexpected error: #{e.message}" }
+      flash[:alert] = "Error with item: #{e.message}"
 
       rebuild_form_objects
       render :new, status: :unprocessable_entity
@@ -228,24 +224,6 @@ module Dashboard
       params.require(:inventory)
             .require(:item_setting)
             .permit(:reg_max_check, :reg_max_total_quantity, :reg_prebook_timeframe, :reg_borrow_time)
-    end
-
-    def load_organization
-      @organization = Organization.find_by(org_id: params[:organization_org_id])
-      return if @organization
-
-      Rails.logger.debug { "Organization not found for org_id=#{params[:organization_org_id].inspect}" }
-
-      if action_name == 'create'
-        Rails.logger.warn do
-          "Organization not found for org param=#{params[:organization_org_id].inspect}; deferring handling to caller"
-        end
-        @organization = nil
-        return
-      end
-
-      redirect_to landing_path, alert: 'Organization not found.'
-      nil
     end
   end
 end

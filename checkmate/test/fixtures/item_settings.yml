@@ -13,7 +13,7 @@ one:
   sup_borrow_time: 1
 
 two:
-  item_id: 1
+  item_id: 2
   owner_org_id: 1
   reg_max_check: 1
   reg_max_total_quantity: 1

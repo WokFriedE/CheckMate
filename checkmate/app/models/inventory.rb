@@ -32,10 +32,6 @@ class Inventory < ApplicationRecord
     Inventory.includes(:item_detail).all
   end
 
-  def self.inventory_org_info
-    Inventory.includes(:organization).all
-  end
-
   def self.complete_inventory_info
     Inventory.includes(:item_detail, :organization).all
   end
