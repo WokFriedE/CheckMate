@@ -3,10 +3,10 @@
 		<h1 class="card-title text-2xl mx-auto"><%= organization.org_name %></h1>
 		<ul class="list">
 			<% organization.attributes.each do |key, value| %>
-				<% next if ["org_pwd"].include? key %>
+				<% next if ['org_pwd'].include? key %>
 				<li class="flex justify-between ">
 					<span class=" font-bold" ><%= key.titleize %></span>
-					<span class="label"> <%= value.blank? ? ( heroicon "question-mark-circle", variant: :outline, options: { class: "size-4 opacity-50" }): value %></span>
+					<span class="label"> <%= value.blank? ? (heroicon 'question-mark-circle', variant: :outline, options: { class: 'size-4 opacity-50' }) : value %></span>
 				</li>
 			<% end %>
 		</ul>
