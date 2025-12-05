@@ -1,7 +1,7 @@
 module Admin
   class OrgRolesController < ApplicationController
-    def index 
-      org_roles = OrgRole.user_role_info
+    def index
+      org_roles = OrgRole.role_user_info
       organizations = Organization.all
 
       @info = {}
@@ -20,7 +20,7 @@ module Admin
       @users = User.all
     end
 
-    def create
+    def create # rubocop:disable Metrics/AbcSize
       processed = org_role_params.to_h.symbolize_keys
       processed[:org_id] = processed[:org_id].to_i if processed[:org_id].present?
 
@@ -31,7 +31,7 @@ module Admin
       if @org_role.save
         redirect_to admin_org_roles_path
       else
-        logger.debug "OrgRole save failed: #{ @org_role.errors.full_messages.join('; ') }"
+        logger.debug "OrgRole save failed: #{@org_role.errors.full_messages.join('; ')}"
         @organizations = Organization.all
         @users = User.all
         render :new, status: :unprocessable_entity
@@ -39,6 +39,7 @@ module Admin
     end
 
     private
+
     def org_role_params
       # Permit both `user_role` (form name) and `role` (model column) to be flexible.
       params.require(:org_role).permit(:org_id, :user_id, :user_role)

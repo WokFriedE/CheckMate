@@ -2,7 +2,7 @@
   # Determine proper URL + method for form: create (collection) vs update (member)
   org_param = params[:organization_org_id]
   item_id = @inventory.try(:item_id) || @item_detail.try(:item_id) || params[:item_id]
-  if @inventory && @inventory.persisted? && item_id.present?
+  if @inventory&.persisted? && item_id.present?
     form_url = organization_item_detail_path(org_param, item_id)
     form_method = :patch
   else
@@ -10,7 +10,7 @@
     form_method = :post
   end
 %>
-<%= form_with model: @inventory, url: form_url, method: form_method, local: true, html: { autocomplete: "off" } do |f| %>
+<%= form_with model: @inventory, url: form_url, method: form_method, local: true, html: { autocomplete: 'off' } do |f| %>
   <%= f.fields_for :item_detail, @item_detail do |df| %>
     <fieldset>
       <legend class="text-2xl">Item Details</legend>
@@ -38,7 +38,7 @@
     </div>
     <div class="field">
       <%= f.label :item_count, 'Item Count*' %><br>
-      <%= f.number_field :item_count, class: 'border', placeholder: "Quantity...", value: 1, required: true %>
+      <%= f.number_field :item_count, class: 'border', placeholder: 'Quantity...', value: 1, required: true %>
     </div>
     <div class="field">
       <%= f.check_box :can_prebook %>
@@ -50,7 +50,8 @@
     </div>
     <div class="field">
       <%= f.label :request_mode, 'Request Mode*' %><br>
-      <%= f.select :request_mode, options_for_select(["self-checkout", "password", "request"]), {}, { required: true, class: "border" }  %>
+      <%= f.select :request_mode, options_for_select(%w[self-checkout password request]), {}, 
+{ required: true, class: 'border' }  %>
     </div>
   </fieldset>
   <%= f.fields_for :item_setting, @item_setting do |sf| %>
@@ -75,7 +76,7 @@
     </fieldset>
   <% end %>
   <div class="actions mt-2">
-    <%= f.submit (@inventory && @inventory.persisted?) ? 'Save Changes' : 'Add Item', class: 'border p-1 hover:cursor-pointer' %>
+    <%= f.submit @inventory&.persisted? ? 'Save Changes' : 'Add Item', class: 'border p-1 hover:cursor-pointer' %>
     <%= link_to 'Cancel', organization_item_details_path(params[:organization_org_id]), class: 'border p-1' %>
   </div>
 <% end %>

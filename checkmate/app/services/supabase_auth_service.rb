@@ -3,20 +3,21 @@
 # Service for interacting with Supabase Auth API (signup, login, decode JWT).
 # Keeps secrets on the server side.
 
-require "httparty"
-require "jwt"
+require 'httparty'
+require 'jwt'
 
 class SupabaseAuthService
   include HTTParty
-  base_uri ENV["SUPABASE_URL"] + "/auth/v1"
-  headers "Content-Type" => "application/json"
+
+  base_uri "#{ENV.fetch('SUPABASE_URL', nil)}/auth/v1"
+  headers 'Content-Type' => 'application/json'
 
   def self.signup(email:, password:)
     body = { email: email, password: password }.to_json
     response = post(
-      "/signup",
+      '/signup',
       body: body,
-      headers: { "apikey" => ENV["SUPABASE_KEY"], "Content-Type" => "application/json" }
+      headers: { 'apikey' => ENV.fetch('SUPABASE_KEY', nil), 'Content-Type' => 'application/json' }
     )
     Rails.logger.info("[supabase.signup] status=#{response.code} body=#{response.body}")
     JSON.parse(response.body)
@@ -25,9 +26,9 @@ class SupabaseAuthService
   def self.login(email:, password:)
     body = { email: email, password: password }.to_json
     response = post(
-      "/token?grant_type=password",
+      '/token?grant_type=password',
       body: body,
-      headers: { "apikey" => ENV["SUPABASE_KEY"], "Content-Type" => "application/json" }
+      headers: { 'apikey' => ENV.fetch('SUPABASE_KEY', nil), 'Content-Type' => 'application/json' }
     )
     Rails.logger.info("[supabase.login] status=#{response.code} body=#{response.body}")
     JSON.parse(response.body)
@@ -35,7 +36,7 @@ class SupabaseAuthService
 
   def self.decode_jwt(token)
     JWT.decode(token, nil, false).first
-  rescue
+  rescue StandardError
     nil
   end
 end

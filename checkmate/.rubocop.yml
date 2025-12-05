@@ -1,14 +1,26 @@
 plugins:
   - rubocop-erb
 
-
 AllCops:
   TargetRubyVersion: 3.2
   NewCops: enable
 
+Metrics/BlockLength:
+  Max: 100
+
+Metrics/MethodLength:
+  Max: 100
+
+Style/Documentation:
+  Enabled: False
+
 # Basic cops only
 Layout/LineLength:
   Max: 120
+  Exclude:
+    - "db/seeds.rb"
+    - "db/schema.rb"
+    - "db/migrate/**/*"
 
 Lint/UselessAssignment:
   Enabled: true

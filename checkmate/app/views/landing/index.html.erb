@@ -1,7 +1,42 @@
+<div class="flex flex-col items-center mt-10">
 
-<div class="card bg-base-100 w-96 shadow-sm">
+  <h1 class="text-4xl font-bold mb-4">CheckMate</h1>
+
+  <fieldset class="fieldset bg-base-200 border-base-300 rounded-box w-xs border p-4 shadow">
+    <legend class="fieldset-legend">Account</legend>
+
+    <p class="text-center mb-4 text-gray-600">
+      You are logged in
+    </p>
+
+    <div class="mb-4">
+      <p class="label">Email: </p>
+      <%= current_user[:email] %>
+    </div>
+
+    <div class="flex justify-center mt-6">
+        <%= button_to 'Log out', logout_path, method: :delete, class: 'btn btn-error' %>
+    </div>
+
+
+
+    <div class="divider mt-6">OR</div>
+
+  </fieldset>
 
   <h1 style="margin-bottom: 20px;">You are logged in</h1>
   <p style="margin-bottom: 12px;">Email: <strong><%= current_user[:email] %></strong></p>
-  <%= button_to "Log out", logout_path, method: :delete, style: "padding:10px 20px; background:#dc3545; color:#fff; border:none; border-radius:4px; cursor:pointer;" %>
+  <%= button_to 'Log out', logout_path, method: :delete, 
+style: 'padding:10px 20px; background:#dc3545; color:#fff; border:none; border-radius:4px; cursor:pointer;' %>
 </div>
+
+<script>
+  const fullUserObject = 
+  {
+    session: <%= raw session.to_json %>,
+    current_user: <%= raw current_user.to_h.to_json %>,
+    supabase_user: <%= raw session[:supabase_user].to_json %>
+  };
+
+  console.log("Full User JSON Object:", fullUserObject);
+</script>

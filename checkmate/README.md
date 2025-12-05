@@ -15,6 +15,7 @@ set up rbenv
 ERB LSP - https://marketplace.visualstudio.com/items?itemName=aliariff.vscode-erb-beautify 
 Set the exec path to: `/home/{user_name}/.rbenv/versions/3.4.5/bin/htmlbeautifier` with ubuntu
 Set the bundle path to: `/home/{user_name}/github/CheckMate/checkmate/bin/bundle` with ubuntu
+or use the `code checkmate.code-workspace` to open a new vscode instance with correct items - recommended to use wsl  
 
 * Database creation
 Example:
