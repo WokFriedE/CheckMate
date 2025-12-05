@@ -443,3 +443,4 @@ end
 # Checkout screen should allow people to change the pending status of the order to confirmed or create an order with the items (for simplicity lets do that)
 #   - store items wanted into session / flash to checkout or cookies
 # Todo: add an action that would create an order and send them to the order page -> if they exit the order page delete it after x time
+# After clicking to checkout, summon an action that would send the item ids and send it to the order creation page --> we need to do a check on quantity
