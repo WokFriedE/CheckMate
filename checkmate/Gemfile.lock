@@ -123,6 +123,7 @@ GEM
     ffi (1.17.2-aarch64-linux-musl)
     ffi (1.17.2-arm-linux-gnu)
     ffi (1.17.2-arm-linux-musl)
+    ffi (1.17.2-arm64-darwin)
     ffi (1.17.2-x86_64-linux-gnu)
     ffi (1.17.2-x86_64-linux-musl)
     formatador (1.2.3)
@@ -153,6 +154,7 @@ GEM
     herb (0.8.2-aarch64-linux-musl)
     herb (0.8.2-arm-linux-gnu)
     herb (0.8.2-arm-linux-musl)
+    herb (0.8.2-arm64-darwin)
     herb (0.8.2-x86_64-linux-gnu)
     herb (0.8.2-x86_64-linux-musl)
     heroicon (1.0.0)
@@ -244,6 +246,8 @@ GEM
       racc (~> 1.4)
     nokogiri (1.18.10-arm-linux-musl)
       racc (~> 1.4)
+    nokogiri (1.18.10-arm64-darwin)
+      racc (~> 1.4)
     nokogiri (1.18.10-x86_64-linux-gnu)
       racc (~> 1.4)
     nokogiri (1.18.10-x86_64-linux-musl)
@@ -259,6 +263,7 @@ GEM
     pg (1.6.2)
     pg (1.6.2-aarch64-linux)
     pg (1.6.2-aarch64-linux-musl)
+    pg (1.6.2-arm64-darwin)
     pg (1.6.2-x86_64-linux)
     pg (1.6.2-x86_64-linux-musl)
     pp (0.6.3)
@@ -385,6 +390,7 @@ GEM
     sqlite3 (2.8.0-aarch64-linux-musl)
     sqlite3 (2.8.0-arm-linux-gnu)
     sqlite3 (2.8.0-arm-linux-musl)
+    sqlite3 (2.8.0-arm64-darwin)
     sqlite3 (2.8.0-x86_64-linux-gnu)
     sqlite3 (2.8.0-x86_64-linux-musl)
     sshkit (1.24.0)
@@ -403,11 +409,13 @@ GEM
     tailwindcss-ruby (4.1.16)
     tailwindcss-ruby (4.1.16-aarch64-linux-gnu)
     tailwindcss-ruby (4.1.16-aarch64-linux-musl)
+    tailwindcss-ruby (4.1.16-arm64-darwin)
     tailwindcss-ruby (4.1.16-x86_64-linux-gnu)
     tailwindcss-ruby (4.1.16-x86_64-linux-musl)
     thor (1.4.0)
     thruster (0.1.16)
     thruster (0.1.16-aarch64-linux)
+    thruster (0.1.16-arm64-darwin)
     thruster (0.1.16-x86_64-linux)
     timeout (0.4.4)
     tsort (0.2.0)
@@ -441,6 +449,7 @@ PLATFORMS
   aarch64-linux-musl
   arm-linux-gnu
   arm-linux-musl
+  arm64-darwin-25
   x86_64-linux
   x86_64-linux-gnu
   x86_64-linux-musl
