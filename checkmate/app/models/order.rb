@@ -9,7 +9,7 @@ class Order < ApplicationRecord
              foreign_key: :user_id,
              primary_key: :user_id
 
-  def self.get_orders_with_user_info
+  def self.orders_with_user_info
     Order.includes(:user_datum).all
   end
 

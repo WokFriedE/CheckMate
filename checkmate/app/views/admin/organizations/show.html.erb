@@ -2,14 +2,14 @@
   <h1 class="text-2xl text-left"><%= @organization.org_name %></h1>
   <ul class="text-center">
       <% @organization.attributes.each do |key, value| %>
-      <% next if ["org_pwd"].include? key %>
+      <% next if ['org_pwd'].include? key %>
       <li><strong><%= key.capitalize %>:</strong> <%= value %></li>
       <% end %>
   </ul>
 
   <div class="flex flex-col gap-2 justify-center items-center">
-    <%= link_to "Edit this organization", edit_admin_organization_path(@organization), class: 'btn btn-sm btn-primary' %>
-    <%= link_to "Back to organizations", admin_organizations_path, class: 'btn btn-sm btn-primary' %>
-    <%= button_to "Destroy this organization", [:admin, @organization], method: :delete, class: 'btn btn-sm btn-primary' %>
+    <%= link_to 'Edit this organization', edit_admin_organization_path(@organization), class: 'btn btn-sm btn-primary' %>
+    <%= link_to 'Back to organizations', admin_organizations_path, class: 'btn btn-sm btn-primary' %>
+    <%= button_to 'Destroy this organization', [:admin, @organization], method: :delete, class: 'btn btn-sm btn-primary' %>
   </div>
 </div>

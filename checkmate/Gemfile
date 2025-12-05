@@ -23,6 +23,7 @@ gem 'httparty'
 
 group :development do
   gem 'launchy'
+  gem 'web-console'
 end
 
 gem 'jwt'
@@ -62,13 +63,10 @@ group :development, :test do
   gem 'rubocop', require: false
   gem 'rubocop-erb', require: false
   gem 'rubocop-rails', require: false
-end
 
-group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem 'guard'
   gem 'guard-livereload', require: false
-  gem 'web-console'
 end
 
 group :test do
