@@ -9,6 +9,19 @@ class Order < ApplicationRecord
              foreign_key: :user_id,
              primary_key: :user_id
 
+  HISTORY_DISPLAY_FIELDS = [
+    'orders.order_id',
+    'orders.order_date',
+    'orders.return_status',
+    'orders.order_type',
+    'order_details.order_detail_id',
+    'order_details.item_id',
+    'order_details.due_date',
+    'order_details.owner_org_id',
+    'order_details.checkout_time',
+    'order_details.approval_status'
+  ].join(', ').freeze
+
   def self.orders_with_user_info
     Order.includes(:user_datum).all
   end
@@ -19,5 +32,70 @@ class Order < ApplicationRecord
 
   def self.complete_orders_info
     Order.includes(:user_datum, :order_details, :returns).all
+  end
+
+  def self.user_all_orders(user_id)
+    joins(:order_details)
+      .where(orders: { user_id: user_id })
+      .order(order_details: :checkout_time)
+      .select(HISTORY_DISPLAY_FIELDS)
+  end
+
+  def self.user_past_orders(user_id)
+    joins(:order_details)
+      .where(orders: { user_id: user_id })
+      .where('order_details.order_date < NOW()')
+      .where('orders.return_status = TRUE OR orders.return_status IS NULL')
+      .order(order_details: :checkout_time)
+      .select(HISTORY_DISPLAY_FIELDS)
+  end
+
+  def self.user_current_orders(user_id)
+    joins(:order_details)
+      .where(orders: { user_id: user_id })
+      .where("orders.order_date < NOW()")
+      .where(return_status: false)
+      .order(order_details: :checkout_time)
+      .select(HISTORY_DISPLAY_FIELDS) 
+  end
+
+  def self.user_future_orders(user_id)
+    joins(:order_details)
+      .where(orders: { user_id: user_id })
+      .where("order_details.checkout_time > ?", Time.current)
+      .order(order_details: :checkout_time)
+      .select(HISTORY_DISPLAY_FIELDS) 
+  end
+
+  def self.org_all_orders(owner_org_id)
+    joins(:order_details)
+      .where(order_details: { owner_org_id: owner_org_id })
+      .order(order_details: :checkout_time)
+      .select(HISTORY_DISPLAY_FIELDS)
+  end
+
+  def self.org_past_orders(owner_org_id)
+    joins(:order_details)
+      .where(order_details: { owner_org_id: owner_org_id })
+      .where('order_details.order_date < NOW()')
+      .order(order_details: :checkout_time)
+      .select(HISTORY_DISPLAY_FIELDS)
+  end
+
+  def self.org_current_orders(owner_org_id)
+    joins(:order_details)
+      .where(order_details: { owner_org_id: owner_org_id })
+      .where("orders.order_date < NOW()")
+      .where(return_status: false)
+      .order(order_details: :checkout_time)
+      .select(HISTORY_DISPLAY_FIELDS) 
+  end
+
+  def self.org_future_orders(owner_org_id)
+    joins(:order_details)
+      .where(order_details: { owner_org_id: owner_org_id })
+      .where("order_details.checkout_time > ?", Time.current)
+      .order(order_details: :checkout_time)
+      .select(HISTORY_DISPLAY_FIELDS) 
   end
 end
