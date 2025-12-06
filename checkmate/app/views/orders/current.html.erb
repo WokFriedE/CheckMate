@@ -1,0 +1,10 @@
+<div class=" flex flex-col flex-1 justify-center  overflow-auto gap-6 p-3" >
+	<%= render "orders_tab"%>
+	<div class=" flex  flex-col flex-1 overflow-auto gap-6 sm:px-3 w-full lg:w-3/4 mx-auto" >
+		<div class=" flex flex-col gap-3">
+			<% for i in 15.times do %>
+				<%= render "order_group"%>
+			<% end %>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,19 @@
+<div class="flex flex-col sm:flex-row gap-4 bg-base-200 p-4 rounded-box">
+	<div class="my-auto">
+		<img class="size-fill sm:size-20 rounded-box object-cover " src="<%= item[:imageUrl] %>"/>
+	</div>
+	<div class="flex flex-col gap-1 w-full">
+		<p><%=item[:name]%></p>
+		<p class="text-xs uppercase font-semibold opacity-60 "><%= item[:description] %></p>
+		<ul class="list">
+			<li class="flex justify-between ">
+				<span class=" font-bold" >Count</span>
+				<span class="label"><%= item[:count]%></span>
+			</li>
+			<li class="flex justify-between ">
+				<span class=" font-bold" >Status</span>
+				<div class="badge badge-sm badge-outline badge-error ">Overdue</div>
+			</li>
+		</ul>
+	</div>
+</div>
