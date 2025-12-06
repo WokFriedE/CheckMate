@@ -1,39 +1,13 @@
-plugins:
-  - rubocop-erb
-
 AllCops:
-  TargetRubyVersion: 3.2
-  NewCops: enable
+  EnabledByDefault: false
 
-Metrics/BlockLength:
-  Max: 300
-
-Metrics/MethodLength:
-  Max: 200
-
-Style/Documentation:
-  Enabled: False
-
-Metrics/AbcSize:
-  Enabled: False
-
-Naming/MethodParameterName:
-  AllowedNames:
-    - e
-
-# Basic cops only
-Layout/LineLength:
-  Max: 200
-  Exclude:
-    - "db/seeds.rb"
-    - "db/schema.rb"
-    - "db/migrate/**/*"
-
-Lint/UselessAssignment:
+Lint:
   Enabled: true
 
-Lint/UnusedMethodArgument:
+Security:
   Enabled: true
 
-Style/FrozenStringLiteralComment:
-  Enabled: false
+Layout/EndOfLine:
+  Enabled: true
+Layout/IndentationWidth:
+  Enabled: true
