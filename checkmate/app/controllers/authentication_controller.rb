@@ -32,7 +32,7 @@ class AuthenticationController < ApplicationController # rubocop:disable Metrics
   # - Displays result using flash messages
   # - Injects request + response into browser console for debugging
   # ============================================================
-  def signup # rubocop:disable Metrics/AbcSize,Metrics/PerceivedComplexity,Metrics/CyclomaticComplexity
+  def signup # rubocop:disable Metrics/PerceivedComplexity,Metrics/CyclomaticComplexity
     email    = params[:email].to_s.strip
     password = params[:password].to_s
 
@@ -64,7 +64,11 @@ class AuthenticationController < ApplicationController # rubocop:disable Metrics
       begin
         supabase_user_id = response['id']
 
-        UserDatum.find_or_create_by!(user_id: supabase_user_id) if supabase_user_id.present?
+        if supabase_user_id.present?
+          UserDatum.find_or_create_by!(user_id: supabase_user_id) do |user_datum|
+            user_datum.email = email
+          end
+        end
       rescue StandardError => e
         Rails.logger.error("[signup] failed to create user_data: #{e.message}")
       end
@@ -101,7 +105,7 @@ class AuthenticationController < ApplicationController # rubocop:disable Metrics
   # - Redirects to landing page if successful
   # - Injects response into browser console for debugging
   # ============================================================
-  def login # rubocop:disable Metrics/AbcSize
+  def login
     response = SupabaseAuthService.login(email: params[:email], password: params[:password])
     Rails.logger.info("[login] Supabase raw response: #{response.inspect}")
 
@@ -160,7 +164,7 @@ class AuthenticationController < ApplicationController # rubocop:disable Metrics
   # Decides signup outcome from Supabase response without removing any
   # existing behavior. We first rely on explicit signals (error_code,
   # identities), then fall back to the original time/message heuristics.
-  def extract_signup_outcome(response) # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
+  def extract_signup_outcome(response) # rubocop:disable Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
     return [:unknown, nil] unless response.is_a?(Hash)
 
     # 1) Explicit error payloads (Supabase returns code + error_code + msg)
