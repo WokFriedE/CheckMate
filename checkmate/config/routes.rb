@@ -3,7 +3,6 @@ Rails.application.routes.draw do
   resources :returns
   resources :inventories, only: %i[index new create]
   resources :checkout
-
   resources :orders, only: [] do
     collection do
       # default route

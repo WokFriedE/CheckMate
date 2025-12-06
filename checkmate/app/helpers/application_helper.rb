@@ -10,4 +10,10 @@ module ApplicationHelper
 
     true
   end
+
+  def navbar_partial
+    return 'shared/admin_nav_bar' if @current_user_role == 'admin'
+
+    'shared/user_nav_bar'
+  end
 end
