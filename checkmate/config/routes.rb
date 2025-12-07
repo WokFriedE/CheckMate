@@ -39,7 +39,7 @@ Rails.application.routes.draw do
                              only: %i[index new create show edit update destroy]
     resources :checkout, controller: 'checkout', param: :order_id, only: %i[show]
 
-    # get 'inventory', param: :item_id, to: 'org/item_details'
+    post 'order', to: 'org/orders#create_order'
   end
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.

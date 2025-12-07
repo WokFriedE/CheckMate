@@ -5,13 +5,16 @@
     <% if @has_write_access %>
       <%= link_to 'Create Item', new_organization_item_detail_path(@org_id), class: 'btn btn-sm btn-primary' %>
     <% end %>
-    <input type="radio" name="my_tabs_6" class="tab" aria-label="Tab 1" checked="checked" />
-    <input type="radio" name="my_tabs_6" class="tab" aria-label="Tab 2" />
-    <input type="radio" name="my_tabs_6" class="tab" aria-label="Tab 3" />
-  </div>
-  <div class="overflow-x-auto overflow-y-scroll rounded-box border border-base-content/5 ">
-    <%= render partial: 'shared/table', locals: { header: @inventory_attributes, items: @inventory_items }  %>
-  </div>
+    <%= form_with url: organization_order_path, method: :post do%>
+      <%= submit_tag "Create Order", class: 'btn btn-sm btn-primary' %>
+      <input type="radio" name="my_tabs_6" class="tab" aria-label="Tab 1" checked="checked" />
+      <input type="radio" name="my_tabs_6" class="tab" aria-label="Tab 2" />
+      <input type="radio" name="my_tabs_6" class="tab" aria-label="Tab 3" />
+    </div>
+    <div class="overflow-x-auto overflow-y-scroll rounded-box border border-base-content/5 ">
+      <%= render partial: 'shared/table', locals: { header: @inventory_attributes, items: @inventory_items }  %>
+    </div>
+  <% end%>
   <div class="join mx-auto">
     <input class="join-item btn btn-xs btn-square" type="radio" name="options" aria-label="1" checked="checked" />
     <input class="join-item btn btn-xs btn-square" type="radio" name="options" aria-label="2" />

@@ -1,29 +1,35 @@
-<table class="table table-pin-rows table-pin-col table-zebra table-xs">
-  <thead>
-    <tr>
-      <th>
-        <label>
-          <input type="checkbox" class="checkbox" aria-label="Select all items" />
-        </label>
-      </th>
-      <% header.each do |name| %>
-        <th class="text-left"><%=name%></th>
-      <%end%>
-    </tr>
-  </thead>
-  <tbody>
-    <% items.each do |item| %>
-      <tr class="hover:bg-base-300" >
-        <th><label><input type="checkbox" class="checkbox" aria-label="Select item" /></label></th>
-        <% item.attributes.each_value do |value| %>
-          <td><%= value %></td>
-        <% end %>
+<div class="selectable-table">
+  <table class="table table-pin-rows table-pin-col table-zebra table-xs">
+    <thead>
+      <tr>
         <th>
-          <%= 
+          <label>
+            <input type="checkbox" class="checkbox select-all" aria-label="Select all items" />
+          </label>
+        </th>
+        <% header.each do |name| %>
+          <th class="text-left"><%=name%></th>
+        <%end%>
+      </tr>
+    </thead>
+    <tbody>
+      <% items.each do |item| %>
+        <tr class="hover:bg-base-300" >
+          <th>
+            <label>
+              <%= check_box_tag "selected_items[]", item.item_id, false, class: "checkbox select-item", aria: { label: "Select item" } %>
+            </label>
+          </th>
+          <% item.attributes.each_value do |value| %>
+            <td><%= value %></td>
+          <% end %>
+          <th>
+            <%= 
           link_to 'Show', organization_item_detail_path(organization_org_id: params[:organization_org_id], item_id: item.item_id) 
           %>
-        </th>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+          </th>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

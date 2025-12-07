@@ -9,6 +9,8 @@ class Order < ApplicationRecord
              foreign_key: :user_id,
              primary_key: :user_id
 
+  before_create :assign_unique_org_id
+
   HISTORY_DISPLAY_FIELDS = [
     'orders.order_id',
     'orders.order_date',
@@ -53,18 +55,18 @@ class Order < ApplicationRecord
   def self.user_current_orders(user_id)
     joins(:order_details)
       .where(orders: { user_id: user_id })
-      .where("orders.order_date < NOW()")
+      .where('orders.order_date < NOW()')
       .where(return_status: false)
       .order(order_details: :checkout_time)
-      .select(HISTORY_DISPLAY_FIELDS) 
+      .select(HISTORY_DISPLAY_FIELDS)
   end
 
   def self.user_future_orders(user_id)
     joins(:order_details)
       .where(orders: { user_id: user_id })
-      .where("order_details.checkout_time > ?", Time.current)
+      .where('order_details.checkout_time > ?', Time.current)
       .order(order_details: :checkout_time)
-      .select(HISTORY_DISPLAY_FIELDS) 
+      .select(HISTORY_DISPLAY_FIELDS)
   end
 
   def self.org_all_orders(owner_org_id)
@@ -85,17 +87,29 @@ class Order < ApplicationRecord
   def self.org_current_orders(owner_org_id)
     joins(:order_details)
       .where(order_details: { owner_org_id: owner_org_id })
-      .where("orders.order_date < NOW()")
+      .where('orders.order_date < NOW()')
       .where(return_status: false)
       .order(order_details: :checkout_time)
-      .select(HISTORY_DISPLAY_FIELDS) 
+      .select(HISTORY_DISPLAY_FIELDS)
   end
 
   def self.org_future_orders(owner_org_id)
     joins(:order_details)
       .where(order_details: { owner_org_id: owner_org_id })
-      .where("order_details.checkout_time > ?", Time.current)
+      .where('order_details.checkout_time > ?', Time.current)
       .order(order_details: :checkout_time)
-      .select(HISTORY_DISPLAY_FIELDS) 
+      .select(HISTORY_DISPLAY_FIELDS)
+  end
+
+  def assign_unique_org_id
+    max_retries = 10
+    retries = 0
+    loop do
+      self.order_id = SecureRandom.random_number(1_000_000_000)
+      break unless self.class.exists?(org_id: org_id)
+
+      retries += 1
+      raise "Unable to generate unique org_id after #{max_retries} attempts" if retries >= max_retries
+    end
   end
 end
