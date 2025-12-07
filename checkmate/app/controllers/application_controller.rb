@@ -34,20 +34,28 @@ class ApplicationController < ActionController::Base
     redirect_to login_path and return
   end
 
-  def load_user_role(org_id = nil, user_id = nil)
-    unless user_id
+  def load_user_role(org_id: nil, user_id: nil)
+    if user_id.nil?
       require_auth
-      user_id ||= current_user_id
+      user_id = current_user_id
     end
-    org_id ||= @organization.org_id
+
+    org_id ||= @organization&.org_id
     Rails.logger.info 'comparing user'
     @current_user_role = OrgRole.provide_user_role user_id, org_id
   end
 
-  def redirect_based_on_role(path, expected_role, user_role = nil)
-    user_role ||= @current_user_role
+  def verify_org_access?(org_id: nil, user_id: nil, expected_role: nil, user_role: nil)
+    load_user_role(org_id: org_id, user_id: user_id) unless @current_user_role
+
     roles = expected_role.is_a?(Array) ? expected_role : [expected_role]
-    return if roles.include?(user_role)
+    effective_role = user_role || @current_user_role
+    roles.include?(effective_role)
+  end
+
+  def redirect_based_on_role(path, expected_role, user_role = nil, org_id = nil)
+    has_access = verify_org_access?(user_role: user_role, expected_role: expected_role, org_id: org_id)
+    return if has_access
 
     flash.alert = 'Incorrect role, please contact an org admin'
     redirect_to path
