@@ -10,15 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 20_251_202_054_116) do
-  create_schema 'auth'
-  create_schema 'extensions'
-  create_schema 'graphql'
-  create_schema 'graphql_public'
-  create_schema 'pgbouncer'
-  create_schema 'realtime'
-  create_schema 'storage'
-  create_schema 'vault'
+ActiveRecord::Schema[8.0].define(version: 20_251_207_015_317) do
+  create_schema :auth unless schema_exists?(:auth)
+  create_schema :extensions unless schema_exists?(:extensions)
+  create_schema :graphql unless schema_exists?(:graphql)
+  create_schema :graphql_public unless schema_exists?(:graphql_public)
+  create_schema :pgbouncer unless schema_exists?(:pgbouncer)
+  create_schema :realtime unless schema_exists?(:realtime)
+  create_schema :storage unless schema_exists?(:storage)
+  create_schema :vault unless schema_exists?(:vault)
 
   # These are extensions that must be enabled in order to support this database
   enable_extension 'extensions.pg_stat_statements'

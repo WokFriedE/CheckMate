@@ -8,6 +8,13 @@ fi
 
 # If running the rails server then create or migrate existing database
 if [ "${@: -2:1}" == "./bin/rails" ] && [ "${@: -1:1}" == "server" ]; then
+  echo "Preparing database..."
+  ./bin/rails db:prepare
+fi
+
+# If running via thrust, also prepare the database
+if [ "${1}" == "./bin/thrust" ]; then
+  echo "Preparing database..."
   ./bin/rails db:prepare
 fi
 
