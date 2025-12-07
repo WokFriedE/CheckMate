@@ -1,0 +1,7 @@
+<%# Simple flash/alert partial used in nav bars %>
+<% flash.each do |type, message| %>
+  <% next if message.blank? %>
+  <div class="fixed top-16 left-1/2 -translate-x-1/2 z-50 flash <%= type %> bg-gray-600">
+    <p><%= "#{type}: #{message}" %></p>
+  </div>
+<% end %>

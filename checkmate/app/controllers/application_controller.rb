@@ -57,7 +57,7 @@ class ApplicationController < ActionController::Base
     has_access = verify_org_access?(user_role: user_role, expected_role: expected_role, org_id: org_id)
     return if has_access
 
-    flash.alert = 'Incorrect role, please contact an org admin'
+    flash[:warning] = 'Incorrect role, please contact an org admin'
     redirect_to path
   end
 

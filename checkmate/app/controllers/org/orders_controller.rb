@@ -19,15 +19,20 @@ class Org::OrdersController < Org::BaseController
     results = ItemDetail.where(item_id: item_ids)
     raise 'all-items-do-not-exist' if results.size != item_ids.size
 
-    ActiveRecord::Base.transaction do
-      order_main = Order.create(user_id: current_user_id, order_date: Time.now.iso8601, return_status: false,
-                                order_type: 'pending')
-      oid = order_main.order_id
-      org_id = @organization.org_id
-      item_inserts = results.map do |item|
-        { order_id: oid, item_id: item.item_id, owner_org_id: org_id }
+    begin
+      ActiveRecord::Base.transaction do
+        order_main = Order.create(user_id: current_user_id, order_date: Time.now.iso8601, return_status: false,
+                                  order_type: 'pending')
+        oid = order_main.order_id
+        org_id = @organization.org_id
+        item_inserts = results.map do |item|
+          { order_id: oid, item_id: item.item_id, owner_org_id: org_id }
+        end
+        OrderDetail.insert_all item_inserts
+        redirect_to organization_checkout_path(organization_org_id: org_id, order_id: oid)
       end
-      OrderDetail.insert_all item_inserts
+    rescue StandardError => e
+      flash[:warning] = 'Something went wrong, please try again'
     end
   end
 end

@@ -11,7 +11,7 @@ module Admin
       Rails.logger.debug "#{has_access} #{current_user_id} #{@current_user_role}"
       return if has_access
 
-      flash.alert = 'You do not have access'
+      flash[:warning] = 'You do not have access'
       redirect_to landing_path
     end
   end
