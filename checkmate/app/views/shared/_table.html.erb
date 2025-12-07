@@ -18,8 +18,11 @@
         <% item.attributes.each_value do |value| %>
           <td><%= value %></td>
         <% end %>
-        <th><%= link_to 'Show', 
-organization_item_detail_path(organization_org_id: params[:organization_org_id], item_id: item.item_id) %></th>
+        <th>
+          <%= 
+          link_to 'Show', organization_item_detail_path(organization_org_id: params[:organization_org_id], item_id: item.item_id) 
+          %>
+        </th>
       </tr>
     <% end %>
   </tbody>
