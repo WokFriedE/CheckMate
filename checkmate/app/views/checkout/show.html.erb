@@ -51,9 +51,6 @@
           <div class="divider"></div>
           <p><b>Current Status</b>: <%= @order_info.order_type %> </p>
         <% end%>
-        <% if @already_ordered && @order_date %>
-          <p><b>Return By</b>: <%= @order_date %> </p>
-        <% end%>
         <% unless @already_ordered %>
           <div class="mt-4">
             <%= f.submit "Checkout", class: "btn btn-primary w-full" %>

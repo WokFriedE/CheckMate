@@ -213,6 +213,25 @@ module Org
       end
     end
 
+    def check_available_quantity(item_id, org_id)
+      # Get the total quantity from inventory
+      inventory = Inventory.find_by(item_id: item_id, owner_org_id: org_id)
+      return 0 unless inventory
+
+      total_quantity = inventory.item_count || 0
+
+      # Calculate quantity currently checked out (pending and reserved orders that are not returned)
+      checked_out_quantity = OrderDetail
+                             .joins(:order)
+                             .where(item_id: item_id, owner_org_id: org_id)
+                             .where(orders: { order_type: %w[pending reserved], return_status: [false, nil] })
+                             .sum(:item_count)
+
+      # Available quantity = total - checked out
+      available_quantity = total_quantity - checked_out_quantity
+      [available_quantity, 0].max # Ensure we don't return negative values
+    end
+
     def item_detail_params
       params.require(:inventory)
             .require(:item_detail)

@@ -104,6 +104,7 @@ class Org::OrdersController < Org::BaseController
     order_id = params[:order_id]
     return_date = params[:return_date]
     items_params = params[:items] || {}
+    org_id = @org_id
 
     # Validate that all items have quantities
     missing_quantities = []
@@ -118,6 +119,26 @@ class Org::OrdersController < Org::BaseController
 
     if missing_quantities.any?
       flash[:error] = "Please specify quantities for all items: #{missing_quantities.join(', ')}"
+      redirect_back(fallback_location: organization_checkout_path(@org_id, order_id)) and return
+    end
+
+    # Validate available inventory for each item
+    insufficient_stock = []
+    items_params.each do |_index, item_data|
+      item_id = item_data[:item_id].to_i
+      requested_quantity = item_data[:quantity].to_i
+
+      available_quantity = check_available_quantity(item_id, org_id)
+
+      next unless requested_quantity > available_quantity
+
+      order_detail = OrderDetail.find_by(order_id: order_id, item_id: item_id)
+      item_name = order_detail&.item_detail&.item_name || "Item ##{item_id}"
+      insufficient_stock << "#{item_name} (requested: #{requested_quantity}, available: #{available_quantity})"
+    end
+
+    if insufficient_stock.any?
+      flash[:error] = "Insufficient stock for the following items: #{insufficient_stock.join(', ')}"
       redirect_back(fallback_location: organization_checkout_path(@org_id, order_id)) and return
     end
 
@@ -166,5 +187,27 @@ class Org::OrdersController < Org::BaseController
       Rails.logger.error e
       redirect_back(fallback_location: organization_checkout_path(@org_id, order_id)) and return
     end
+  end
+
+  private
+
+  # Check available quantity by subtracting active orders from inventory
+  def check_available_quantity(item_id, org_id)
+    # Get the total quantity from inventory
+    inventory = Inventory.find_by(item_id: item_id, owner_org_id: org_id)
+    return 0 unless inventory
+
+    total_quantity = inventory.item_count || 0
+
+    # Calculate quantity currently checked out (pending and reserved orders that are not returned)
+    checked_out_quantity = OrderDetail
+                           .joins(:order)
+                           .where(item_id: item_id, owner_org_id: org_id)
+                           .where(orders: { order_type: %w[pending reserved], return_status: [false, nil] })
+                           .sum(:item_count)
+
+    # Available quantity = total - checked out
+    available_quantity = total_quantity - checked_out_quantity
+    [available_quantity, 0].max # Ensure we don't return negative values
   end
 end
