@@ -1,19 +1,36 @@
+<% 
+  item_detail = order_detail.item_detail
+  is_overdue = order_detail.due_date && order_detail.due_date < Time.current
+  status = order_detail.approval_status || 'Pending'
+  status_color = case status.downcase
+                 when 'approved' then 'badge-success'
+                 when 'pending' then 'badge-warning'
+                 when 'rejected' then 'badge-error'
+                 else 'badge-info'
+                 end
+%>
 <div class="flex flex-col sm:flex-row gap-4 bg-base-200 p-4 rounded-box">
-	<div class="my-auto">
-		<img class="size-fill sm:size-20 rounded-box object-cover " src="<%= item[:imageUrl] %>"/>
-	</div>
-	<div class="flex flex-col gap-1 w-full">
-		<p><%=item[:name]%></p>
-		<p class="text-xs uppercase font-semibold opacity-60 "><%= item[:description] %></p>
-		<ul class="list">
-			<li class="flex justify-between ">
-				<span class=" font-bold" >Count</span>
-				<span class="label"><%= item[:count]%></span>
-			</li>
-			<li class="flex justify-between ">
-				<span class=" font-bold" >Status</span>
-				<div class="badge badge-sm badge-outline badge-error ">Overdue</div>
-			</li>
-		</ul>
-	</div>
+  <div class="my-auto">
+    <img class="size-fill sm:size-16 rounded-box object-cover" src="/item_tag.svg"/>
+  </div>
+  <div class="flex flex-col gap-1 w-full">
+    <p><%= item_detail.item_name %></p>
+    <p class="text-xs uppercase font-semibold opacity-60 "><%= item_detail.item_comment || 'No description available' %></p>
+    <ul class="list">
+      <li class="flex justify-between ">
+        <span class=" font-bold" >Count</span>
+        <span class="label"><%= order_detail.item_count %></span>
+      </li>
+      <% if order_detail.due_date %>
+        <li class="flex justify-between ">
+          <span class=" font-bold" >Due Date</span>
+          <span class="label"><%= order_detail.due_date.strftime('%b %d, %Y') %></span>
+        </li>
+      <% end %>
+      <li class="flex justify-between ">
+        <span class=" font-bold" >Status</span>
+        <div class="badge badge-sm badge-outline <%= is_overdue ? 'badge-error' : status_color %> "><%= is_overdue ? 'Overdue' : status %></div>
+      </li>
+    </ul>
+  </div>
 </div>
