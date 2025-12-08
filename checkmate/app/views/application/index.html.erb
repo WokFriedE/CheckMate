@@ -11,7 +11,7 @@
 
 	<%# remove later %>
 	<div class="divider font-mono text-gray-500">ROUTES (for debugging)</div>
-	<div class=" font-mono text-gray-500 gap-1 flex flex-col overflow-auto max-h-100">
+	<div class=" font-mono text-gray-500 gap-1 flex flex-col overflow-auto max-h-200">
 		<%
       routes = Rails.application.routes.routes
       static_paths = routes.map do |r|
@@ -21,7 +21,7 @@
       end.compact.uniq
       %>
 		<% static_paths.each do |path| %>
-			<%= link_to path, path ,class: 'btn btn-primary btn-dash btn-warning btn-xs' %>
+			<%= link_to path, path ,class: 'btn  btn-dash btn-warning btn-xs rounded-full' %>
 		<% end %>
 	</div>
 
