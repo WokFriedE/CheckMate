@@ -7,6 +7,12 @@
 			<ul tabindex="-1" 
 			class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
 				<li>
+					<%= link_to messages_path, class: "flex items-center gap-2" do %>
+						<%= heroicon 'inbox-arrow-down', variant: :outline, options: { class: 'size-4' } %>
+						<span>Messages</span>
+					<% end %>
+				</li>
+				<li>
 					<details>
 						<summary>
 							<%= link_to orders_path, class: "flex items-center gap-2" do %>
@@ -28,12 +34,19 @@
 						<span>Checkout</span>
 					<% end %>
 				</li>
+
 			</ul>
 		</div>
 		<%= link_to 'CheckMate', root_path, class: 'btn btn-ghost text-xl' %>
 	</div>
 	<div class="navbar-center hidden lg:flex">
 		<ul class="menu menu-horizontal px-1">
+			<li>
+				<%= link_to messages_path, class: "flex items-center gap-2" do %>
+					<%= heroicon 'inbox-arrow-down', variant: :outline, options: { class: 'size-4' } %>
+					<span>Messages</span>
+				<% end %>
+			</li>
 			<li>
 				<details>
 					<summary>
@@ -56,6 +69,7 @@
 					<span>Checkout</span>
 				<% end %>
 			</li>
+
 		</ul>
 	</div>
 	<div class="navbar-end">

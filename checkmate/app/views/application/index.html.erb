@@ -1,11 +1,28 @@
 <div class="flex flex-col w-fit justify-center items-center gap-2 m-auto">
-  <div class="badge badge-dash rounded-full badge-primary">COMING SOON</div>
-  <h1 class="text-5xl font-bold"><%= link_to 'CheckMate', root_path %></h1>
-  <span class="text-l font-bold text-gray-500 pt-6">WELCOME</span>
-  <% if @is_logged_in %>
-    <%= link_to 'Go To Dashboard', landing_path, class: 'btn btn-primary w-full'%>
-  <% else %>
-    <%= link_to 'Log in', login_path, class: 'btn btn-primary w-full'%>
-    <%= link_to 'Sign up', signup_path, class: 'btn btn-outline btn-primary w-full'%>
-  <% end %>
+	<div class="badge badge-dash rounded-full badge-primary">COMING SOON</div>
+	<h1 class="text-5xl font-bold"><%= link_to 'CheckMate', root_path %></h1>
+	<span class="text-l font-bold text-gray-500 pt-6">WELCOME</span>
+	<% if @is_logged_in %>
+		<%= link_to 'Go To Dashboard', landing_path, class: 'btn btn-primary w-full'%>
+	<% else %>
+		<%= link_to 'Log in', login_path, class: 'btn btn-primary w-full'%>
+		<%= link_to 'Sign up', signup_path, class: 'btn btn-outline btn-primary w-full'%>
+	<% end %>
+
+	<%# remove later %>
+	<div class="divider font-mono text-gray-500">ROUTES (for debugging)</div>
+	<div class=" font-mono text-gray-500 gap-1 flex flex-col overflow-auto max-h-100">
+		<%
+      routes = Rails.application.routes.routes
+      static_paths = routes.map do |r|
+        raw_path = r.path.spec.to_s
+        path = raw_path.sub(/\(\.:format\)/, "")
+        path unless path.match?(/\/:[a-zA-Z_]+/)
+      end.compact.uniq
+      %>
+		<% static_paths.each do |path| %>
+			<%= link_to path, path ,class: 'btn btn-primary btn-dash btn-warning btn-xs' %>
+		<% end %>
+	</div>
+
 </div>
