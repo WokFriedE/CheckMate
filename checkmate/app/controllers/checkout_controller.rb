@@ -16,9 +16,9 @@ class CheckoutController < ApplicationController
                     {}
                   end
       item_info[:max] = if %w[admin organizer upper].include? @current_user_role
-                          item_info.fetch(:reg_max_total_quantity, 1)
+                          item_info.fetch('sup_max_total_quantity', 1)
                         else
-                          item_info.fetch(:sup_max_total_quantity, 1)
+                          item_info.fetch('reg_max_total_quantity', 1)
                         end
       item_info[:min] = 1
       od.attributes.merge(item_info)

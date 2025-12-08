@@ -41,6 +41,7 @@ Rails.application.routes.draw do
 
     resources :checkout, controller: 'checkout', param: :order_id, only: %i[show]
     delete 'checkout/:order_id', to: 'org/orders#destroy', as: :destroy_checkout
+    delete 'checkout/:order_id/item/:item_id', to: 'org/orders#delete_item', as: :delete_checkout_item
     post 'checkout/:order_id', to: 'org/orders#confirm_order', as: :finalize_checkout
     post 'checkout/:order_id/new', to: 'org/orders#recreate_order', as: :recreate_order
   end

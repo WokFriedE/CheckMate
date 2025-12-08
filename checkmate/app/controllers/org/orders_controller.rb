@@ -63,6 +63,7 @@ class Org::OrdersController < Org::BaseController
     raise 'all-items-do-not-exist' if results.size != item_ids.size
 
     # TODO: make sure there is capacity before reserving (at least 1 item)
+    # TODO: also pull in current item_details / quantity
     begin
       ActiveRecord::Base.transaction do
         order_main = Order.create(user_id: current_user_id, order_date: Time.now.iso8601, return_status: false,
@@ -101,14 +102,36 @@ class Org::OrdersController < Org::BaseController
 
   def confirm_order
     order_id = params[:order_id]
+    return_date = params[:return_date]
+    items_params = params[:items] || {}
+
     begin
-      order = Order.find_by!(order_id: order_id)
-      order.update!(order_type: 'reserved') unless order.order_type == 'reserved'
+      ActiveRecord::Base.transaction do
+        order = Order.find_by!(order_id: order_id)
+        order.update!(order_type: 'reserved') unless order.order_type == 'reserved'
+
+        # Update each order_detail with quantity (count) and due_date
+        items_params.each do |_index, item_data|
+          item_id = item_data[:item_id]
+          quantity = item_data[:quantity].to_i
+
+          order_detail = OrderDetail.find_by(order_id: order_id, item_id: item_id)
+          next unless order_detail
+
+          order_detail.update!(
+            item_count: quantity,
+            due_date: return_date
+          )
+        end
+
+        flash[:success] = 'Order confirmed successfully'
+      end
       # Redirect back so the page reloads; fallback to the organization checkout page
       redirect_back(fallback_location: organization_checkout_path(@org_id, order_id)) and return
     rescue StandardError => e
       flash[:warning] = 'Something went wrong, please try again'
       Rails.logger.error e
+      redirect_back(fallback_location: organization_checkout_path(@org_id, order_id)) and return
     end
   end
 end
