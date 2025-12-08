@@ -1,0 +1,18 @@
+<div class="container mx-auto p-1 sm:p-4 max-h-full overflow-auto">
+	<h2 class="card-title justify-center ">Messages</h2>
+	<div class="card-body">
+		<div class="space-y-4">
+			<%for i in 1..10 do %>
+				<div role="alert" class="alert alert-soft alert-horizontal">
+					<%= heroicon 'information-circle', variant: :outline, options: { class: 'size-6 text-blue-400' } %>
+					<div>
+						<h3 class="font-bold">New message!</h3>
+						<div class="text-xs">You have 1 unread message</div>
+					</div>
+					<button class="btn btn-soft btn-error btn-circle btn-sm"><%= heroicon 'x-mark', variant: :outline, options: { class: 'size-4' } %></button>
+				</div>
+			<% end %>
+		</div>
+		<p class="text-center text-gray-500">No messages yet.</p>
+	</div>
+</div>
