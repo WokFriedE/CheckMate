@@ -14,22 +14,20 @@ class Org::OrdersController < Org::BaseController
     load_user_role
     order_id = params[:order_id]
     order = Order.find_by!(order_id: order_id)
-    Rails.logger.debug "#{order.inspect} with #{current_user_id}"
     if (@current_user_role == 'user') && (current_user_id != order.user_id)
       flash[:error] = 'You do not have permission'
-      redirect_back_or_to organization_checkout_path(@organization&.org_id || params[:organization_org_id],
-                                                     params[:order_id]) and return
+      redirect_back_or_to(organization_checkout_path(@organization&.org_id || params[:organization_org_id],
+                                                     params[:order_id])) && return
     end
 
     begin
       order.destroy!
-      Rails.logger.debug "deleting #{order_id} and #{order.inspect}"
       flash[:success] = 'Order Deleted'
-      redirect_to landing_path and return
+      redirect_to(landing_path) && return
     rescue StandardError => e
       flash[:warning] = 'Something went wrong, please try again'
       Rails.logger.error e
-      redirect_back_or_to landing_path and return
+      redirect_back_or_to(landing_path) && return
     end
   end
 
@@ -65,21 +63,22 @@ class Org::OrdersController < Org::BaseController
     # TODO: make sure there is capacity before reserving (at least 1 item)
     # TODO: also pull in current item_details / quantity
     begin
+      oid = nil
+      org_id = @org_id
       ActiveRecord::Base.transaction do
         order_main = Order.create(user_id: current_user_id, order_date: Time.now.iso8601, return_status: false,
                                   order_type: 'pending')
         oid = order_main.order_id
-        org_id = @org_id
         item_inserts = results.map do |item|
           { order_id: oid, item_id: item.item_id, owner_org_id: org_id }
         end
         OrderDetail.insert_all item_inserts
-        redirect_to organization_checkout_path(organization_org_id: org_id, order_id: oid)
       end
+      redirect_to organization_checkout_path(organization_org_id: org_id, order_id: oid)
     rescue StandardError => e
       flash[:warning] = 'Something went wrong, please try again'
       Rails.logger.error e
-      redirect_back_or_to organization_item_details_path(organization_org_id: @org_id) and return
+      redirect_back_or_to(organization_item_details_path(organization_org_id: @org_id)) && return
     end
   end
 
@@ -91,7 +90,6 @@ class Org::OrdersController < Org::BaseController
         items = order.order_details.map do |order_item|
           order_item.item_id
         end
-        Rails.logger.debug items.inspect
         create_order items
       end
     rescue StandardError => e
@@ -119,7 +117,7 @@ class Org::OrdersController < Org::BaseController
 
     if missing_quantities.any?
       flash[:error] = "Please specify quantities for all items: #{missing_quantities.join(', ')}"
-      redirect_back(fallback_location: organization_checkout_path(@org_id, order_id)) and return
+      redirect_back(fallback_location: organization_checkout_path(@org_id, order_id)) && return
     end
 
     # Validate available inventory for each item
@@ -139,7 +137,7 @@ class Org::OrdersController < Org::BaseController
 
     if insufficient_stock.any?
       flash[:error] = "Insufficient stock for the following items: #{insufficient_stock.join(', ')}"
-      redirect_back(fallback_location: organization_checkout_path(@org_id, order_id)) and return
+      redirect_back(fallback_location: organization_checkout_path(@org_id, order_id)) && return
     end
 
     begin
@@ -163,11 +161,11 @@ class Org::OrdersController < Org::BaseController
 
         flash[:success] = 'Order confirmed successfully'
       end
-      redirect_back(fallback_location: organization_checkout_path(@org_id, order_id)) and return
+      redirect_back(fallback_location: organization_checkout_path(@org_id, order_id)) && return
     rescue StandardError => e
       flash[:warning] = 'Something went wrong, please try again'
       Rails.logger.error e
-      redirect_back(fallback_location: organization_checkout_path(@org_id, order_id)) and return
+      redirect_back(fallback_location: organization_checkout_path(@org_id, order_id)) && return
     end
   end
 
@@ -181,11 +179,11 @@ class Org::OrdersController < Org::BaseController
 
         flash[:success] = 'Order marked as returned'
       end
-      redirect_back(fallback_location: organization_checkout_path(@org_id, order_id)) and return
+      redirect_back(fallback_location: organization_checkout_path(@org_id, order_id)) && return
     rescue StandardError => e
       flash[:warning] = 'Something went wrong, please try again'
       Rails.logger.error e
-      redirect_back(fallback_location: organization_checkout_path(@org_id, order_id)) and return
+      redirect_back(fallback_location: organization_checkout_path(@org_id, order_id)) && return
     end
   end
 

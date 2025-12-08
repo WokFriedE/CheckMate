@@ -6,9 +6,7 @@ module Admin
 
     def check_user_super
       sys_org = Organization.system_org
-      Rails.logger.debug "ssss #{sys_org.org_id} #{sys_org.inspect}"
       has_access = verify_org_access?(org_id: sys_org.org_id, expected_role: 'admin')
-      Rails.logger.debug "#{has_access} #{current_user_id} #{@current_user_role}"
       return if has_access
 
       flash[:warning] = 'You do not have access'

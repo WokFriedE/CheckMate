@@ -11,9 +11,6 @@ module Org
     def index
       @inventory_items = Inventory.get_detailed_inventory(params[:organization_org_id])
       @inventory_attributes = Inventory.detailed_inventory_schema
-      Rails.logger.debug do
-        "Dashboard::ItemDetailsController#index headers: #{@inventory_attributes.inspect}"
-      end
     end
 
     def new
