@@ -1,16 +1,19 @@
 module Org
   class ItemDetailsController < Org::BaseController # rubocop:disable Metrics/ClassLength
-    def index
+    before_action :write_access
+
+    def write_access
+      # Used to determine user org role access (admin and organizer)
       load_user_role
+      @has_write_access = verify_org_access?(org_id: @organization.org_id, expected_role: %w[admin organizer])
+    end
+
+    def index
       @inventory_items = Inventory.get_detailed_inventory(params[:organization_org_id])
       @inventory_attributes = Inventory.detailed_inventory_schema
-      Rails.logger.debug do
-        "Dashboard::ItemDetailsController#index headers: #{@inventory_attributes.inspect}"
-      end
     end
 
     def new
-      load_user_role
       redirect_based_on_role organization_item_details_path(@org_id), %w[admin organizer]
       @inventory = Inventory.new
       @item_detail = ItemDetail.new
@@ -205,6 +208,25 @@ module Org
       rescue StandardError
         @inventory = Inventory.new
       end
+    end
+
+    def check_available_quantity(item_id, org_id)
+      # Get the total quantity from inventory
+      inventory = Inventory.find_by(item_id: item_id, owner_org_id: org_id)
+      return 0 unless inventory
+
+      total_quantity = inventory.item_count || 0
+
+      # Calculate quantity currently checked out (pending and reserved orders that are not returned)
+      checked_out_quantity = OrderDetail
+                             .joins(:order)
+                             .where(item_id: item_id, owner_org_id: org_id)
+                             .where(orders: { order_type: %w[pending reserved], return_status: [false, nil] })
+                             .sum(:item_count)
+
+      # Available quantity = total - checked out
+      available_quantity = total_quantity - checked_out_quantity
+      [available_quantity, 0].max # Ensure we don't return negative values
     end
 
     def item_detail_params

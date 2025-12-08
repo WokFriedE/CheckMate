@@ -5,6 +5,9 @@
         }
     ],
     "settings": {
-        "rubyLsp.formatter": "rubocop"
+        "rubyLsp.formatter": "rubocop",
+        "[erb]": {
+            "editor.defaultFormatter": "aliariff.vscode-erb-beautify"
+        },
     }
 }

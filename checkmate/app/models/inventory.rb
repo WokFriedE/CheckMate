@@ -21,6 +21,7 @@ class Inventory < ApplicationRecord
 
   def self.get_detailed_inventory(org_id)
     # TODO: add pagination
+    # TODO: add quantity - pass quant left
     Inventory.joins(:item_detail).where(owner_org_id: org_id).select(ITEM_DISPLAY_FIELDS)
   end
 
