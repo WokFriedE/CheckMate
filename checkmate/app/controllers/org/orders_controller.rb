@@ -105,6 +105,22 @@ class Org::OrdersController < Org::BaseController
     return_date = params[:return_date]
     items_params = params[:items] || {}
 
+    # Validate that all items have quantities
+    missing_quantities = []
+    items_params.each do |_index, item_data|
+      quantity = item_data[:quantity].to_i
+      next unless quantity <= 0
+
+      item_id = item_data[:item_id]
+      order_detail = OrderDetail.find_by(order_id: order_id, item_id: item_id)
+      missing_quantities << order_detail&.item&.item_name || "Item ##{item_id}" if order_detail
+    end
+
+    if missing_quantities.any?
+      flash[:error] = "Please specify quantities for all items: #{missing_quantities.join(', ')}"
+      redirect_back(fallback_location: organization_checkout_path(@org_id, order_id)) and return
+    end
+
     begin
       ActiveRecord::Base.transaction do
         order = Order.find_by!(order_id: order_id)
