@@ -6,9 +6,20 @@ if [ -z "${LD_PRELOAD+x}" ]; then
     export LD_PRELOAD
 fi
 
-# If running the rails server then create or migrate existing database
+RAILS_ENV=${RAILS_ENV:-production}
+
+# If running the rails server then create or migrate existing database, then seed
 if [ "${@: -2:1}" == "./bin/rails" ] && [ "${@: -1:1}" == "server" ]; then
+  echo "Preparing database (migrate + seed) for ${RAILS_ENV}..."
   ./bin/rails db:prepare
+  ./bin/rails db:seed
+fi
+
+# If running via thrust, also prepare and seed the DB
+if [ "${1}" == "./bin/thrust" ]; then
+  echo "Preparing database (migrate + seed) for ${RAILS_ENV}..."
+  ./bin/rails db:prepare
+  ./bin/rails db:seed
 fi
 
 exec "${@}"

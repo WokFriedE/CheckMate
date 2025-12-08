@@ -17,12 +17,14 @@
         <% end %>
       </tbody>
     </table>
-    <%= button_to 'Destroy this item', organization_item_detail_path(params[:organization_org_id], @inventory_item.item_id), 
-method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-sm btn-primary' %>
-    <%= link_to 'Edit this item', edit_organization_item_detail_path(params[:organization_org_id], @inventory_item.item_id), 
-class: 'btn btn-sm btn-primary' %>
+    <% if @has_write_access%>
+      <%= button_to 'Destroy this item', organization_item_detail_path(params[:organization_org_id], @inventory_item.item_id), 
+      method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-sm btn-primary w-full' %>
+      <%= link_to 'Edit this item', edit_organization_item_detail_path(params[:organization_org_id], @inventory_item.item_id), 
+      class: 'btn btn-sm btn-primary w-full' %>
+    <% end%>
   <% else %>
     <h2 class="text-lg">Item not found.</h2>
   <% end %>
-  <%= link_to 'Return', organization_item_details_path(params[:organization_org_id]), class: 'btn btn-sm btn-primary' %>
+  <%= link_to 'Return', organization_item_details_path(params[:organization_org_id]), class: 'btn btn-sm btn-primary w-full' %>
 </div>

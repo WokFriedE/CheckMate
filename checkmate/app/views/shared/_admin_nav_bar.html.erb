@@ -5,7 +5,6 @@
         <div tabindex="0" role="button" class="btn btn-ghost lg:hidden">
           <%= heroicon 'bars-3', variant: :solid, options: { class: 
           'w-[1em] h-[1em] inline-block' } %>
-
         </div>
         <ul
           tabindex="-1"
@@ -39,12 +38,7 @@
       </ul>
     </div>
     <div class="navbar-end">
-      <%= link_to 'Logout', logout_path, method: :delete, class: 'btn btn-soft btn-error' %>  
+      <%= link_to 'Logout', logout_path, method: :delete, class: 'btn btn-soft btn-error' %>
     </div>
   </div>
-  <% if flash.any? %>
-    <% flash.each do |type, message| %>
-      <div class="fixed top-16 left-1/2 -translate-x-1/2 z-50 flash <%= type %> bg-gray-600"><%= message %></div>
-    <% end %>
-  <% end %>
 </div>

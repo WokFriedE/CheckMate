@@ -1,0 +1,62 @@
+<div class='w-full h-full flex flex-col' >
+  <div class="card bg-base-100 shadow-sm mx-3 mt-3">
+    <div class="card-body py-4">
+      <div class="flex flex-col gap-2 w-full">
+        <% if @already_ordered %>
+          <% if @order_info.order_type == "reserved" %>
+            <%= button_to "Mark Returned",
+              organization_mark_returned_checkout_path(@organization&.org_id || params[:organization_org_id], params[:order_id]),
+              method: :post,
+              class: "btn btn-primary w-full" %>
+          <% end %>
+          <%= button_to "Order Again",
+                organization_recreate_order_path(@organization&.org_id || params[:organization_org_id], params[:order_id]),
+                method: :post,
+                class: "btn btn-primary w-full" %>
+        <% else %>
+          <%= link_to "Delete Order",
+            organization_destroy_checkout_path(@organization&.org_id || params[:organization_org_id], params[:order_id]),
+            data: { turbo_method: :delete, turbo_confirm: "Are you sure you want to delete this order?" },
+            class: "btn btn-soft btn-error w-full" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <%= form_with url: organization_finalize_checkout_path(@organization&.org_id || params[:organization_org_id], params[:order_id]), method: :post, local: true, authenticity_token: true, class: "flex flex-col-reverse sm:flex-row flex-1 justify-center gap-6 p-3 h-full" do |f| %>
+    <div class="overflow-y-auto flex-1">
+      <%@item_settings.each_with_index do |i, index| %>
+        <%= render partial: 'checkout_item', locals:  { item: i, index: index }  %>
+      <%end %>
+    </div>
+    <div class="card sm:w-sm h-fit bg-base-100 card-md shadow-sm">
+      <div class="card-body">
+        <h2 class="card-title">Checkout Summary</h2>
+        <ul class="list summary">
+          <% @item_settings.each do |item|%>
+            <li class="flex justify-between">
+              <span class="text-slate-400 text-base"><%=item["item_name"]%></span>
+            </li>
+          <% end %>
+          <li class="flex justify-between">
+            <span class="text-lg font-semibold">Different Items</span>
+            <span id="total-items" class="text-lg font-semibold"><%= @item_settings.length %></span>
+          </li>
+        </ul>
+        <div class="divider"></div>
+        <div>
+          <label class="label">Return Date</label>
+          <%= f.datetime_local_field :return_date, value: @order_date || DateTime.tomorrow.strftime('%Y-%m-%dT%H:%M'), class: 'input w-full validator', required: true, disabled: @already_ordered %>
+        </div>
+        <% if @already_ordered %>
+          <div class="divider"></div>
+          <p><b>Current Status</b>: <%= @order_info.order_type %> </p>
+        <% end%>
+        <% unless @already_ordered %>
+          <div class="mt-4">
+            <%= f.submit "Checkout", class: "btn btn-primary w-full" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>

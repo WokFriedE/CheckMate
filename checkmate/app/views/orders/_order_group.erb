@@ -1,49 +1,35 @@
 <div class="flex flex-row gap-3"   >
-	<label class="mt-2 btn btn-circle swap">
-		<input type="checkbox" />
-		<%= heroicon 'heart', variant: :solid, options: { class: 'size-4 swap-on' } %>
-		<%= heroicon 'heart', variant: :outline, options: { class: 'size-4 swap-off' } %>
-	</label>
-
-	<div class="collapse bg-base-100 border-base-300 border collapse-arrow">
-		<input type="checkbox" />
-		<div class="collapse-title font-semibold flex flex-col sm:flex-row justify-between ">
-			<h1 >Order #92384 </h1>
-			<h1 >09/45/3003</h1>
-		</div>
-
-		<div class="collapse-content  ">
-
-			<ul class="list mb-3">
-				<li class="flex justify-between ">
-					<span class=" font-bold" >Borrow Date</span>
-					<span class="label">some date</span>
-				</li>
-				<li class="flex justify-between ">
-					<span class=" font-bold" >Borrow Date</span>
-					<span class="label">some date</span>
-				</li>
-				<li class="flex justify-between ">
-					<span class=" font-bold" >Total Count</span>
-					<span class="label">40</span>
-				</li>
-
-			</ul>
-			<div class="flex flex-col gap-2">
-				<% for i in 5.times do%>
-					<%= render partial: 'order_item', locals:  
-                            { item: 
-                            { name: 'Item Name', 
-                            description: "Item description goes here 
-                                        and it can go really hard lololol",
-                            imageUrl: asset_path('item_img.jpg'),
-                            count: 9,   
-                            min: 1,
-                            max: 5,
-                            returnDate: '2026-07-22' } }  %>
-				<%end%>
-
-			</div>
-		</div>
-	</div>
+  <label class="mt-2 btn btn-circle swap">
+    <input type="checkbox" />
+    <%= heroicon 'heart', variant: :solid, options: { class: 'size-4 swap-on' } %>
+    <%= heroicon 'heart', variant: :outline, options: { class: 'size-4 swap-off' } %>
+  </label>
+  <div class="collapse bg-base-100 border-base-300 border collapse-arrow flex-1">
+    <input type="checkbox" />
+    <div class="collapse-title font-semibold flex flex-col sm:flex-row justify-between ">
+      <h1 >Order #<%= order.order_id %> </h1>
+      <h1 ><%= order.order_date.strftime('%m/%d/%Y') %></h1>
+    </div>
+    <div class="collapse-content  ">
+      <ul class="list mb-3">
+        <li class="flex justify-between ">
+          <span class=" font-bold" >Order Date</span>
+          <span class="label"><%= order.order_date.strftime('%b %d, %Y %I:%M %p') %></span>
+        </li>
+        <li class="flex justify-between ">
+          <span class=" font-bold" >Order Type</span>
+          <span class="label"><%= order.order_type || 'Standard' %></span>
+        </li>
+        <li class="flex justify-between ">
+          <span class=" font-bold" >Total Items</span>
+          <span class="label"><%= order.order_details.sum(:item_count) %></span>
+        </li>
+      </ul>
+      <div class="flex flex-col gap-2">
+        <% order.order_details.includes(item_detail: :item_settings).each do |order_detail| %>
+          <%= render partial: 'order_item', locals: { order_detail: order_detail } %>
+        <% end %>
+      </div>
+    </div>
+  </div>
 </div>
