@@ -37,10 +37,13 @@ class CheckoutController < ApplicationController
 
   def checkout_access
     load_user_role # Used eventually for Upper vs normal user for limits and user perms
+    return if performed?
+
     order = Order.find_by(order_id: params[:order_id])
     unless order
       flash[:error] = 'Order is not accessible'
-      redirect_to landing_path and return
+      redirect_to landing_path
+      return
     end
 
     higher_priv = verify_org_access?(org_id: params[:organization_org_id], user_id: current_user_id,
@@ -49,6 +52,7 @@ class CheckoutController < ApplicationController
     return if @has_write_access
 
     flash[:error] = 'Order is not accessible'
-    redirect_to(landing_path) && return
+    redirect_to landing_path
+    nil
   end
 end
