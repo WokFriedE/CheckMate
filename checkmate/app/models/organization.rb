@@ -1,4 +1,6 @@
 class Organization < ApplicationRecord
+  RESERVED_ORG_NAMES = %w[system internal].freeze
+
   has_many :org_roles,
            foreign_key: :org_id,
            primary_key: :org_id
@@ -18,6 +20,19 @@ class Organization < ApplicationRecord
            primary_key: :org_id
 
   before_create :assign_unique_org_id
+
+  validate :org_name_not_reserved
+
+  def self.system_org
+    Organization.where(org_name: :system).first
+  end
+
+  def org_name_not_reserved
+    return if org_name.blank?
+    return unless RESERVED_ORG_NAMES.include?(org_name.to_s.downcase)
+
+    errors.add(:org_name, "#{org_name} is reserved.")
+  end
 
   # Randomization prevents people from trying to iterate through orgs
   def assign_unique_org_id

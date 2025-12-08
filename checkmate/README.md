@@ -38,5 +38,7 @@ Create model, controller, view dir
 * Services (job queues, cache servers, search engines, etc.)
 
 * Deployment instructions
+`docker build -t checkmate .`
+`docker run -d -p 80:3000 --env-file .env --name checkmate checkmate`
 
 * ...

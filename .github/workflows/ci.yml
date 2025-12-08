@@ -67,15 +67,10 @@ jobs:
                   bundler-cache: true
                   working-directory: checkmate
 
-            - name: Lint Ruby code (lint cops only)
+            - name: Lint Ruby code with auto-correct
               working-directory: checkmate
               run: |
-                  bin/rubocop -l --parallel --format github --display-cop-names --fail-level C
-
-            - name: Check and report layout autocorrections (dry-run/ci friendly)
-              working-directory: checkmate
-              run: |
-                  bin/rubocop -f github
+                  bin/rubocop --autocorrect --parallel --format github
 
     test:
         runs-on: ubuntu-latest

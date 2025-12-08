@@ -1,5 +1,5 @@
 module Admin
-  class OrgRolesController < ApplicationController
+  class OrgRolesController < Admin::BaseController
     def index
       org_roles = OrgRole.role_user_info
       organizations = Organization.all

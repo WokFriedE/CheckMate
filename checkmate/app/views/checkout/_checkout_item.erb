@@ -1,30 +1,40 @@
-<div class="flex flex-col sm:flex-row gap-4 rounded-md bg-base-100 p-2 my-2 border border-base-300">
-
-	<div class="my-auto">
-		<img class="size-fill sm:size-40 rounded-box object-cover " src="<%= item[:imageUrl] %>"/></div>
-	<div class="flex flex-col sm:max-w-1/2">
-		<p><%=item[:name]%></p>
-		<p class="text-xs uppercase font-semibold opacity-60 "><%= item[:description] %></p>
-	</div>
-
-	<div class="flex flex-col sm:w-1/4 gap-2">
-		<label class="label">Return Date</label>
-		<input type="date"  value="<%= item[:returnDate]%>" class="input w-full validator" />
-
-		<label class="label">Count</label>
-		<div class="join">
-			<input type="number" class="input w-full validator join-item" required 
-            placeholder="count" 
-            value="<%=item[:count]%>" 
+<div class="flex flex-col sm:flex-row gap-4 w-full">
+  <div class="my-auto">
+    <img class="size-fill sm:size-40 rounded-box object-cover " src="<%= item.fetch('imageUrl', '/item_tag.svg') %>"/></div>
+  <div class="flex flex-col sm:max-w-1/2">
+    <p><%=item['item_name']%></p>
+    <p class="text-xs uppercase font-semibold opacity-60 "><%= item['item_comment'] %></p>
+  </div>
+  <div class="flex flex-col sm:w-1/4 gap-2">
+    <label class="label">Count</label>
+    <div class="join">
+      <input type="number" 
+            name="items[<%= index %>][quantity]" 
+            data-item-id="<%= item['item_id'] || item['id'] %>" 
+            class="input w-full validator join-item min-w-sm" 
+            required 
+            placeholder="Count" 
+            value="<%=item['item_count'] || 1%>" 
             min="<%=item[:min]%>" 
             max="<%=item[:max]%>" 
-            title="Must be between be 1 to 10" />
-			<button class="btn join-item btn-soft btn-error">
-				<%= heroicon 'trash', variant: :solid, options: { class: 
-        'w-[1em] h-[1em] inline-block' } %>
-			</button>
-		</div>
-
-	</div>
-
+            title="Must be between <%= item[:min] %> to <%= item[:max] %>" />
+      <input type="hidden" name="items[<%= index %>][item_id]" value="<%= item['item_id'] || item['id'] %>" />
+      <!-- to be uncommented when layout issue is fixed
+      <% unless @already_ordered %>
+        <%= button_to organization_delete_checkout_item_path(
+		  item['owner_org_id'], 
+            item['order_id'], 
+            item['item_id'] || item['id']
+          ), 
+          method: :delete,
+          data: { turbo_confirm: 'Remove this item?' },
+          type: "button",
+          class: "btn join-item btn-soft btn-error" do %>
+          <%= heroicon 'trash', variant: :solid, options: { class: 'w-[1em] h-[1em] inline-block' } %>
+        <% end %>
+      <% end %>
+      -->
+    </div>
+  </div>
 </div>
+<div class="divider"></div>

@@ -58,12 +58,12 @@
     <fieldset>
       <legend class="text-2xl">Inventory Settings</legend>
       <div class="field">
-        <%= sf.label :reg_max_check, 'Reg Max Check' %><br>
-        <%= sf.number_field :reg_max_check, class: 'border'  %>
+        <%= sf.label :reg_max_check, 'Reg Max Check*' %><br>
+        <%= sf.number_field :reg_max_check, class: 'border', placeholder: 'Max Quantity...', value: 1, required: true  %>
       </div>
       <div class="field">
-        <%= sf.label :reg_max_total_quantity, 'Reg Max Total Quantity' %><br>
-        <%= sf.number_field :reg_max_total_quantity, class: 'border'  %>
+        <%= sf.label :reg_max_total_quantity, 'Reg Max Total Quantity*' %><br>
+        <%= sf.number_field :reg_max_total_quantity, class: 'border', placeholder: 'Max Quantity...', value: 1, required: true  %>
       </div>
       <div class="field">
         <%= sf.label :reg_prebook_timeframe, 'Reg Prebook Timeframe' %><br>
