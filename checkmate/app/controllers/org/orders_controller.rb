@@ -126,7 +126,24 @@ class Org::OrdersController < Org::BaseController
 
         flash[:success] = 'Order confirmed successfully'
       end
-      # Redirect back so the page reloads; fallback to the organization checkout page
+      redirect_back(fallback_location: organization_checkout_path(@org_id, order_id)) and return
+    rescue StandardError => e
+      flash[:warning] = 'Something went wrong, please try again'
+      Rails.logger.error e
+      redirect_back(fallback_location: organization_checkout_path(@org_id, order_id)) and return
+    end
+  end
+
+  def mark_returned
+    order_id = params[:order_id]
+
+    begin
+      ActiveRecord::Base.transaction do
+        order = Order.find_by!(order_id: order_id)
+        order.update!(order_type: 'returned', return_status: true)
+
+        flash[:success] = 'Order marked as returned'
+      end
       redirect_back(fallback_location: organization_checkout_path(@org_id, order_id)) and return
     rescue StandardError => e
       flash[:warning] = 'Something went wrong, please try again'

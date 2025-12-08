@@ -44,6 +44,7 @@ Rails.application.routes.draw do
     delete 'checkout/:order_id/item/:item_id', to: 'org/orders#delete_item', as: :delete_checkout_item
     post 'checkout/:order_id', to: 'org/orders#confirm_order', as: :finalize_checkout
     post 'checkout/:order_id/new', to: 'org/orders#recreate_order', as: :recreate_order
+    post 'checkout/:order_id/status', to: 'org/orders#mark_returned', as: :mark_returned_checkout
   end
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
