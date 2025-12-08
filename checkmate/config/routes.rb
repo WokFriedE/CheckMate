@@ -35,11 +35,14 @@ Rails.application.routes.draw do
   # creates routes for /org/:org_id/*
   resources :organizations, path: 'org', param: :org_id do
     # creates routes for /org/:org_id/dashboard/inventory
-    resources :item_details, path: 'dashboard/inventory', controller: 'org/item_details', param: :item_id,
+    resources :item_details, path: 'inventory', controller: 'org/item_details', param: :item_id,
                              only: %i[index new create show edit update destroy]
-    resources :checkout, controller: 'checkout', param: :order_id, only: %i[show]
-
     post 'order', to: 'org/orders#create_order'
+
+    resources :checkout, controller: 'checkout', param: :order_id, only: %i[show]
+    delete 'checkout/:order_id', to: 'org/orders#destroy', as: :destroy_checkout
+    post 'checkout/:order_id', to: 'org/orders#confirm_order', as: :finalize_checkout
+    post 'checkout/:order_id/new', to: 'org/orders#recreate_order', as: :recreate_order
   end
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.

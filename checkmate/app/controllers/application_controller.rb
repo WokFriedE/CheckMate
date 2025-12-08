@@ -46,7 +46,7 @@ class ApplicationController < ActionController::Base
   end
 
   def verify_org_access?(org_id: nil, user_id: nil, expected_role: nil, user_role: nil)
-    load_user_role(org_id: org_id, user_id: user_id) unless @current_user_role
+    load_user_role(org_id: org_id, user_id: user_id) unless @current_user_role || user_role
 
     roles = expected_role.is_a?(Array) ? expected_role : [expected_role]
     effective_role = user_role || @current_user_role
