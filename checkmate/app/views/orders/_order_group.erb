@@ -30,6 +30,7 @@
           <%= render partial: 'order_item', locals: { order_detail: order_detail } %>
         <% end %>
       </div>
+      <%= link_to 'View Order', organization_checkout_path(organization_org_id: order.owner_org_id, order_id: order.order_id), class: 'btn btn-primary mt-2 w-full' %>
     </div>
   </div>
 </div>

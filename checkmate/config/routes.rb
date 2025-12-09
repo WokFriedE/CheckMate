@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   resources :inventories, only: %i[index new create]
   resources :checkout
 
-  get 'user_organizations', to: 'user_organizations#index', as: 'user_organizations'
+  get 'orgs', to: 'user_organizations#index', as: 'user_organizations'
 
   resources :orders, only: [] do
     collection do
