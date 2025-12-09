@@ -1,4 +1,4 @@
-<%= form_with(model: organization) do |form| %>
+<%= form_with(model: [:admin, organization]) do |form| %>
   <% if organization.errors.any? %>
     <div style="color: red">
       <h3><%= pluralize(organization.errors.count, 'error') %> prohibited this organization from being saved:</h3>
@@ -11,7 +11,38 @@
     </div>
   <% end %>
 
-  <div>
-    <%= form.submit %>
+  <div class="mb-4">
+    <%= form.label :org_name, class: 'block text-sm font-medium mb-1' %>
+    <%= form.text_field :org_name, class: 'input input-bordered w-full' %>
+  </div>
+
+  <div class="mb-4">
+    <%= form.label :org_location, class: 'block text-sm font-medium mb-1' %>
+    <%= form.text_field :org_location, class: 'input input-bordered w-full' %>
+  </div>
+
+  <div class="mb-4">
+    <%= form.label :public_access, class: 'block text-sm font-medium mb-2' %>
+    <%= form.check_box :public_access, { class: 'checkbox' } %>
+  </div>
+
+  <div class="mb-4">
+    <%= form.label :parent_org_id, class: 'block text-sm font-medium mb-1' %>
+    <%= form.number_field :parent_org_id, class: 'input input-bordered w-full' %>
+  </div>
+
+  <div class="mb-4">
+    <%= form.label :prebook_timeframe, class: 'block text-sm font-medium mb-1' %>
+    <%= form.number_field :prebook_timeframe, class: 'input input-bordered w-full' %>
+  </div>
+
+  <div class="mb-4">
+    <%= form.label :org_pwd, class: 'block text-sm font-medium mb-1' %>
+    <%= form.password_field :org_pwd, class: 'input input-bordered w-full' %>
+  </div>
+
+  <div class="flex gap-2">
+    <%= form.submit class: 'btn btn-primary' %>
+    <%= link_to 'Cancel', admin_organizations_path, class: 'btn btn-ghost' %>
   </div>
 <% end %>

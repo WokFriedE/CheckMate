@@ -123,13 +123,13 @@ class AuthenticationController < ApplicationController # rubocop:disable Metrics
       session[:user_email]    = response.dig('user', 'email')
       redirect_to landing_path, notice: 'You are logged in.'
     when :invalid_credentials
-      flash.now[:alert] = 'Incorrect password.'
+      flash.now[:alert] = 'Invalid credentials. Please check your email if you have an account.'
       render :login_form, status: :unprocessable_entity
     when :email_not_confirmed
-      flash.now[:alert] = 'Please confirm your email before logging in.'
+      flash.now[:alert] = 'Invalid credentials. Please check your email if you have an account.'
       render :login_form, status: :unprocessable_entity
     when :user_not_found
-      flash.now[:alert] = 'No user with that email found.'
+      flash.now[:alert] = 'Invalid credentials. Please check your email if you have an account.'
       render :login_form, status: :unprocessable_entity
     else
       flash.now[:alert] = msg.presence || 'Login failed.'
