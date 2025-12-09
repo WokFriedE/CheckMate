@@ -1,64 +1,85 @@
 <div class="navbar w-full z-20 bg-base-100 shadow-sm">
-  <div class="navbar-start">
-    <div class="dropdown">
-      <div tabindex="0" role="button" class="btn btn-ghost lg:hidden">
-        <%= heroicon 'bars-3', variant: :solid, options: { class: 'size-4' } %>
-      </div>
-      <ul tabindex="-1" 
+	<div class="navbar-start">
+		<div class="dropdown">
+			<div tabindex="0" role="button" class="btn btn-ghost lg:hidden">
+				<%= heroicon 'bars-3', variant: :solid, options: { class: 'size-4' } %>
+			</div>
+			<ul tabindex="-1" 
 			class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
-        <li>
-          <details>
-            <summary>
-              <%= link_to orders_path, class: "flex items-center gap-2" do %>
-                <%= heroicon 'shopping-bag', variant: :outline, options: { class: 'size-4' } %>
-                <span>Orders</span>
-              <% end %>
-            </summary>
-            <ul class="p-2">
-              <%[:current, :history, :favorites].each do |tab|%>
-                <% path = send("#{tab}_orders_path") %>
-                <li><%= link_to  tab.to_s.capitalize , path %></li>
-              <%end%>
-            </ul>
-          </details>
-        </li>
-        <li>
-          <%= link_to checkout_index_path, class: "flex items-center gap-2" do %>
-            <%= heroicon 'shopping-cart', variant: :outline, options: { class: 'size-4' } %>
-            <span>Checkout</span>
-          <% end %>
-        </li>
-      </ul>
-    </div>
-    <%= link_to 'CheckMate', root_path, class: 'btn btn-ghost text-xl' %>
-  </div>
-  <div class="navbar-center hidden lg:flex">
-    <ul class="menu menu-horizontal px-1">
-      <li>
-        <details>
-          <summary>
-            <%= link_to orders_path, class: "flex items-center gap-2" do %>
-              <%= heroicon 'shopping-bag', variant: :outline, options: { class: 'size-4' } %>
-              <span>Orders</span>
-            <% end %>
-          </summary>
-          <ul class="p-2">
-            <%[:current, :history, :favorites].each do |tab|%>
-              <% path = send("#{tab}_orders_path") %>
-              <li><%= link_to  tab.to_s.capitalize , path %></li>
-            <%end%>
-          </ul>
-        </details>
-      </li>
-      <li>
-        <%= link_to checkout_index_path, class: "flex items-center gap-2" do %>
-          <%= heroicon 'shopping-cart', variant: :outline, options: { class: 'size-4' } %>
-          <span>Checkout</span>
-        <% end %>
-      </li>
-    </ul>
-  </div>
-  <div class="navbar-end">
-    <%= link_to 'Logout', logout_path, method: :delete, class: 'btn btn-soft btn-error' %>
-  </div>
+				<li>
+					<details>
+						<summary>
+							<%= link_to orders_path, class: "flex items-center gap-2" do %>
+								<%= heroicon 'shopping-bag', variant: :outline, options: { class: 'size-4' } %>
+								<span>Orders</span>
+							<% end %>
+						</summary>
+						<ul class="p-2">
+							<%[:current, :history].each do |tab|%>
+								<% path = send("#{tab}_orders_path") %>
+								<li><%= link_to  tab.to_s.capitalize , path %></li>
+							<%end%>
+						</ul>
+					</details>
+				</li>
+				<li>
+					<%= link_to checkout_index_path, class: "flex items-center gap-2" do %>
+						<%= heroicon 'shopping-cart', variant: :outline, options: { class: 'size-4' } %>
+						<span>Checkout</span>
+					<% end %>
+				</li>
+			</ul>
+		</div>
+		<%= link_to 'CheckMate', root_path, class: 'btn btn-ghost text-xl' %>
+	</div>
+	<div class="navbar-center hidden lg:flex">
+		<ul class="menu menu-horizontal px-1">
+			<li>
+				<details>
+					<summary>
+						<%= link_to orders_path, class: "flex items-center gap-2" do %>
+							<%= heroicon 'shopping-bag', variant: :outline, options: { class: 'size-4' } %>
+							<span>Orders</span>
+						<% end %>
+					</summary>
+					<ul class="p-2">
+						<%[:current, :history].each do |tab|%>
+							<% path = send("#{tab}_orders_path") %>
+							<li><%= link_to  tab.to_s.capitalize , path %></li>
+						<%end%>
+					</ul>
+				</details>
+			</li>
+			<li>
+				<%= link_to checkout_index_path, class: "flex items-center gap-2" do %>
+					<%= heroicon 'shopping-cart', variant: :outline, options: { class: 'size-4' } %>
+					<span>Checkout</span>
+				<% end %>
+			</li>
+		</ul>
+	</div>
+
+	<div class="navbar-end gap-4">
+		<div class="dropdown dropdown-end">
+			<div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
+				<div class="avatar avatar-placeholder">
+					<div class="bg-neutral text-neutral-content w-8 rounded-full">
+						<span class="text-xs"><%= current_user[:email][0].capitalize %></span>
+					</div>
+				</div>
+			</div>
+			<ul
+        tabindex="-1"
+        class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 p-2 shadow">
+				<li>
+					<div class="flex flex-col gap-2">
+						<label class="label me-auto">Email</label>
+						<span>
+							<%= current_user[:email] %></span>
+					</div>
+				</li>
+			</ul>
+		</div>
+		<%= link_to 'Logout', logout_path, method: :delete, class: 'btn btn-soft btn-error' %>
+	</div>
 </div>
