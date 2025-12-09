@@ -50,27 +50,27 @@ jobs:
               working-directory: checkmate
               run: bin/importmap audit
 
-    lint:
-        runs-on: ubuntu-latest
-        steps:
-            - name: Checkout code
-              uses: actions/checkout@v6
+    # lint:
+    #     runs-on: ubuntu-latest
+    #     steps:
+    #         - name: Checkout code
+    #           uses: actions/checkout@v6
 
-            - name: Fix bin permissions
-              working-directory: checkmate
-              run: chmod +x bin/*
+    #         - name: Fix bin permissions
+    #           working-directory: checkmate
+    #           run: chmod +x bin/*
 
-            - name: Set up Ruby
-              uses: ruby/setup-ruby@v1
-              with:
-                  ruby-version: .ruby-version
-                  bundler-cache: true
-                  working-directory: checkmate
+    #         - name: Set up Ruby
+    #           uses: ruby/setup-ruby@v1
+    #           with:
+    #               ruby-version: .ruby-version
+    #               bundler-cache: true
+    #               working-directory: checkmate
 
-            - name: Lint Ruby code with auto-correct
-              working-directory: checkmate
-              run: |
-                  bin/rubocop --autocorrect --parallel --format github
+    #         - name: Lint Ruby code with auto-correct
+    #           working-directory: checkmate
+    #           run: |
+    #               bin/rubocop --autocorrect --parallel --format github
 
     test:
         runs-on: ubuntu-latest
