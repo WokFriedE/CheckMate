@@ -97,7 +97,7 @@ jobs:
               working-directory: checkmate
               env:
                   RAILS_ENV: test
-                  TEST_DATABASE_URL: ${{ secrets.DEVELOPMENT_URL }}
+                  TEST_DATABASE_URL: ${{ secrets.TEST_DATABASE_URL }}
               run: |
                   bin/rails test test test:system
 
