@@ -1,7 +1,7 @@
 <% 
   item_detail = order_detail.item_detail
   is_overdue = order_detail.due_date && order_detail.due_date < Time.current
-  status = order_detail.approval_status || 'Pending'
+  status = order_detail.approval_status || 'Self-Checkout'
   status_color = case status.downcase
                  when 'approved' then 'badge-success'
                  when 'pending' then 'badge-warning'
