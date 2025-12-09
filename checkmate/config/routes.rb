@@ -28,7 +28,7 @@ Rails.application.routes.draw do
   delete 'logout', to: 'authentication#logout'
   get 'logout', to: 'authentication#logout'
 
-  get 'landing', to: 'landing#index'
+  get 'landing', to: 'application#index'
 
   namespace :admin do
     resources :org_roles, only: %i[index new create]
