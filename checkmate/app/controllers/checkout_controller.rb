@@ -48,7 +48,7 @@ class CheckoutController < ApplicationController
 
     higher_priv = verify_org_access?(org_id: params[:organization_org_id], user_id: current_user_id,
                                      expected_role: %w[admin organizer])
-    @has_write_access = higher_priv || ((@current_user_role == 'user') && (@current_user_id == order.user_id))
+    @has_write_access = higher_priv || (current_user_id.to_s == order.user_id.to_s)
     return if @has_write_access
 
     flash[:error] = 'Order is not accessible'

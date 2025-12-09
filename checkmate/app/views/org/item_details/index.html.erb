@@ -5,7 +5,6 @@
 			<%= link_to 'Create Item', new_organization_item_detail_path(@org_id), class: 'btn btn-sm btn-primary' %>
 		<% end %>
 		<%= submit_tag "Create Order", class: 'btn btn-sm btn-primary' %>
-
 		<div class="mt-2 overflow-x-auto overflow-y-scroll rounded-box border border-base-content/5 ">
 			<%= render partial: 'shared/table', locals: { header: @inventory_attributes, items: @inventory_items } %>
 		</div>

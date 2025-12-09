@@ -3,7 +3,7 @@
 
 	<div class="divider"></div>
 
-	<div class="flex flex-col self-center sm:grid sm:grid-flow-col gap-4 overflow-y-scroll  ">
+	<div class="flex flex-col self-center md:grid md:grid-flow-col gap-4  ">
 		<% @organizations.each do |organization| %>
 			<%= link_to organization_item_details_path(organization_org_id: organization.org_id) do %>
 				<%= render partial: 'org_info', locals: { organization: organization }  %>

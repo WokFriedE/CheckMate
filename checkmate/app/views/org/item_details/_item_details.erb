@@ -1,0 +1,13 @@
+<div class="card pt-4 sm:w-sm h-fit  bg-base-100 card-md shadow-lg ">
+	<h1 class="text-center text-lg font-bold px-2">Inventory Breakdown for item - <%= @inventory_item.item_id %></h1>
+	<div class="card-body">
+		<ul class="list gap-1">
+			<% @inventory_item.attributes.each do |key, val| %>
+				<li class="flex justify-between ">
+					<span class="font-bold"><%= key.titleize %></span>
+					<span class="label"> <%= val.blank? ? (heroicon 'question-mark-circle', variant: :outline, options: { class: 'size-4 opacity-50' }) : ([true, false].include?(val) ? (val ? 'YES' : 'NO') : val.to_s.titleize) %></span>
+				</li>
+			<% end %>
+		</ul>
+	</div>
+</div>
