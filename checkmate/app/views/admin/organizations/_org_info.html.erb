@@ -6,14 +6,14 @@
 				<% next if ['org_pwd'].include? key %>
 				<li class="flex justify-between ">
 					<span class=" font-bold" ><%= key.titleize %></span>
-					<span class="label"> <%= value.blank? ? (heroicon 'question-mark-circle', variant: :outline, options: { class: 'size-4 opacity-50' }) : value %></span>
+					<span class="label"> <%= value.blank? ? (heroicon 'question-mark-circle', variant: :outline, options: { class: 'w-4 h-4 opacity-50 shrink-0' }) : value %></span>
 				</li>
 			<% end %>
 		</ul>
 		<div class="flex  flex-col  sm:flex-row-reverse  justify-between gap-2 mt-4">
-			<%= button_to (heroicon 'x-mark', options: { class: 'size-4' })+"Destroy", [:admin, organization], method: :delete, 
+			<%= button_to "Destroy", [:admin, organization], method: :delete, 
 class: 'btn btn-error btn-soft w-full' %>
-			<%= link_to (heroicon 'pencil-square', options: { class: 'size-4' })+"Edit", 
+			<%= link_to "Edit", 
 edit_admin_organization_path(organization), class: 'btn btn-primary btn-outline ' %>
 		</div>
 	</div>
