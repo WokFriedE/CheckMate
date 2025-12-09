@@ -1,7 +1,40 @@
 <%# Simple flash/alert partial used in nav bars %>
+
 <% flash.each do |type, message| %>
-  <% next if message.blank? %>
-  <div class="fixed top-16 left-1/2 -translate-x-1/2 z-50 flash <%= type %> bg-gray-600">
-    <p><%= "#{type}: #{message}" %></p>
-  </div>
+	<% next if message.blank? %>
+	<div role="alert"  class="flash-alert fixed top-16 left-1/2 
+  -translate-x-1/2 z-50 alert  alert-soft rounded-full  ps-3 p-1
+  <%= flash_to_daisy(type) %> transition-opacity duration-500"
+      data-timeout="4000">
+		<p><%= message %></p>
+
+     <button type="button" class="btn btn-sm btn-circle btn-soft btn-error ml-4 flash-close">
+      ✕
+    </button>
+	</div>
+
 <% end %>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll(".flash-alert").forEach((alert) => {
+      const closeBtn = alert.querySelector(".flash-close");
+
+      // Manual close
+      if (closeBtn) {
+        closeBtn.addEventListener("click", () => {
+          alert.classList.add("opacity-0");
+          setTimeout(() => alert.remove(), 500);
+        });
+      }
+
+      // Auto dismiss (default 4 seconds)
+      const timeout = alert.dataset.timeout || 4000;
+
+      setTimeout(() => {
+        alert.classList.add("opacity-0");
+        setTimeout(() => alert.remove(), 500);
+      }, timeout);
+    });
+  });
+</script>
