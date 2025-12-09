@@ -14,7 +14,7 @@
 				<%= password_field_tag :password, nil, class: 'input w-full', placeholder: 'Password' %>
 			</div>
 			<% if flash[:notice] %>
-				<div class="badge badge-soft badge-success mx-auto mb-4"><%= flash[:notice] %></div>
+				<div class="badge badge-soft badge-success mx-auto min-h-fit mb-4"><%= flash[:notice] %></div>
 			<% elsif flash[:alert] %>
 				<div class="badge badge-soft badge-error mx-auto mb-4"><%= flash[:alert] %></div>
 			<% end %>

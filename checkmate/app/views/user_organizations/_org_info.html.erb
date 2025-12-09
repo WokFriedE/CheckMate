@@ -1,0 +1,16 @@
+<div class="card  bg-base-100 shadow-xl w-fit hover:shadow-2xl transition-shadow duration-300">
+	<div class="card-body">
+		<%=heroicon 'building-office-2', variant: :solid, options: { class: 'size-20 shadow-md' }%>
+		<h1 class="card-title text-2xl mx-auto"><%= organization.org_name %></h1>
+
+		<div class="flex flex-row justify-between my-2">
+			<span class="label font-bold" >Location</span>
+			<span class="label"> <%= organization.org_location.blank? ? (heroicon 'question-mark-circle', variant: :outline, options: { class: 'size-4 opacity-50' }) : organization.org_location %></span>
+		</div>
+
+		<%= link_to (heroicon 'arrow-right-circle',
+				variant: :outline, options: { class: 'size-5' })+"Browse Inventory", 
+				organization_item_details_path(organization_org_id: organization.org_id),
+				class: 'btn btn-neutiral btn-outline ' %>
+	</div>
+</div>

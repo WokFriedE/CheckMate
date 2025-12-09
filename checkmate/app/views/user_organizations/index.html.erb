@@ -1,0 +1,13 @@
+<div class="flex flex-col justify-center p-6">
+	<h1 class="text-3xl mx-auto mb-3 text-center ">Organizations</h1>
+
+	<div class="divider"></div>
+
+	<div class="flex flex-col self-center sm:grid sm:grid-flow-col gap-4 overflow-y-scroll  ">
+		<% @organizations.each do |organization| %>
+			<%= link_to organization_item_details_path(organization_org_id: organization.org_id) do %>
+				<%= render partial: 'org_info', locals: { organization: organization }  %>
+			<% end %>
+		<% end %>
+	</div>
+</div>
