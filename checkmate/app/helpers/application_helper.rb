@@ -16,4 +16,14 @@ module ApplicationHelper
 
     'shared/user_nav_bar'
   end
+
+  def flash_to_daisy(type)
+    {
+      notice: 'alert-info',
+      alert: 'alert-warning',
+      error: 'alert-error',
+      success: 'alert-success',
+      warning: 'alert-warning'
+    }.stringify_keys[type.to_s] || 'alert-info'
+  end
 end

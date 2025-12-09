@@ -3,6 +3,9 @@ Rails.application.routes.draw do
   resources :returns
   resources :inventories, only: %i[index new create]
   resources :checkout
+
+  get 'orgs', to: 'user_organizations#index', as: 'user_organizations'
+
   resources :orders, only: [] do
     collection do
       # default route
@@ -25,7 +28,7 @@ Rails.application.routes.draw do
   delete 'logout', to: 'authentication#logout'
   get 'logout', to: 'authentication#logout'
 
-  get 'landing', to: 'landing#index'
+  get 'landing', to: 'application#index'
 
   namespace :admin do
     resources :org_roles, only: %i[index new create]

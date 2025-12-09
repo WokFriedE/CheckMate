@@ -101,6 +101,11 @@ class Order < ApplicationRecord
       .select(HISTORY_DISPLAY_FIELDS)
   end
 
+  # Convenience: derive org id from associated order details
+  def owner_org_id
+    order_details.first&.owner_org_id
+  end
+
   def assign_unique_org_id
     max_retries = 10
     retries = 0

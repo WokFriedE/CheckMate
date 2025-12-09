@@ -43,6 +43,7 @@ class Inventory < ApplicationRecord
 
   def self.detailed_inventory_schema
     ITEM_DISPLAY_FIELDS.split(', ').map do |attr|
+      attr = 'inventories.inventory_tag' if attr == 'inventories.inventory_name'
       field = attr.include?('.') ? attr.split('.').last : attr
       field.titleize
     end
