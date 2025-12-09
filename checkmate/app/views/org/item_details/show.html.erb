@@ -2,9 +2,9 @@
 	<% if @inventory_item.present? %>
 		<%= render "item_details"%>
 		<% if @has_write_access%>
-			<%= button_to 'Destroy this item', organization_item_detail_path(params[:organization_org_id], @inventory_item.item_id), 
-      method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-sm btn-primary w-full' %>
-			<%= link_to 'Edit this item', edit_organization_item_detail_path(params[:organization_org_id], @inventory_item.item_id), 
+			<%= button_to (heroicon "x-circle" ,variant: :solid, options: { class: 'size-4'})+'Destroy', organization_item_detail_path(params[:organization_org_id], @inventory_item.item_id), 
+      method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-sm btn-error w-full' %>
+			<%= link_to (heroicon "pencil-square" ,variant: :solid, options: { class: 'size-4'})+'Edit', edit_organization_item_detail_path(params[:organization_org_id], @inventory_item.item_id), 
       class: 'btn btn-sm btn-primary w-full' %>
 		<% end%>
 	<% else %>

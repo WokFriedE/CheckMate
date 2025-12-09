@@ -10,70 +10,73 @@
     form_method = :post
   end
 %>
-<%= form_with model: @inventory, url: form_url, method: form_method, local: true, html: { autocomplete: 'off' } do |f| %>
-  <%= f.fields_for :item_detail, (@inventory&.item_detail || @item_detail) do |df| %>
-    <fieldset class="mb-6">
-      <legend class="text-2xl font-bold mb-4">Item Details</legend>
-      <div class="mb-4">
-        <%= df.label :item_name, 'Item Name*', class: 'block text-sm font-medium mb-1' %>
-        <%= df.text_field :item_name, class: 'input input-bordered w-full', required: true %>
-      </div>
-      <div class="field">
-        <%= f.label :inventory_name, 'Inventory Tag' %><br>
-        <%= f.text_field :inventory_name, class: 'input input-bordered w-full'%>
-      </div>
-      <div class="mb-4">
-        <%= df.label :item_comment, 'Comment', class: 'block text-sm font-medium mb-1' %>
-        <%= df.text_area :item_comment, class: 'textarea textarea-bordered w-full' %>
-      </div>
-    </fieldset>
-  <% end %>
-  <fieldset class="mb-6">
-    <legend class="text-2xl font-bold mb-4">Stock</legend>
-    <div class="mb-4">
-      <%= f.label :item_category, 'Category', class: 'block text-sm font-medium mb-1' %>
-      <%= f.text_field :item_category, class: 'input input-bordered w-full' %>
-    </div>
-    <div class="mb-4">
-      <%= f.label :item_count, 'Item Count*', class: 'block text-sm font-medium mb-1' %>
-      <%= f.number_field :item_count, class: 'input input-bordered w-full', placeholder: 'Quantity...', value: (@inventory&.item_count || 1), required: true %>
-    </div>
-    <div class="mb-4">
-      <%= f.check_box :can_prebook, { class: 'checkbox' } %>
-      <%= f.label :can_prebook, 'Can Prebook', class: 'ml-2 text-sm' %>
-    </div>
-    <div class="mb-4">
-      <%= f.check_box :lock_status, { class: 'checkbox' } %>
-      <%= f.label :lock_status, 'Lock Status', class: 'ml-2 text-sm' %>
-    </div>
-    <div class="mb-4">
-      <%= f.label :request_mode, 'Request Mode*', class: 'block text-sm font-medium mb-1' %>
-      <%= f.select :request_mode, options_for_select(%w[self-checkout password request], @inventory&.request_mode), {}, { required: true, class: 'select select-bordered w-full' } %>
-    </div>
-  </fieldset>
-  <%= f.fields_for :item_setting, (@item_setting || ItemSetting.new) do |sf| %>
-    <fieldset class="mb-6">
-      <legend class="text-2xl font-bold mb-4">Inventory Settings</legend>
-      <div class="mb-4">
-        <%= sf.label :reg_max_check, 'Reg Max Check*', class: 'block text-sm font-medium mb-1' %>
-        <%= sf.number_field :reg_max_check, class: 'input input-bordered w-full', placeholder: 'Max Quantity...', value: (@item_setting&.reg_max_check || 1), required: true %>
-      </div>
-      <div class="mb-4">
-        <%= sf.label :reg_max_total_quantity, 'Reg Max Total Quantity*', class: 'block text-sm font-medium mb-1' %>
-        <%= sf.number_field :reg_max_total_quantity, class: 'input input-bordered w-full', placeholder: 'Max Quantity...', value: (@item_setting&.reg_max_total_quantity || 1), required: true %>
-      </div>
-      <div class="mb-4">
-        <%= sf.label :reg_prebook_timeframe, 'Reg Prebook Timeframe (days)', class: 'block text-sm font-medium mb-1' %>
-        <%= sf.number_field :reg_prebook_timeframe, class: 'input input-bordered w-full', value: (@item_setting&.reg_prebook_timeframe || '') %>
-      </div>
-      <div class="mb-4">
-        <%= sf.label :reg_borrow_time, 'Reg Borrow Time (days)', class: 'block text-sm font-medium mb-1' %>
-        <%= sf.number_field :reg_borrow_time, class: 'input input-bordered w-full', value: (@item_setting&.reg_borrow_time || '') %>
-      </div>
-    </fieldset>
-  <% end %>
-  <div class="flex gap-2 mt-6">
-    <%= f.submit @inventory&.persisted? ? 'Save Changes' : 'Add Item', class: 'btn btn-primary' %>
-    <%= link_to 'Cancel', organization_item_details_path(params[:organization_org_id]), class: 'btn btn-ghost' %>
-  </div>
-<% end %>
+<div class="card p-4 sm:w-sm h-fit  bg-base-100 card-md shadow-lg m-auto ">
+
+	<%= form_with model: @inventory, url: form_url, method: form_method, local: true, html: { autocomplete: 'off' } do |f| %>
+		<%= f.fields_for :item_detail, (@inventory&.item_detail || @item_detail) do |df| %>
+			<fieldset class="mb-6">
+				<div class="divider  mb-4"><legend class="text-2xl font-bold">Item Details</legend></div>
+				<div class="mb-4">
+					<%= df.label :item_name, 'Item Name*', class: 'label text-sm mb-1' %>
+					<%= df.text_field :item_name, class: 'input input-bordered w-full', required: true %>
+				</div>
+				<div class="field">
+					<%= f.label :inventory_name, 'Inventory Tag', class: 'label text-sm mb-1'%><br>
+					<%= f.text_field :inventory_name, class: 'input input-bordered w-full'%>
+				</div>
+				<div class="mb-4">
+					<%= df.label :item_comment, 'Comment', class: 'label text-sm mb-1' %>
+					<%= df.text_area :item_comment, class: 'textarea textarea-bordered w-full' %>
+				</div>
+			</fieldset>
+		<% end %>
+		<fieldset class="mb-6">
+			<div class="divider  mb-4"><legend class="text-2xl font-bold">Stock</legend></div>
+			<div class="mb-4">
+				<%= f.label :item_category, 'Category', class: ' label text-sm mb-1' %>
+				<%= f.text_field :item_category, class: 'input input-bordered w-full' %>
+			</div>
+			<div class="mb-4">
+				<%= f.label :item_count, 'Item Count*', class: 'label text-sm mb-1' %>
+				<%= f.number_field :item_count, class: 'input input-bordered w-full', placeholder: 'Quantity...', value: (@inventory&.item_count || 1), required: true %>
+			</div>
+			<div class="mb-4">
+				<%= f.check_box :can_prebook, { class: 'checkbox' } %>
+				<%= f.label :can_prebook, 'Can Prebook', class: 'ml-2 text-sm' %>
+			</div>
+			<div class="mb-4">
+				<%= f.check_box :lock_status, { class: 'checkbox' } %>
+				<%= f.label :lock_status, 'Lock Status', class: 'ml-2 text-sm' %>
+			</div>
+			<div class="mb-4">
+				<%= f.label :request_mode, 'Request Mode*', class: 'label text-sm mb-1' %>
+				<%= f.select :request_mode, options_for_select(%w[self-checkout password request], @inventory&.request_mode), {}, { required: true, class: 'select select-bordered w-full' } %>
+			</div>
+		</fieldset>
+		<%= f.fields_for :item_setting, (@item_setting || ItemSetting.new) do |sf| %>
+			<fieldset class="mb-6">
+				<div class="divider  mb-4"><legend class="text-2xl font-bold">Inventory Settings</legend></div>
+				<div class="mb-4">
+					<%= sf.label :reg_max_check, 'Reg Max Check*', class: 'label text-sm mb-1' %>
+					<%= sf.number_field :reg_max_check, class: 'input input-bordered w-full', placeholder: 'Max Quantity...', value: (@item_setting&.reg_max_check || 1), required: true %>
+				</div>
+				<div class="mb-4">
+					<%= sf.label :reg_max_total_quantity, 'Reg Max Total Quantity*', class: 'label text-sm mb-1' %>
+					<%= sf.number_field :reg_max_total_quantity, class: 'input input-bordered w-full', placeholder: 'Max Quantity...', value: (@item_setting&.reg_max_total_quantity || 1), required: true %>
+				</div>
+				<div class="mb-4">
+					<%= sf.label :reg_prebook_timeframe, 'Reg Prebook Timeframe (days)', class: 'label text-sm mb-1' %>
+					<%= sf.number_field :reg_prebook_timeframe, class: 'input input-bordered w-full', value: (@item_setting&.reg_prebook_timeframe || '') %>
+				</div>
+				<div class="mb-4">
+					<%= sf.label :reg_borrow_time, 'Reg Borrow Time (days)', class: 'label text-sm mb-1' %>
+					<%= sf.number_field :reg_borrow_time, class: 'input input-bordered w-full', value: (@item_setting&.reg_borrow_time || '') %>
+				</div>
+			</fieldset>
+		<% end %>
+		<div class="flex gap-2 mt-6">
+			<%= f.submit @inventory&.persisted? ? 'Save Changes' : 'Add Item', class: 'btn btn-primary' %>
+			<%= link_to 'Cancel', organization_item_details_path(params[:organization_org_id]), class: 'btn btn-ghost' %>
+		</div>
+	<% end %>
+</div>
