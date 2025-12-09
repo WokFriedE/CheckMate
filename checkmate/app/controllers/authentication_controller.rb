@@ -121,7 +121,7 @@ class AuthenticationController < ApplicationController # rubocop:disable Metrics
       session[:access_token]  = response['access_token']
       session[:refresh_token] = response['refresh_token']
       session[:user_email]    = response.dig('user', 'email')
-      redirect_to landing_path, notice: 'You are logged in.'
+      redirect_to landing_path, notice: 'You are logged in.' && return
     when :invalid_credentials
       flash.now[:alert] = 'Invalid credentials. Please check your email if you have an account.'
       render :login_form, status: :unprocessable_entity
@@ -144,7 +144,7 @@ class AuthenticationController < ApplicationController # rubocop:disable Metrics
   def logout
     require_auth
     reset_session
-    redirect_to root_path, notice: 'You have been logged out.'
+    redirect_to root_path, notice: 'You have been logged out.' && return
   end
 
   private
@@ -245,9 +245,9 @@ class AuthenticationController < ApplicationController # rubocop:disable Metrics
     reset_session
     if action_name.to_s == 'signup'
       flash[:alert] = 'Account/Password is incorrect please try again.'
-      redirect_to signup_path
+      redirect_to signup_path && return
     else
-      redirect_to login_path, alert: 'Account/Password is incorrect please try again.'
+      redirect_to login_path, alert: 'Account/Password is incorrect please try again.' && return
     end
   end
 
