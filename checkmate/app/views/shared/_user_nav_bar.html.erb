@@ -44,7 +44,7 @@
 			<div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
 				<div class="avatar avatar-placeholder">
 					<div class="bg-neutral text-neutral-content w-8 rounded-full">
-						<span class="text-xs"><%= current_user[:email][0].capitalize %></span>
+						<span class="text-xs"><%= current_user&.dig(:email)&.first&.capitalize || '?' %></span>
 					</div>
 				</div>
 			</div>
@@ -55,7 +55,7 @@
 					<div class="flex flex-col gap-2">
 						<label class="label me-auto">Email</label>
 						<span>
-							<%= current_user[:email] %></span>
+							<%= current_user&.dig(:email) || 'Not logged in' %></span>
 					</div>
 				</li>
 			</ul>
