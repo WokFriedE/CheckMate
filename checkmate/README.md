@@ -34,6 +34,9 @@ Create model, controller, view dir
 * Database initialization
 
 * How to run the test suite
+- capybara tests: `bundle exec cucumber features/`
+- unit tests: `rails test`
+
 
 * Services (job queues, cache servers, search engines, etc.)
 
